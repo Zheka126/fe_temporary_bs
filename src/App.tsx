@@ -1,20 +1,22 @@
-import styled from "styled-components";
 import "./App.css";
-
-const Title = styled.h1`
-  font-size: 2.5em;
-  text-align: center;
-  color: #bf4f74;
-`;
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import MainPage from "./pages/MainPage";
+import RegistrationPage from "./pages/RegistrationPage";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
 
 function App() {
   return (
     <>
-      <Title>SAY MY NAME</Title>
-      <img
-        src="https://i1.sndcdn.com/artworks-000173392556-ppnbfq-t500x500.jpg"
-        alt=""
-      />
+      <Provider store={store}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/registration" element={<RegistrationPage />} />
+            <Route index element={<MainPage />} />
+            {/* <Route path="*" element={<NoPage />} /> */}
+          </Routes>
+        </BrowserRouter>
+      </Provider>
     </>
   );
 }
