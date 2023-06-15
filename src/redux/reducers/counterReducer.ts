@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 type CounterState = {
   value: number;
@@ -13,7 +13,7 @@ function sum(a: number, b: number) {
 }
 
 export const counterSlice = createSlice({
-  name: "counter",
+  name: 'counter',
   initialState,
   reducers: {
     increment: (state) => {
