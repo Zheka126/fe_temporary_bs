@@ -1,7 +1,7 @@
-import { styled } from 'styled-components';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { increment } from '../redux/reducers/counterReducer';
 import Layout from '../components/Layout';
+import styled from 'styled-components';
+import { increment } from '../redux/reducers/counterReducer';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 
 export default function MainPage() {
   const dispatch = useAppDispatch();
