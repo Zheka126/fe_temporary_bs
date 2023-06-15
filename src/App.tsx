@@ -29,7 +29,8 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/registration" element={<RegistrationPage />} />
-            <Route index element={<MainPage />} />
+            <Route path="/" element={<RegistrationPage />} />
+            {/* <Route index element={<MainPage />} /> */}
             {/* <Route path="*" element={<NoPage />} /> */}
           </Routes>
         </BrowserRouter>
