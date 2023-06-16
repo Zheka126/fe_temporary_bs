@@ -50,6 +50,9 @@ const onSubmit = (props: IRegistrationValues) => {
   console.log(props);
 };
 
+const inputOutline = (error: string | undefined, touched: boolean | undefined) =>
+  error && touched ? '1px solid red' : 'none';
+
 export const SignupForm: FC = () => {
   return (
     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
@@ -64,7 +67,7 @@ export const SignupForm: FC = () => {
                 id="firstName"
                 type="text"
                 placeholder="First name"
-                outline={errors.firstName && touched.firstName ? '1px solid red' : 'none'}
+                outline={inputOutline(errors.firstName, touched.firstName)}
               />
               <StyledErrorMessage name="firstName" component={'span'} />
             </InputContainer>
@@ -76,7 +79,7 @@ export const SignupForm: FC = () => {
                 id="lastName"
                 type="text"
                 placeholder="Last name"
-                outline={errors.lastName && touched.lastName ? '1px solid red' : 'none'}
+                outline={inputOutline(errors.lastName, touched.lastName)}
               />
               <StyledErrorMessage name="lastName" component={'span'} />
             </InputContainer>
@@ -88,7 +91,7 @@ export const SignupForm: FC = () => {
                 id="username"
                 type="text"
                 placeholder="Enter username"
-                outline={errors.username && touched.username ? '1px solid red' : 'none'}
+                outline={inputOutline(errors.username, touched.username)}
               />
               <StyledErrorMessage name="username" component={'span'} />
             </InputContainer>
@@ -100,7 +103,7 @@ export const SignupForm: FC = () => {
                 id="email"
                 type="email"
                 placeholder="Enter email"
-                outline={errors.email && touched.email ? '1px solid red' : 'none'}
+                outline={inputOutline(errors.email, touched.email)}
               />
               <StyledErrorMessage name="email" component={'span'} />
             </InputContainer>
@@ -112,7 +115,7 @@ export const SignupForm: FC = () => {
                 id="password"
                 type="password"
                 placeholder="Enter password"
-                outline={errors.password && touched.password ? '1px solid red' : 'none'}
+                outline={inputOutline(errors.password, touched.password)}
               />
               <StyledErrorMessage name="password" component={'span'} />
             </InputContainer>
@@ -124,9 +127,7 @@ export const SignupForm: FC = () => {
                 id="confirmPassword"
                 type="password"
                 placeholder="Confirm password"
-                outline={
-                  errors.confirmPassword && touched.confirmPassword ? '1px solid red' : 'none'
-                }
+                outline={inputOutline(errors.confirmPassword, touched.confirmPassword)}
               />
               <StyledErrorMessage name="confirmPassword" component={'span'} />
             </InputContainer>

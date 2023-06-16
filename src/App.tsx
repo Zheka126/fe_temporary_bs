@@ -9,7 +9,6 @@ import { MainPage } from './pages/MainPage';
 /*
 Todo:
 2) Fix eslint
-3) Figure out about styled-components and folders - Do we contain styles in separate files?
 
 */
 
