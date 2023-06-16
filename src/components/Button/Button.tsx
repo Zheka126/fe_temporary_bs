@@ -1,6 +1,13 @@
-import { ButtonType } from '../../types';
+import { FC } from 'react';
 import { StyledButton } from './Button.styles';
+import { memo } from 'react';
 
-export default function Button({ title, callback }: ButtonType) {
-  return <StyledButton onClick={callback}>{title}</StyledButton>;
+export interface IButtonProps {
+  type: 'button' | 'submit' | 'reset';
+  title: string;
+  // callback: () => void;
 }
+
+export const Button: FC<IButtonProps> = memo(({ type, title }) => {
+  return <StyledButton type={type}>{title}</StyledButton>;
+});

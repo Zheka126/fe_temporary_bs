@@ -1,27 +1,20 @@
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import MainPage from './pages/MainPage';
 import { Provider } from 'react-redux';
-import RegistrationPage from './pages/RegistrationPage';
 import { store } from './redux/store';
-import React, { useEffect, useState } from 'react';
+import { FC, useState } from 'react';
+import { RegistrationPage } from './pages/RegistrationPage';
+import { MainPage } from './pages/MainPage';
 
 /*
 Todo:
-1) Get right fonts
 2) Fix eslint
 3) Figure out about styled-components and folders - Do we contain styles in separate files?
 
-
 */
 
-function App() {
+export const App: FC = () => {
   const [state, setState] = useState(false);
-  const age = 12;
-
-  useEffect(() => {
-    if (!state) setState(true);
-  }, []);
 
   return (
     <>
@@ -37,6 +30,4 @@ function App() {
       </Provider>
     </>
   );
-}
-
-export default App;
+};

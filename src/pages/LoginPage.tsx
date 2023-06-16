@@ -1,7 +1,8 @@
-import AuthLayout from '../components/AuthLayout/AuthLayout';
-import SignupForm from '../components/SignupForm/SignupForm';
+import { FC } from 'react';
+import { AuthLayout } from '../components/AuthLayout/AuthLayout';
+import { SignupForm } from '../components/SignupForm/SignupForm';
 
-export default function LoginPage() {
+export const LoginPage: FC = () => {
   return (
     <div>
       <AuthLayout>
@@ -9,4 +10,4 @@ export default function LoginPage() {
       </AuthLayout>
     </div>
   );
-}
+};

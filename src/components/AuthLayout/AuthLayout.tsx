@@ -1,7 +1,11 @@
+import { FC, ReactNode } from 'react';
 import { Container, LeftSection, RightSection, LogoImg, CenterText } from './AuthLayout.styles';
-import { AuthLayoutProps } from '../../types';
 
-export default function AuthLayout({ children }: AuthLayoutProps) {
+export interface IAuthLayoutProps {
+  children: ReactNode;
+}
+
+export const AuthLayout: FC<IAuthLayoutProps> = ({ children }) => {
   return (
     <Container>
       <LeftSection>
@@ -14,4 +18,4 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
       <RightSection>{children}</RightSection>
     </Container>
   );
-}
+};

@@ -1,10 +1,26 @@
-import { Formik } from 'formik';
 import * as Yup from 'yup';
-import FormInput from '../Input/FormInput';
-import Button from '../Button/Button';
-import { ButtonsContainer, StyledForm, Title } from './SignupForm.styles';
+import {
+  ButtonsContainer,
+  InputContainer,
+  StyledErrorMessage,
+  StyledForm,
+  StyledInput,
+  Title,
+} from './SignupForm.styles';
+import { Formik } from 'formik';
+import { Button } from '../Button/Button';
+import { FC } from 'react';
 
-const initialValues = {
+export interface IRegistrationValues {
+  firstName: string;
+  lastName: string;
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+const initialValues: IRegistrationValues = {
   firstName: '',
   lastName: '',
   username: '',
@@ -25,60 +41,103 @@ const validationSchema = Yup.object({
   username: Yup.string().min(3, errMsgForUsername).max(30, errMsgForUsername).required('Required'),
   email: Yup.string().email(errorMessageForEmail).required('Required'),
   password: Yup.string().min(3, errMsgForPass).max(30, errMsgForPass).required('Required'),
-  repeatPassword: Yup.string()
+  confirmPassword: Yup.string()
     .oneOf([Yup.ref('password')], 'Passwords must match')
     .required('Required'),
 });
 
-export default function SignupForm() {
+const onSubmit = (props: IRegistrationValues) => {
+  console.log(props);
+};
+
+export const SignupForm: FC = () => {
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={validationSchema}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
-      }}
-    >
-      {({ errors, touched }) => {
-        console.log('touched: ', touched);
-        console.log('errors: ', errors);
+    <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+      {({ errors, touched, handleSubmit }) => {
         return (
-          <StyledForm>
+          <StyledForm onSubmit={handleSubmit}>
             <Title>Sign Up</Title>
-            {/* {createFormInput('firstName', 'text', 'First Name', touched, errors)} */}
-            <label htmlFor="firstName">First Name</label>
-            <FormInput id="firstName" name="firstName" type="text" placeholder="First name" />
+            <InputContainer>
+              <label htmlFor="firstName">First Name</label>
+              <StyledInput
+                name="firstName"
+                id="firstName"
+                type="text"
+                placeholder="First name"
+                outline={errors.firstName && touched.firstName ? '1px solid red' : 'none'}
+              />
+              <StyledErrorMessage name="firstName" component={'span'} />
+            </InputContainer>
 
-            <label htmlFor="lastName">Last Name</label>
-            <FormInput id="lastName" name="lastName" type="text" placeholder="Last name" />
+            <InputContainer>
+              <label htmlFor="lastName">Last Name</label>
+              <StyledInput
+                name="lastName"
+                id="lastName"
+                type="text"
+                placeholder="Last name"
+                outline={errors.lastName && touched.lastName ? '1px solid red' : 'none'}
+              />
+              <StyledErrorMessage name="lastName" component={'span'} />
+            </InputContainer>
 
-            <label htmlFor="username">Username</label>
-            <FormInput id="username" name="username" type="text" placeholder="Enter username" />
+            <InputContainer>
+              <label htmlFor="username">Username</label>
+              <StyledInput
+                name="username"
+                id="username"
+                type="text"
+                placeholder="Enter username"
+                outline={errors.username && touched.username ? '1px solid red' : 'none'}
+              />
+              <StyledErrorMessage name="username" component={'span'} />
+            </InputContainer>
 
-            <label htmlFor="email">Email</label>
-            <FormInput id="email" name="email" type="email" placeholder="Enter email" />
+            <InputContainer>
+              <label htmlFor="email">Email</label>
+              <StyledInput
+                name="email"
+                id="email"
+                type="email"
+                placeholder="Enter email"
+                outline={errors.email && touched.email ? '1px solid red' : 'none'}
+              />
+              <StyledErrorMessage name="email" component={'span'} />
+            </InputContainer>
 
-            <label htmlFor="password">Password</label>
-            <FormInput id="password" name="password" type="password" placeholder="Enter password" />
+            <InputContainer>
+              <label htmlFor="password">Password</label>
+              <StyledInput
+                name="password"
+                id="password"
+                type="password"
+                placeholder="Enter password"
+                outline={errors.password && touched.password ? '1px solid red' : 'none'}
+              />
+              <StyledErrorMessage name="password" component={'span'} />
+            </InputContainer>
 
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <FormInput
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              placeholder="Confirm password"
-            />
+            <InputContainer>
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <StyledInput
+                name="confirmPassword"
+                id="confirmPassword"
+                type="password"
+                placeholder="Confirm password"
+                outline={
+                  errors.confirmPassword && touched.confirmPassword ? '1px solid red' : 'none'
+                }
+              />
+              <StyledErrorMessage name="confirmPassword" component={'span'} />
+            </InputContainer>
 
             <ButtonsContainer>
-              <Button type="submit" title="Sign up" callback={() => console.log('work')} />
-              <Button type="submit" title="Log in" callback={() => console.log('work')} />
+              <Button type="submit" title="Sign up" />
+              <Button type="submit" title="Log in" />
             </ButtonsContainer>
           </StyledForm>
         );
       }}
     </Formik>
   );
-}
+};
