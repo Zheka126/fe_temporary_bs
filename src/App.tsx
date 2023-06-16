@@ -2,7 +2,7 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { RegistrationPage } from './pages/RegistrationPage';
 import { MainPage } from './pages/MainPage';
 
