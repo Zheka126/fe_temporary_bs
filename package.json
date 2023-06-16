@@ -10,40 +10,45 @@
     "preview": "vite preview",
     "lint:fix": "eslint . --fix"
   },
-  "prettier": {
-    "singleQuote": true,
-    "printWidth": 100
-  },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "@types/react-redux": "^7.1.25",
     "formik": "^2.4.2",
+<<<<<<< HEAD
     "normalize.css": "^8.0.1",
+=======
+>>>>>>> 5e83d271137c7dd2a4e46027c9386784db3f74eb
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.0",
     "react-router-dom": "^6.12.1",
+<<<<<<< HEAD
     "styled-components": "^6.0.0-rc.3",
     "yup": "^1.2.0"
+=======
+    "styled-components": "^6.0.0-rc.3"
+>>>>>>> 5e83d271137c7dd2a4e46027c9386784db3f74eb
   },
   "devDependencies": {
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
-    "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@typescript-eslint/parser": "^5.59.11",
     "@vitejs/plugin-react-swc": "^3.0.0",
-    "eslint": "^8.42.0",
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-node": "^4.1.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-standard-with-typescript": "^35.0.0",
-    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-n": "^15.7.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.1.1",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-react-refresh": "^0.3.4",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "prettier": "^2.8.8",
