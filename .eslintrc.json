@@ -18,6 +18,9 @@
     "project": "./tsconfig.json"
   },
   "plugins": ["react", "@typescript-eslint", "prettier"],
+  "ignorePatterns": [
+    "vite.config.ts"
+  ],
   "rules": {
     "linebreak-style": 0,
     "import/prefer-default-export": 0,
