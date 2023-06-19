@@ -1,5 +1,6 @@
-import { StyledButton } from './Button.styles';
 import { memo } from 'react';
+
+import { StyledButton } from './Button.styles';
 
 export interface IButtonProps {
   type: 'button' | 'submit' | 'reset';

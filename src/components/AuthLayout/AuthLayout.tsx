@@ -1,5 +1,12 @@
 import { ReactNode } from 'react';
-import { Container, LeftSection, RightSection, LogoImg, CenterText } from './AuthLayout.styles';
+
+import {
+  CenterText,
+  Container,
+  LeftSection,
+  LogoImg,
+  RightSection,
+} from './AuthLayout.styles';
 
 export interface IAuthLayoutProps {
   children: ReactNode;
