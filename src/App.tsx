@@ -1,16 +1,11 @@
-import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from './redux/store';
-import { useEffect, useState } from 'react';
 import { RegistrationPage } from './pages/RegistrationPage';
+import { store } from './redux/store';
 import { MainPage } from './pages/MainPage';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
-/*
-Todo:
-2) Fix eslint
-
-*/
+import './App.css';
 
 export const App = () => {
   const [state, setState] = useState(false);
@@ -28,5 +23,5 @@ export const App = () => {
         </BrowserRouter>
       </Provider>
     </>
-  )
-  }
+  );
+};
