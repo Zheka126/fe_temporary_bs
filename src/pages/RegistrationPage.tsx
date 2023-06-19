@@ -1,8 +1,7 @@
-import { FC } from 'react';
 import { AuthLayout } from '../components/AuthLayout/AuthLayout';
 import { SignupForm } from '../components/SignupForm/SignupForm';
 
-export const RegistrationPage: FC = () => {
+export const RegistrationPage = () => {
   return (
     <div>
       <AuthLayout>

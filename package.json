@@ -14,20 +14,13 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@types/react-redux": "^7.1.25",
     "formik": "^2.4.2",
-<<<<<<< HEAD
     "normalize.css": "^8.0.1",
-=======
->>>>>>> 5e83d271137c7dd2a4e46027c9386784db3f74eb
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.0",
     "react-router-dom": "^6.12.1",
-<<<<<<< HEAD
     "styled-components": "^6.0.0-rc.3",
     "yup": "^1.2.0"
-=======
-    "styled-components": "^6.0.0-rc.3"
->>>>>>> 5e83d271137c7dd2a4e46027c9386784db3f74eb
   },
   "devDependencies": {
     "@types/react": "^18.0.37",

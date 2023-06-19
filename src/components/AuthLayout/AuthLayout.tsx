@@ -1,11 +1,11 @@
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { Container, LeftSection, RightSection, LogoImg, CenterText } from './AuthLayout.styles';
 
 export interface IAuthLayoutProps {
   children: ReactNode;
 }
 
-export const AuthLayout: FC<IAuthLayoutProps> = ({ children }) => {
+export const AuthLayout = ({ children }: IAuthLayoutProps) => {
   return (
     <Container>
       <LeftSection>

@@ -9,7 +9,6 @@ import {
 } from './SignupForm.styles';
 import { Formik } from 'formik';
 import { Button } from '../Button/Button';
-import { FC } from 'react';
 
 export interface IRegistrationValues {
   firstName: string;
@@ -53,7 +52,7 @@ const onSubmit = (props: IRegistrationValues) => {
 const inputOutline = (error: string | undefined, touched: boolean | undefined) =>
   error && touched ? '1px solid red' : 'none';
 
-export const SignupForm: FC = () => {
+export const SignupForm = () => {
   return (
     <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
       {({ errors, touched, handleSubmit }) => {
