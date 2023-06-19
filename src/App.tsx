@@ -10,6 +10,13 @@ import './App.css';
 export const App = () => {
   const [state, setState] = useState(false);
 
+  useEffect(() => {
+
+
+    
+    console.log(124324);
+  }, []);
+
   return (
     <>
       <Provider store={store}>

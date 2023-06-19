@@ -19,23 +19,12 @@
   },
   "plugins": ["react", "@typescript-eslint", "prettier", "simple-import-sort"],
   "rules": {
-<<<<<<< HEAD
     "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error"
-  },
-  "sort-imports": ["error", {
-    "ignoreCase": false,
-    "ignoreDeclarationSort": false,
-    "ignoreMemberSort": false,
-    "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
-    "allowSeparatedGroups": false
-}]
-=======
+    "simple-import-sort/exports": "error",
     "linebreak-style": 0,
     "import/prefer-default-export": 0,
     "react/function-component-definition": 0,
     "react/react-in-jsx-scope": 0,
     "jsx-quotes": 0
+  },
   }
->>>>>>> 5e83d271137c7dd2a4e46027c9386784db3f74eb
-}
