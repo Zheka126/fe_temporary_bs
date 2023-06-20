@@ -1,6 +1,6 @@
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 
+import { registrationValidation } from '../../helpers';
 import { Button } from '../Button/Button';
 import {
   ButtonsContainer,
@@ -29,36 +29,6 @@ const initialValues: IRegistrationValues = {
   confirmPassword: '',
 };
 
-const errMsgForName = "Should be from 3 to 30 letters or symbols(space, -, ')";
-const errMsgForUsername =
-  "Should be unique and from 3 to 30 letters or symbols(space, -, ')";
-const errorMessageForEmail =
-  "Should be unique and, alphanumeric characters oor symbols(space, -, ')";
-const errMsgForPass = 'Should be from 3 to 30 alphanumeric characters';
-
-const validationSchema = Yup.object({
-  firstName: Yup.string()
-    .min(3, errMsgForName)
-    .max(30, errMsgForName)
-    .required('Required'),
-  lastName: Yup.string()
-    .min(3, errMsgForName)
-    .max(30, errMsgForName)
-    .required('Required'),
-  username: Yup.string()
-    .min(3, errMsgForUsername)
-    .max(30, errMsgForUsername)
-    .required('Required'),
-  email: Yup.string().email(errorMessageForEmail).required('Required'),
-  password: Yup.string()
-    .min(3, errMsgForPass)
-    .max(30, errMsgForPass)
-    .required('Required'),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password')], 'Passwords must match')
-    .required('Required'),
-});
-
 const onSubmit = (props: IRegistrationValues) => {
   console.log(props);
 };
@@ -72,7 +42,7 @@ export const SignupForm = () => {
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={validationSchema}
+      validationSchema={registrationValidation}
       onSubmit={onSubmit}
     >
       {({ errors, touched, handleSubmit }) => {

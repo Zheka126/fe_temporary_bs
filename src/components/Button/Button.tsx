@@ -1,5 +1,3 @@
-import { memo } from 'react';
-
 import { StyledButton } from './Button.styles';
 
 export interface IButtonProps {
@@ -7,6 +5,6 @@ export interface IButtonProps {
   title: string;
 }
 
-export const Button = memo(({ type, title }: IButtonProps) => {
+export const Button = ({ type, title }: IButtonProps) => {
   return <StyledButton type={type}>{title}</StyledButton>;
-});
+};
