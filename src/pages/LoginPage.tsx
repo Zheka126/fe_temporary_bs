@@ -1,11 +1,11 @@
 import { AuthLayout } from '../components/AuthLayout/AuthLayout';
-import { SignupForm } from '../components/SignupForm/SignupForm';
+import { LoginForm } from '../components/LoginForm/LoginForm';
 
 export const LoginPage = () => {
   return (
     <div>
       <AuthLayout>
-        <SignupForm />
+        <LoginForm />
       </AuthLayout>
     </div>
   );
