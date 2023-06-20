@@ -51,6 +51,7 @@ export const StyledErrorMessage = styled(ErrorMessage)`
 export const ButtonsContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  // gap: 5px;
   margin: 5px 0;
 
   button + button {
