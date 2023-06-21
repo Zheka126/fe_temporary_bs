@@ -1,10 +1,9 @@
-import { Formik } from 'formik';
+import { useFormik } from 'formik';
 import { Link } from 'react-router-dom';
 
 import { Button } from '../Button/Button';
 import {
   InputContainer,
-  StyledErrorMessage,
   StyledForm,
   StyledInput,
   Title,
@@ -26,43 +25,40 @@ export const LoginForm = () => {
     console.log(props);
   };
 
+  const { handleSubmit, getFieldProps } = useFormik({
+    initialValues,
+    onSubmit,
+  });
+
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit}>
-      {({ handleSubmit }) => {
-        return (
-          <StyledForm onSubmit={handleSubmit}>
-            <Title>Login</Title>
-            <StyledParagraph>
-              Don't have an account yet? <Link to="/registration">Sign up</Link>
-            </StyledParagraph>
-            <InputContainer>
-              <label htmlFor="username">Username</label>
-              <StyledInput
-                name="username"
-                id="username"
-                type="text"
-                placeholder="Enter username"
-              />
-              <StyledErrorMessage name="username" component="span" />
-            </InputContainer>
+    <StyledForm onSubmit={handleSubmit}>
+      <Title>Login</Title>
+      <StyledParagraph>
+        Don't have an account yet? <Link to="/registration">Sign up</Link>
+      </StyledParagraph>
+      <InputContainer>
+        <label htmlFor="username">Username</label>
+        <StyledInput
+          id="username"
+          type="text"
+          placeholder="Enter username"
+          {...getFieldProps('username')}
+        />
+      </InputContainer>
 
-            <InputContainer>
-              <label htmlFor="password">Password</label>
-              <StyledInput
-                name="password"
-                id="password"
-                type="text"
-                placeholder="Enter password"
-              />
-              <StyledErrorMessage name="password" component="span" />
-            </InputContainer>
+      <InputContainer>
+        <label htmlFor="password">Password</label>
+        <StyledInput
+          id="password"
+          type="password"
+          placeholder="Enter password"
+          {...getFieldProps('password')}
+        />
+      </InputContainer>
 
-            <ForgotPasswordLink to="">Forgot password?</ForgotPasswordLink>
+      <ForgotPasswordLink to="">Forgot password?</ForgotPasswordLink>
 
-            <Button type="submit" title="Log in" />
-          </StyledForm>
-        );
-      }}
-    </Formik>
+      <Button type="submit" title="Log in" />
+    </StyledForm>
   );
 };
