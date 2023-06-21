@@ -8,11 +8,11 @@ import {
   RightSection,
 } from './AuthLayout.styles';
 
-export interface IAuthLayoutProps {
+export interface AuthLayoutProps {
   children: ReactNode;
 }
 
-export const AuthLayout = ({ children }: IAuthLayoutProps) => {
+export const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (
     <Container>
       <LeftSection>

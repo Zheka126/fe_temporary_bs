@@ -1,6 +1,5 @@
 import { Formik } from 'formik';
 
-import { registrationValidation } from '../../helpers';
 import { Button } from '../Button/Button';
 import {
   ButtonsContainer,
@@ -10,8 +9,9 @@ import {
   StyledInput,
   Title,
 } from './SignupForm.styles';
+import { signupValidation } from './signupValidation';
 
-export interface IRegistrationValues {
+export interface RegistrationValues {
   firstName: string;
   lastName: string;
   username: string;
@@ -20,7 +20,7 @@ export interface IRegistrationValues {
   confirmPassword: string;
 }
 
-const initialValues: IRegistrationValues = {
+const initialValues: RegistrationValues = {
   firstName: '',
   lastName: '',
   username: '',
@@ -29,7 +29,7 @@ const initialValues: IRegistrationValues = {
   confirmPassword: '',
 };
 
-const onSubmit = (props: IRegistrationValues) => {
+const onSubmit = (props: RegistrationValues) => {
   console.log(props);
 };
 
@@ -42,7 +42,7 @@ export const SignupForm = () => {
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={registrationValidation}
+      validationSchema={signupValidation}
       onSubmit={onSubmit}
     >
       {({ errors, touched, handleSubmit }) => {

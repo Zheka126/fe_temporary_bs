@@ -11,21 +11,21 @@ import {
 } from '../SignupForm/SignupForm.styles';
 import { ForgotPasswordLink, StyledParagraph } from './LoginForm.styles';
 
-export interface ILoginValues {
+export interface LoginValues {
   username: string;
   password: string;
 }
 
-const initialValues: ILoginValues = {
+const initialValues: LoginValues = {
   username: '',
   password: '',
 };
 
-const onSubmit = (props: ILoginValues) => {
-  console.log(props);
-};
-
 export const LoginForm = () => {
+  const onSubmit = (props: LoginValues) => {
+    console.log(props);
+  };
+
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
       {({ handleSubmit }) => {
