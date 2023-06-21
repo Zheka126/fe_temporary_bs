@@ -14,13 +14,13 @@ export const flexCenterStyles = css`
 export const LeftSection = styled.div`
   position: relative;
   flex: 0.4;
-  background-color: #1a1a1a;
+  background-color: ${({ theme }) => theme.colors.black};
   ${flexCenterStyles}
 `;
 
 export const RightSection = styled.div`
   flex: 0.6;
-  background-color: #f7f7f7;
+  background-color: ${({ theme }) => theme.colors.lightGray};
   ${flexCenterStyles}
 `;
 

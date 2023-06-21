@@ -35,7 +35,7 @@ export const StyledInput = styled(Field)`
   }
 
   &:focus {
-    outline: 1px solid #9d9d9d;
+    outline: 1px solid ${({ theme }) => theme.colors.outline};
     box-shadow: 0px 5px 15px -3px rgba(0, 0, 0, 0.08);
   }
 `;
@@ -44,7 +44,7 @@ export const StyledErrorMessage = styled(ErrorMessage)`
   position: absolute;
   left: 0;
   bottom: -20px;
-  color: #de6b67;
+  color: ${({ theme }) => theme.colors.error};
   font-size: 14px;
 `;
 

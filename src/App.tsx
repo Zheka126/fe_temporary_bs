@@ -6,10 +6,12 @@ import { LoginPage } from './pages/LoginPage';
 import { RegistrationPage } from './pages/RegistrationPage';
 import { store } from './redux/store';
 
-const themes = {
-  color: {
-    gray: '#fff',
-    black: '111',
+const theme = {
+  colors: {
+    black: '#1a1a1a',
+    lightGray: '#f7f7f7',
+    outline: '#9d9d9d',
+    error: "#de6b67"
   },
 };
 
@@ -17,9 +19,9 @@ export const App = () => {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <ThemeProvider theme={themes}>
+        <ThemeProvider theme={theme}>
           <Routes>
-            <Route path="/registration" element={<RegistrationPage />} />
+            <Route path="/" element={<RegistrationPage />} />
             <Route path="/login" element={<LoginPage />} />
             {/* <Route index element={<MainPage />} /> */}
             {/* <Route path="*" element={<NoPage />} /> */}
