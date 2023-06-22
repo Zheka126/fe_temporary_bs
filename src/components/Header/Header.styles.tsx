@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+import { styled } from "styled-components";
 
 export const StyledHeader = styled.header`
   display: flex;
@@ -48,18 +48,19 @@ export const NavBtn = styled.button`
   }
 `;
 
-export const NavBtnWithSubmenu = styled(NavBtn)<{ isSubmenuShowed: boolean }>`
+export const NavBtnWithDropdown = styled(NavBtn)<{ isDropdownShowed: boolean }>`
   img {
     width: 8px;
     padding: 0 6px;
-    transform: ${({ isSubmenuShowed }) =>
-      isSubmenuShowed ? 'rotate(180deg)' : 'rotate(0deg)'};
+    transform: ${({ isDropdownShowed }) =>
+      isDropdownShowed ? "rotate(180deg)" : "rotate(0deg)"};
     transition: transform 0.2s ease-in-out;
   }
 `;
 
-export const Dropdown = styled('ul')<{ isSubmenuShowed: boolean }>`
-  display: ${({ isSubmenuShowed }) => (isSubmenuShowed ? 'block' : 'none')};
+export const Dropdown = styled("ul")<{ isDropdownShowed: boolean }>`
+  display: ${({ isDropdownShowed: isDropdownShowed }) =>
+    isDropdownShowed ? "block" : "none"};
   position: absolute;
   right: -30px;
   width: 150px;
@@ -72,6 +73,7 @@ export const Dropdown = styled('ul')<{ isSubmenuShowed: boolean }>`
   li {
     padding: 2px 5px;
     text-align: left;
+    cursor: default;
     &:last-child {
       margin-top: 8px;
       padding-top: 10px;

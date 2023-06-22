@@ -1,23 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 type headerState = {
-  isSubmenuShowed: boolean;
+  isDropdownShowed: boolean;
 };
 
 const initialState: headerState = {
-  isSubmenuShowed: false,
+  isDropdownShowed: false,
 };
 
 export const headerSlice = createSlice({
-  name: 'counter',
+  name: "counter",
   initialState,
   reducers: {
-    setIsSubmenuShowed: (state, { payload }) => {
-      state.isSubmenuShowed = payload;
+    setIsDropdownShowed: (state, { payload }) => {
+      state.isDropdownShowed = payload;
     },
   },
 });
 
-export const { setIsSubmenuShowed } = headerSlice.actions;
+export const { setIsDropdownShowed } = headerSlice.actions;
 
 export default headerSlice.reducer;

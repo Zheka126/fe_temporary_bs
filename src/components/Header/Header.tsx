@@ -1,23 +1,54 @@
-import { Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { setIsSubmenuShowed } from '../../redux/reducers/headerReducer';
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { setIsDropdownShowed } from "../../redux/reducers/headerReducer";
 import {
   BtnsContainer,
   Dropdown,
   NavBtn,
-  NavBtnWithSubmenu,
+  NavBtnWithDropdown,
   StyledHeader,
-} from './Header.styles';
+} from "./Header.styles";
 
 export const Header = () => {
   const dispatch = useAppDispatch();
-  const isSubmenuShowed = useAppSelector(
-    (state) => state.header.isSubmenuShowed
+  const isDropdownShowed = useAppSelector(
+    (state) => state.header.isDropdownShowed
   );
 
   const handleUsernameClick = () => {
-    dispatch(setIsSubmenuShowed(!isSubmenuShowed));
+    dispatch(setIsDropdownShowed(!isDropdownShowed));
   };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    const dropdown = document.getElementById("dropdown");
+    const navBtnWithSubmenu = document.getElementById("navBtnWithSubmenu");
+    const isClickInsideDropdown = dropdown?.contains(event.target as Node);
+    const isClickInsideNavBtnWithSubmenu = navBtnWithSubmenu?.contains(
+      event.target as Node
+    );
+
+    if (
+      !isClickInsideDropdown &&
+      !isClickInsideNavBtnWithSubmenu &&
+      isDropdownShowed
+    ) {
+      dispatch(setIsDropdownShowed(false));
+    }
+  };
+
+  const handleEscapeKey = (event: KeyboardEvent) => {
+    if (event.key === "Escape") dispatch(setIsDropdownShowed(false));
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscapeKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, []);
 
   return (
     <StyledHeader>
@@ -28,15 +59,16 @@ export const Header = () => {
         <NavBtn>
           <Link to="/Catalog">Catalog</Link>
         </NavBtn>
-        <NavBtnWithSubmenu
+        <NavBtnWithDropdown
+          id="navBtnWithSubmenu"
           className="active"
           onClick={handleUsernameClick}
-          isSubmenuShowed={isSubmenuShowed}
+          isDropdownShowed={isDropdownShowed}
         >
           {/* Should be displayed real username of current user */}
           Username
           <img src="src\assets\arrow-down.svg" alt="Drop down" />
-          <Dropdown isSubmenuShowed={isSubmenuShowed}>
+          <Dropdown id="dropdown" isDropdownShowed={isDropdownShowed}>
             <li>
               <Link to="/Profile">My profile</Link>
             </li>
@@ -48,7 +80,7 @@ export const Header = () => {
               <Link to="/SignOut">Sign out</Link>
             </li>
           </Dropdown>
-        </NavBtnWithSubmenu>
+        </NavBtnWithDropdown>
       </BtnsContainer>
     </StyledHeader>
   );
