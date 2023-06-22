@@ -1,27 +1,32 @@
-import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { useEffect, useState } from 'react';
-import MainPage from './pages/MainPage';
-import RegistrationPage from './pages/RegistrationPage';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
+
+import { LoginPage } from './pages/LoginPage';
+import { RegistrationPage } from './pages/RegistrationPage';
 import { store } from './redux/store';
 
+const theme = {
+  colors: {
+    black: '#1a1a1a',
+    lightGray: '#f7f7f7',
+    outline: '#9d9d9d',
+    error: "#de6b67"
+  },
+};
+
 export const App = () => {
-  const [state, setState] = useState(false);
-  const age = 12;
-
-  useEffect(() => {
-    if (!state) setState(true);
-  }, [state]);
-
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <Routes>
-          <Route path="/registration" element={<RegistrationPage />} />
-          <Route index element={<MainPage />} />
-          {/* <Route path="*" element={<NoPage />} /> */}
-        </Routes>
+        <ThemeProvider theme={theme}>
+          <Routes>
+            <Route path="/" element={<RegistrationPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            {/* <Route index element={<MainPage />} /> */}
+            {/* <Route path="*" element={<NoPage />} /> */}
+          </Routes>
+        </ThemeProvider>
       </BrowserRouter>
     </Provider>
   );
