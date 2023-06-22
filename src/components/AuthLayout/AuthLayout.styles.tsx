@@ -8,13 +8,13 @@ export const Container = styled.div`
 export const LeftSection = styled.div`
   position: relative;
   flex: 0.4;
-  background-color: #1a1a1a;
+  background-color: ${({ theme }) => theme.colors.black};
   ${({ theme }) => theme.flexStyles()}
 `;
 
 export const RightSection = styled.div`
   flex: 0.6;
-  background-color: #f7f7f7;
+  background-color: ${({ theme }) => theme.colors.lightGray};
   ${({ theme }) => theme.flexStyles()}
 `;
 export const LogoImg = styled.img`
