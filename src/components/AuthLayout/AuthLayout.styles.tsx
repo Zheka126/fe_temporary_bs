@@ -17,7 +17,6 @@ export const RightSection = styled.div`
   background-color: #f7f7f7;
   ${({ theme }) => theme.flexStyles()}
 `;
-
 export const LogoImg = styled.img`
   position: absolute;
   top: 20px;
