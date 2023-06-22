@@ -1,5 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from './reducers/counterReducer';
+import { configureStore } from "@reduxjs/toolkit";
 import headerReducer from './reducers/headerReducer';
 
 export const store = configureStore({
