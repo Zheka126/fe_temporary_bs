@@ -7,10 +7,12 @@ import { RegistrationPage } from './pages/RegistrationPage';
 import { store } from './redux/store';
 import { StyledTheme } from './types';
 
-const theme: StyledTheme = {
+const theme = {
   colors: {
-    gray: '#fff',
-    black: '111',
+    black: '#1a1a1a',
+    lightGray: '#f7f7f7',
+    outline: '#9d9d9d',
+    error: "#de6b67"
   },
 
   flexStyles: (justifyContent = 'center', alignItems = 'center') => css`
@@ -26,7 +28,7 @@ export const App = () => {
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <Routes>
-            <Route path="/registration" element={<RegistrationPage />} />
+            <Route path="/" element={<RegistrationPage />} />
             <Route path="/login" element={<LoginPage />} />
           </Routes>
         </ThemeProvider>
