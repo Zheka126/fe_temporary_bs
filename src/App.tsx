@@ -1,16 +1,30 @@
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { css, ThemeProvider } from 'styled-components';
+import { DefaultTheme, ThemeProvider, css } from 'styled-components';
 
 import { LoginPage } from './pages/LoginPage';
 import { RegistrationPage } from './pages/RegistrationPage';
 import { store } from './redux/store';
-import { StyledTheme } from './types';
+
+interface StyledTheme extends DefaultTheme {
+  colors: {
+    black: string;
+    lightGray: string;
+    outline: string;
+    error: string;
+  };
+  flexStyles: (
+    justifyContent?: string,
+    alignItems?: string
+  ) => ReturnType<typeof css>;
+}
 
 const theme: StyledTheme = {
   colors: {
-    gray: '#fff',
-    black: '111',
+    black: '#1a1a1a',
+    lightGray: '#f7f7f7',
+    outline: '#9d9d9d',
+    error: '#de6b67',
   },
 
   flexStyles: (justifyContent = 'center', alignItems = 'center') => css`
@@ -26,7 +40,7 @@ export const App = () => {
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <Routes>
-            <Route path="/registration" element={<RegistrationPage />} />
+            <Route path="/" element={<RegistrationPage />} />
             <Route path="/login" element={<LoginPage />} />
           </Routes>
         </ThemeProvider>
