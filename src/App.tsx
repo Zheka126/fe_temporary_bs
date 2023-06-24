@@ -40,7 +40,7 @@ export const App = () => {
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <Routes>
-            <Route path="/" element={<RegistrationPage />} />
+            <Route path="/registration" element={<RegistrationPage />} />
             <Route path="/login" element={<LoginPage />} />
           </Routes>
         </ThemeProvider>
