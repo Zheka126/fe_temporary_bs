@@ -2,18 +2,9 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
-import { LoginPage } from './pages/LoginPage';
-import { RegistrationPage } from './pages/RegistrationPage';
 import { store } from './redux/store';
-
-const theme = {
-  colors: {
-    black: '#1a1a1a',
-    lightGray: '#f7f7f7',
-    outline: '#9d9d9d',
-    error: "#de6b67"
-  },
-};
+import { openRoutes } from './routes';
+import { theme } from './theme';
 
 export const App = () => {
   return (
@@ -21,10 +12,15 @@ export const App = () => {
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <Routes>
-            <Route path="/" element={<RegistrationPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            {/* <Route index element={<MainPage />} /> */}
-            {/* <Route path="*" element={<NoPage />} /> */}
+            {openRoutes.map((route) => {
+              return (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={<route.component />}
+                />
+              );
+            })}
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

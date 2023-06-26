@@ -1,4 +1,4 @@
-import { Formik } from 'formik';
+import { useFormik } from 'formik';
 import { Link } from 'react-router-dom';
 
 import { Button } from '../Button/Button';
@@ -10,59 +10,75 @@ import {
   Title,
 } from '../SignupForm/SignupForm.styles';
 import { ForgotPasswordLink, StyledParagraph } from './LoginForm.styles';
+import { loginValidation } from './loginValidation';
 
-export interface ILoginValues {
+export interface LoginValues {
   username: string;
   password: string;
 }
 
-const initialValues: ILoginValues = {
+const initialValues: LoginValues = {
   username: '',
   password: '',
 };
 
-const onSubmit = (props: ILoginValues) => {
-  console.log(props);
-};
+const inputOutline = (
+  error: string | undefined,
+  touched: boolean | undefined
+) => (error && touched ? '1px solid red' : 'none');
 
 export const LoginForm = () => {
+  const onSubmit = (values: LoginValues) => {
+    console.log(values);
+  };
+
+  const { touched, errors, handleSubmit, getFieldProps } = useFormik({
+    initialValues,
+    validationSchema: loginValidation,
+    onSubmit,
+  });
+
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit}>
-      {({ handleSubmit }) => {
-        return (
-          <StyledForm onSubmit={handleSubmit}>
-            <Title>Login</Title>
-            <StyledParagraph>
-              Don't have an account yet? <Link to="/registration">Sign up</Link>
-            </StyledParagraph>
-            <InputContainer>
-              <label htmlFor="username">Username</label>
-              <StyledInput
-                name="username"
-                id="username"
-                type="text"
-                placeholder="Enter username"
-              />
-              <StyledErrorMessage name="username" component="span" />
-            </InputContainer>
+    <StyledForm onSubmit={handleSubmit}>
+      <Title>Login</Title>
+      <StyledParagraph>
+        Don't have an account yet? <Link to="/registration">Sign up</Link>
+      </StyledParagraph>
+      <InputContainer>
+        <label htmlFor="username">Username</label>
+        <StyledInput
+          id="username"
+          type="text"
+          placeholder="Enter username"
+          outline={inputOutline(errors.username, touched.username)}
+          {...getFieldProps('username')}
+        />
+        {touched.username && errors.username ? (
+          <StyledErrorMessage>{errors.username}</StyledErrorMessage>
+        ) : null}
+      </InputContainer>
 
-            <InputContainer>
-              <label htmlFor="password">Password</label>
-              <StyledInput
-                name="password"
-                id="password"
-                type="text"
-                placeholder="Enter password"
-              />
-              <StyledErrorMessage name="password" component="span" />
-            </InputContainer>
+      <InputContainer>
+        <label htmlFor="password">Password</label>
+        <StyledInput
+          id="password"
+          type="password"
+          placeholder="Enter password"
+          outline={inputOutline(errors.password, touched.password)}
+          {...getFieldProps('password')}
+        />
+        {touched.password && errors.password ? (
+          <StyledErrorMessage>{errors.password}</StyledErrorMessage>
+        ) : null}
+      </InputContainer>
 
-            <ForgotPasswordLink to="">Forgot password?</ForgotPasswordLink>
+      <ForgotPasswordLink to="">Forgot password?</ForgotPasswordLink>
 
-            <Button type="submit" title="Log in" />
-          </StyledForm>
-        );
-      }}
-    </Formik>
+      <Button
+        type="submit"
+        title="Log in"
+        // disabled={Object.keys(errors).length}
+      />
+    </StyledForm>
   );
 };
