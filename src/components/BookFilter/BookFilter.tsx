@@ -30,17 +30,25 @@ export const BookFilter = () => {
   const [stars, setStars] = useState(starsArr);
 
   const onClickStar = (clickedStarInd: number) => {
-    const newStars = stars.map((star, ind) => ({
-      ...star,
-      isClicked: clickedStarInd >= ind,
-    }));
+    const newStars = stars.map((star, ind) => {
+      if (ind === clickedStarInd) {
+        return {
+          ...star,
+          isClicked: !star.isClicked,
+        };
+      }
+      return {
+        ...star,
+        isClicked: clickedStarInd >= ind,
+      };
+    });
     setStars(newStars);
   };
 
   return (
     <div>
       <h4>Genres</h4>
-      <input type="search"/>
+      <input type="search" />
       <CheckboxContainer>
         <input type="checkbox" id="fiction" name="fiction" />
         <label htmlFor="fiction">Fiction</label>
