@@ -1,29 +1,22 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
   height: 100vh;
 `;
 
-export const flexCenterStyles = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 export const LeftSection = styled.div`
   position: relative;
   flex: 0.4;
   background-color: ${({ theme }) => theme.colors.black};
-  ${flexCenterStyles}
+  ${({ theme }) => theme.flexStyles()}
 `;
 
 export const RightSection = styled.div`
   flex: 0.6;
   background-color: ${({ theme }) => theme.colors.lightGray};
-  ${flexCenterStyles}
+  ${({ theme }) => theme.flexStyles()}
 `;
-
 export const LogoImg = styled.img`
   position: absolute;
   top: 20px;

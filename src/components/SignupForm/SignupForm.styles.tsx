@@ -1,7 +1,10 @@
-import { ErrorMessage, Field, Form } from 'formik';
 import { styled } from 'styled-components';
 
-export const StyledForm = styled(Form)`
+interface InputProps {
+  outline?: string;
+}
+
+export const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   width: 50%;
@@ -22,7 +25,7 @@ export const InputContainer = styled.div`
   margin-bottom: 25px;
 `;
 
-export const StyledInput = styled(Field)`
+export const StyledInput = styled.input<InputProps>`
   width: 100%;
 
   padding: 15px 25px;
@@ -40,7 +43,7 @@ export const StyledInput = styled(Field)`
   }
 `;
 
-export const StyledErrorMessage = styled(ErrorMessage)`
+export const StyledErrorMessage = styled.span`
   position: absolute;
   left: 0;
   bottom: -20px;
