@@ -39,7 +39,6 @@ export const Header = () => {
           <Link to="/Catalog">Catalog</Link>
         </NavBtn>
         <NavBtnWithDropdown
-          id="navBtnWithSubmenu"
           className="active"
           onClick={toggleDropdown}
           onBlur={closeDropdown}
@@ -48,7 +47,7 @@ export const Header = () => {
           {/* Should be displayed real username of current user */}
           Username
           <img src="src\assets\arrow-down.svg" alt="Drop down" />
-          <Dropdown id="dropdown" isDropdownShowed={isDropdownShowed}>
+          <Dropdown isDropdownShowed={isDropdownShowed}>
             <li>
               <Link to="/Profile">My profile</Link>
             </li>
