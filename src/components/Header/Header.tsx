@@ -1,57 +1,36 @@
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { setIsDropdownShowed } from "../../redux/reducers/headerReducer";
+import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   BtnsContainer,
   Dropdown,
   NavBtn,
   NavBtnWithDropdown,
   StyledHeader,
-} from "./Header.styles";
+} from './Header.styles';
 
 export const Header = () => {
-  const dispatch = useAppDispatch();
-  const isDropdownShowed = useAppSelector(
-    (state) => state.header.isDropdownShowed
-  );
+  const [isDropdownShowed, setIsDropdownShowed] = useState(false);
+  const headerRef = useRef<HTMLHeadingElement>(null);
 
-  const handleUsernameClick = () => {
-    dispatch(setIsDropdownShowed(!isDropdownShowed));
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    const dropdown = document.getElementById("dropdown");
-    const navBtnWithSubmenu = document.getElementById("navBtnWithSubmenu");
-    const isClickInsideDropdown = dropdown?.contains(event.target as Node);
-    const isClickInsideNavBtnWithSubmenu = navBtnWithSubmenu?.contains(
-      event.target as Node
-    );
-
-    if (
-      !isClickInsideDropdown &&
-      !isClickInsideNavBtnWithSubmenu &&
-      isDropdownShowed
-    ) {
-      dispatch(setIsDropdownShowed(false));
-    }
-  };
+  const closeDropdown = () => setIsDropdownShowed(false);
+  const toggleDropdown = () => setIsDropdownShowed((prev) => !prev);
 
   const handleEscapeKey = (event: KeyboardEvent) => {
-    if (event.key === "Escape") dispatch(setIsDropdownShowed(false));
+    if (event.key === 'Escape') closeDropdown();
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleEscapeKey);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEscapeKey);
-    };
+    const container = headerRef.current;
+    if (container) {
+      container.addEventListener('keydown', handleEscapeKey);
+      return () => {
+        container.removeEventListener('keydown', handleEscapeKey);
+      };
+    }
   }, []);
 
   return (
-    <StyledHeader>
+    <StyledHeader ref={headerRef}>
       <Link to="/Catalog">
         <img src="src/assets/darkLogo.png" alt="Endava Logo" />
       </Link>
@@ -62,7 +41,8 @@ export const Header = () => {
         <NavBtnWithDropdown
           id="navBtnWithSubmenu"
           className="active"
-          onClick={handleUsernameClick}
+          onClick={toggleDropdown}
+          onBlur={closeDropdown}
           isDropdownShowed={isDropdownShowed}
         >
           {/* Should be displayed real username of current user */}

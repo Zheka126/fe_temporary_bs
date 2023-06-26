@@ -1,10 +1,7 @@
-import { configureStore } from "@reduxjs/toolkit";
-import headerReducer from './reducers/headerReducer';
+import { configureStore } from '@reduxjs/toolkit';
 
 export const store = configureStore({
-  reducer: {
-    header: headerReducer,
-  },
+  reducer: {},
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
