@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { ReactComponent as StarSVG } from 'src/assets/star.svg';
 
-import { ReactComponent as StarSVG } from '../../assets/star.svg';
-import { CheckboxContainer, StarItem, StarsList } from './BookFilter.styles';
+import { CheckboxContainer, SearchInput, StarItem, StarsList } from './BookFilter.styles';
 
 const starsArr = [
   {
@@ -48,7 +48,7 @@ export const BookFilter = () => {
   return (
     <div>
       <h4>Genres</h4>
-      <input type="search" />
+      <SearchInput type="search" placeholder='Search'/>
       <CheckboxContainer>
         <input type="checkbox" id="fiction" name="fiction" />
         <label htmlFor="fiction">Fiction</label>
