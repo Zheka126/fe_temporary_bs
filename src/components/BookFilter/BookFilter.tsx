@@ -1,83 +1,89 @@
 import { useState } from 'react';
-import { ReactComponent as StarSVG } from 'src/assets/star.svg';
+import { ReactComponent as StarIcon } from 'src/assets/star.svg';
 
-import { CheckboxContainer, SearchInput, StarItem, StarsList } from './BookFilter.styles';
-
-const starsArr = [
-  {
-    svg: <StarSVG />,
-    isClicked: false,
-  },
-  {
-    svg: <StarSVG />,
-    isClicked: false,
-  },
-  {
-    svg: <StarSVG />,
-    isClicked: false,
-  },
-  {
-    svg: <StarSVG />,
-    isClicked: false,
-  },
-  {
-    svg: <StarSVG />,
-    isClicked: false,
-  },
-];
+import {
+  CheckboxContainer,
+  SearchInput,
+  StarItem,
+  StarsList,
+} from './BookFilter.styles';
 
 export const BookFilter = () => {
-  const [stars, setStars] = useState(starsArr);
+  const stars = Array(5).fill({ isClicked: false });
+  const [selectedRating, setSelectedRating] = useState(0);
 
-  const onClickStar = (clickedStarInd: number) => {
-    const newStars = stars.map((star, ind) => {
-      if (ind === clickedStarInd) {
-        return {
-          ...star,
-          isClicked: !star.isClicked,
-        };
-      }
-      return {
-        ...star,
-        isClicked: clickedStarInd >= ind,
-      };
-    });
-    setStars(newStars);
-  };
+  const [filters, setFilters] = useState({
+    search: '',
+    genres: { fiction: false, adventure: false },
+    status: { free: false, busy: false },
+  });
 
   return (
     <div>
       <h4>Genres</h4>
-      <SearchInput type="search" placeholder='Search'/>
+      <SearchInput
+        type="search"
+        placeholder="Search"
+        value={filters.search}
+        onChange={(e) => {}}
+      />
       <CheckboxContainer>
-        <input type="checkbox" id="fiction" name="fiction" />
+        <input
+          type="checkbox"
+          id="fiction"
+          name="fiction"
+          value="fiction"
+          checked={filters.genres.fiction}
+          onChange={(e) => {}}
+        />
         <label htmlFor="fiction">Fiction</label>
       </CheckboxContainer>
       <CheckboxContainer>
-        <input type="checkbox" id="adventure" name="adventure" />
+        <input
+          type="checkbox"
+          id="adventure"
+          name="adventure"
+          value="adventure"
+          checked={filters.genres.adventure}
+          onChange={(e) => {}}
+        />
         <label htmlFor="adventure">Adventure</label>
       </CheckboxContainer>
 
       <h4>Status</h4>
       <CheckboxContainer>
-        <input type="checkbox" id="free" name="free" />
+        <input
+          type="checkbox"
+          id="free"
+          name="free"
+          value="free"
+          checked={filters.status.free}
+          onChange={(e) => {}}
+        />
         <label htmlFor="free">Free</label>
       </CheckboxContainer>
       <CheckboxContainer>
-        <input type="checkbox" id="busy" name="busy" />
+        <input
+          type="checkbox"
+          id="busy"
+          name="busy"
+          value="busy"
+          checked={filters.status.busy}
+          onChange={(e) => {}}
+        />
         <label htmlFor="busy">Busy</label>
       </CheckboxContainer>
 
       <h4>Popularity</h4>
       <StarsList>
-        {stars.map((star, ind) => {
+        {stars.map((_, ind) => {
           return (
             <StarItem
-              key={ind}
-              isclicked={star.isClicked}
-              onClick={() => onClickStar(ind)}
+              key={ind!}
+              filled={ind <= selectedRating}
+              onClick={() => setSelectedRating(ind)}
             >
-              {star.svg}
+              <StarIcon />
             </StarItem>
           );
         })}

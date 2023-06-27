@@ -7,12 +7,12 @@ export const StarsList = styled.ul`
   padding: 0;
 `;
 
-export const StarItem = styled.li<{ isclicked: boolean }>`
+export const StarItem = styled.li<{ filled: boolean }>`
   cursor: pointer;
   svg {
     path {
-      fill: ${({ isclicked, theme }) =>
-        isclicked ? '#fde16d' : theme.colors.gray};
+      fill: ${({ filled, theme }) =>
+        filled ? '#fde16d' : theme.colors.gray};
     }
   }
 `;

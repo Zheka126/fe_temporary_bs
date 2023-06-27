@@ -38,7 +38,7 @@ export const StyledInput = styled.input<InputProps>`
   }
 
   &:focus {
-    outline: 1px solid ${({ theme }) => theme.colors.outline};
+    outline: 1px solid ${({ theme }) => theme.colors.gray};
     box-shadow: 0px 5px 15px -3px rgba(0, 0, 0, 0.08);
   }
 `;
@@ -47,7 +47,7 @@ export const StyledErrorMessage = styled.span`
   position: absolute;
   left: 0;
   bottom: -20px;
-  color: ${({ theme }) => theme.colors.error};
+  color: ${({ theme }) => theme.colors.red};
   font-size: 14px;
 `;
 

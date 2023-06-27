@@ -12,26 +12,11 @@ export const App = () => {
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <Routes>
-            {openRoutes.map((route) => {
-              return (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={<route.component />}
-                />
-                );
-              })}
-            {
-              privateRoutes.map(route => {
-                return (
-                  <Route
-                    key={route.path}
-                    path={route.path}
-                    element={<route.component />}
-                  />
-                )
-              })
-            }
+            {[...openRoutes, ...privateRoutes].map(
+              ({ path, component: Component }) => {
+                return <Route key={path} path={path} element={<Component />} />;
+              }
+            )}
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

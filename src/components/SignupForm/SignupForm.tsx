@@ -30,7 +30,6 @@ const initialValues: RegistrationValues = {
 };
 
 const onSubmit = (values: RegistrationValues) => {
-  console.log(values);
 };
 
 const inputOutline = (

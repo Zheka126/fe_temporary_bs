@@ -30,8 +30,7 @@ const inputOutline = (
 export const LoginForm = () => {
   const navigate = useNavigate();
 
-  const onSubmit = (props: LoginValues) => {
-    console.log(props);
+  const onSubmit = (values: LoginValues) => {
     navigate('/main');
   };
 
