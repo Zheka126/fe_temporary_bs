@@ -1,14 +1,14 @@
 import { useFormik } from 'formik';
 
-import { Button } from '../Button/Button';
+import { Button } from '../common/Button/Button';
 import {
-  ButtonsContainer,
   InputContainer,
   StyledErrorMessage,
   StyledForm,
   StyledInput,
   Title,
-} from './SignupForm.styles';
+} from '../common/common.styles';
+import { ButtonsContainer } from './SignupForm.styles';
 import { signupValidation } from './signupValidation';
 
 export interface RegistrationValues {
@@ -57,7 +57,7 @@ export const SignupForm = () => {
           id="firstName"
           type="text"
           placeholder="First name"
-          errorTouched={touched.firstName && errors.firstName}
+          isError={Boolean(touched.firstName && errors.firstName)}
           {...getFieldProps('firstName')}
         />
         {touched.firstName && errors.firstName ? (
@@ -74,7 +74,7 @@ export const SignupForm = () => {
           value={values.lastName}
           onChange={handleChange}
           onBlur={handleBlur}
-          errorTouched={touched.lastName && errors.lastName}
+          isError={Boolean(touched.lastName && errors.lastName)}
         />
         {touched.lastName && errors.lastName ? (
           <StyledErrorMessage>{errors.lastName}</StyledErrorMessage>
@@ -91,7 +91,7 @@ export const SignupForm = () => {
           placeholder="Enter username"
           onChange={handleChange}
           onBlur={handleBlur}
-          errorTouched={touched.username && errors.username}
+          isError={Boolean(touched.username && errors.username)}
         />
         {touched.username && errors.username ? (
           <StyledErrorMessage>{errors.username}</StyledErrorMessage>
@@ -108,7 +108,7 @@ export const SignupForm = () => {
           placeholder="Enter email"
           onChange={handleChange}
           onBlur={handleBlur}
-          errorTouched={touched.email && errors.email}
+          isError={Boolean(touched.email && errors.email)}
         />
         {touched.email && errors.email ? (
           <StyledErrorMessage>{errors.email}</StyledErrorMessage>
@@ -125,7 +125,7 @@ export const SignupForm = () => {
           placeholder="Enter password"
           onChange={handleChange}
           onBlur={handleBlur}
-          errorTouched={touched.password && errors.password}
+          isError={Boolean(touched.password && errors.password)}
         />
         {touched.password && errors.password ? (
           <StyledErrorMessage>{errors.password}</StyledErrorMessage>
@@ -142,7 +142,7 @@ export const SignupForm = () => {
           placeholder="Confirm password"
           onChange={handleChange}
           onBlur={handleBlur}
-          errorTouched={touched.confirmPass && errors.confirmPass}
+          isError={Boolean(touched.confirmPass && errors.confirmPass)}
         />
         {touched.confirmPass && errors.confirmPass ? (
           <StyledErrorMessage>{errors.confirmPass}</StyledErrorMessage>

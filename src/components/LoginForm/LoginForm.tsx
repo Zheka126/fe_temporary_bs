@@ -1,14 +1,14 @@
 import { useFormik } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { Button } from '../Button/Button';
+import { Button } from '../common/Button/Button';
 import {
   InputContainer,
   StyledErrorMessage,
   StyledForm,
   StyledInput,
   Title,
-} from '../SignupForm/SignupForm.styles';
+} from '../common/common.styles';
 import { ForgotPasswordLink, StyledParagraph } from './LoginForm.styles';
 import { loginValidation } from './loginValidation';
 
@@ -23,8 +23,11 @@ const initialValues: LoginValues = {
 };
 
 export const LoginForm = () => {
-  const onSubmit = (values: LoginValues) => {
-    console.log(values);
+  const navigate = useNavigate();
+
+  const onSubmit = (props: LoginValues) => {
+    console.log(props);
+    navigate('/main');
   };
 
   const { touched, errors, handleSubmit, getFieldProps } = useFormik({
@@ -45,7 +48,7 @@ export const LoginForm = () => {
           id="username"
           type="text"
           placeholder="Enter username"
-          errorTouched={touched.username && errors.username}
+          isError={Boolean(touched.username && errors.username)}
           {...getFieldProps('username')}
         />
         {touched.username && errors.username ? (
@@ -59,7 +62,7 @@ export const LoginForm = () => {
           id="password"
           type="password"
           placeholder="Enter password"
-          errorTouched={touched.password && errors.password}
+          isError={Boolean(touched.password && errors.password)}
           {...getFieldProps('password')}
         />
         {touched.password && errors.password ? (
