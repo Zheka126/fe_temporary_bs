@@ -22,11 +22,6 @@ const initialValues: LoginValues = {
   password: '',
 };
 
-const inputOutline = (
-  error: string | undefined,
-  touched: boolean | undefined
-) => (error && touched ? '1px solid red' : 'none');
-
 export const LoginForm = () => {
   const onSubmit = (values: LoginValues) => {
     console.log(values);
@@ -50,7 +45,7 @@ export const LoginForm = () => {
           id="username"
           type="text"
           placeholder="Enter username"
-          outline={inputOutline(errors.username, touched.username)}
+          errorTouched={touched.username && errors.username}
           {...getFieldProps('username')}
         />
         {touched.username && errors.username ? (
@@ -64,7 +59,7 @@ export const LoginForm = () => {
           id="password"
           type="password"
           placeholder="Enter password"
-          outline={inputOutline(errors.password, touched.password)}
+          errorTouched={touched.password && errors.password}
           {...getFieldProps('password')}
         />
         {touched.password && errors.password ? (

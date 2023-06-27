@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 
 interface InputProps {
-  outline?: string;
+  errorTouched: boolean | string | undefined;
 }
 
 export const StyledForm = styled.form`
@@ -27,11 +27,11 @@ export const InputContainer = styled.div`
 
 export const StyledInput = styled.input<InputProps>`
   width: 100%;
-
   padding: 15px 25px;
-  outline: ${({ outline }) => outline};
   border: none;
   border-radius: 1px;
+  outline: 1px solid
+    ${({ errorTouched, theme }) => (errorTouched ? theme.colors.error : 'none')};
 
   &:hover {
     box-shadow: 0px 5px 15px -3px rgba(0, 0, 0, 0.08);

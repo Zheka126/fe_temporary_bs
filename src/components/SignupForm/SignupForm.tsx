@@ -1,4 +1,4 @@
-import { ErrorMessage, useFormik } from 'formik';
+import { useFormik } from 'formik';
 
 import { Button } from '../Button/Button';
 import {
@@ -17,7 +17,7 @@ export interface RegistrationValues {
   username: string;
   email: string;
   password: string;
-  confirmPassword: string;
+  confirmPass: string;
 }
 
 const initialValues: RegistrationValues = {
@@ -26,25 +26,27 @@ const initialValues: RegistrationValues = {
   username: '',
   email: '',
   password: '',
-  confirmPassword: '',
+  confirmPass: '',
 };
 
 const onSubmit = (values: RegistrationValues) => {
   console.log(values);
 };
 
-const inputOutline = (
-  error: string | undefined,
-  touched: boolean | undefined
-) => (error && touched ? '1px solid red' : 'none');
-
 export const SignupForm = () => {
-  const { values, errors, touched, handleSubmit, handleChange, handleBlur, getFieldProps } =
-    useFormik({
-      initialValues,
-      validationSchema: signupValidation,
-      onSubmit,
-    });
+  const {
+    values,
+    errors,
+    touched,
+    handleSubmit,
+    handleChange,
+    handleBlur,
+    getFieldProps,
+  } = useFormik({
+    initialValues,
+    validationSchema: signupValidation,
+    onSubmit,
+  });
 
   return (
     <StyledForm onSubmit={handleSubmit}>
@@ -53,13 +55,9 @@ export const SignupForm = () => {
         <label htmlFor="firstName">First Name</label>
         <StyledInput
           id="firstName"
-          // name="firstName"
           type="text"
           placeholder="First name"
-          // value={values.firstName}
-          // onChange={handleChange}
-          // onBlur={handleBlur}
-          outline={inputOutline(errors.firstName, touched.firstName)}
+          errorTouched={touched.firstName && errors.firstName}
           {...getFieldProps('firstName')}
         />
         {touched.firstName && errors.firstName ? (
@@ -76,7 +74,7 @@ export const SignupForm = () => {
           value={values.lastName}
           onChange={handleChange}
           onBlur={handleBlur}
-          outline={inputOutline(errors.lastName, touched.lastName)}
+          errorTouched={touched.lastName && errors.lastName}
         />
         {touched.lastName && errors.lastName ? (
           <StyledErrorMessage>{errors.lastName}</StyledErrorMessage>
@@ -93,7 +91,7 @@ export const SignupForm = () => {
           placeholder="Enter username"
           onChange={handleChange}
           onBlur={handleBlur}
-          outline={inputOutline(errors.username, touched.username)}
+          errorTouched={touched.username && errors.username}
         />
         {touched.username && errors.username ? (
           <StyledErrorMessage>{errors.username}</StyledErrorMessage>
@@ -110,7 +108,7 @@ export const SignupForm = () => {
           placeholder="Enter email"
           onChange={handleChange}
           onBlur={handleBlur}
-          outline={inputOutline(errors.email, touched.email)}
+          errorTouched={touched.email && errors.email}
         />
         {touched.email && errors.email ? (
           <StyledErrorMessage>{errors.email}</StyledErrorMessage>
@@ -127,7 +125,7 @@ export const SignupForm = () => {
           placeholder="Enter password"
           onChange={handleChange}
           onBlur={handleBlur}
-          outline={inputOutline(errors.password, touched.password)}
+          errorTouched={touched.password && errors.password}
         />
         {touched.password && errors.password ? (
           <StyledErrorMessage>{errors.password}</StyledErrorMessage>
@@ -135,22 +133,19 @@ export const SignupForm = () => {
       </InputContainer>
 
       <InputContainer>
-        <label htmlFor="confirmPassword">Confirm Password</label>
+        <label htmlFor="confirmPass">Confirm Password</label>
         <StyledInput
-          id="confirmPassword"
-          name="confirmPassword"
-          value={values.confirmPassword}
+          id="confirmPass"
+          name="confirmPass"
+          value={values.confirmPass}
           type="password"
           placeholder="Confirm password"
           onChange={handleChange}
           onBlur={handleBlur}
-          outline={inputOutline(
-            errors.confirmPassword,
-            touched.confirmPassword
-          )}
+          errorTouched={touched.confirmPass && errors.confirmPass}
         />
-        {touched.confirmPassword && errors.confirmPassword ? (
-          <StyledErrorMessage>{errors.confirmPassword}</StyledErrorMessage>
+        {touched.confirmPass && errors.confirmPass ? (
+          <StyledErrorMessage>{errors.confirmPass}</StyledErrorMessage>
         ) : null}
       </InputContainer>
 
