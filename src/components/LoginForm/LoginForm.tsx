@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Button } from '../Button/Button';
 import {
@@ -28,8 +28,11 @@ const inputOutline = (
 ) => (error && touched ? '1px solid red' : 'none');
 
 export const LoginForm = () => {
-  const onSubmit = (values: LoginValues) => {
-    console.log(values);
+  const navigate = useNavigate();
+
+  const onSubmit = (props: LoginValues) => {
+    console.log(props);
+    navigate('/main');
   };
 
   const { touched, errors, handleSubmit, getFieldProps } = useFormik({
@@ -50,7 +53,7 @@ export const LoginForm = () => {
           id="username"
           type="text"
           placeholder="Enter username"
-          outline={inputOutline(errors.username, touched.username)}
+          iserror={Boolean(touched.username && errors.username)}
           {...getFieldProps('username')}
         />
         {touched.username && errors.username ? (
@@ -64,7 +67,7 @@ export const LoginForm = () => {
           id="password"
           type="password"
           placeholder="Enter password"
-          outline={inputOutline(errors.password, touched.password)}
+          iserror={Boolean(touched.password && errors.password)}
           {...getFieldProps('password')}
         />
         {touched.password && errors.password ? (

@@ -1,8 +1,12 @@
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { increment } from '../redux/reducers/counterReducer';
+import { BookList } from '../components/BookList/BookList';
+import { Pagination } from '../components/Pagination/Pagination';
+import { Container } from '../styles';
 
 export const MainPage = () => {
-  const dispatch = useAppDispatch();
-  const count = useAppSelector((state) => state.count.value);
-  return <div />;
+  return (
+    <Container>
+      <BookList />
+      <Pagination />
+    </Container>
+  );
 };

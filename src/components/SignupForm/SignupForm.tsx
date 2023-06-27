@@ -1,4 +1,4 @@
-import { ErrorMessage, useFormik } from 'formik';
+import { useFormik } from 'formik';
 
 import { Button } from '../Button/Button';
 import {
@@ -33,18 +33,20 @@ const onSubmit = (values: RegistrationValues) => {
   console.log(values);
 };
 
-const inputOutline = (
-  error: string | undefined,
-  touched: boolean | undefined
-) => (error && touched ? '1px solid red' : 'none');
-
 export const SignupForm = () => {
-  const { values, errors, touched, handleSubmit, handleChange, handleBlur, getFieldProps } =
-    useFormik({
-      initialValues,
-      validationSchema: signupValidation,
-      onSubmit,
-    });
+  const {
+    values,
+    errors,
+    touched,
+    handleSubmit,
+    handleChange,
+    handleBlur,
+    getFieldProps,
+  } = useFormik({
+    initialValues,
+    validationSchema: signupValidation,
+    onSubmit,
+  });
 
   return (
     <StyledForm onSubmit={handleSubmit}>
@@ -59,7 +61,7 @@ export const SignupForm = () => {
           // value={values.firstName}
           // onChange={handleChange}
           // onBlur={handleBlur}
-          outline={inputOutline(errors.firstName, touched.firstName)}
+          iserror={Boolean(touched.firstName && errors.firstName)}
           {...getFieldProps('firstName')}
         />
         {touched.firstName && errors.firstName ? (
@@ -76,7 +78,7 @@ export const SignupForm = () => {
           value={values.lastName}
           onChange={handleChange}
           onBlur={handleBlur}
-          outline={inputOutline(errors.lastName, touched.lastName)}
+          iserror={Boolean(touched.lastName && errors.lastName)}
         />
         {touched.lastName && errors.lastName ? (
           <StyledErrorMessage>{errors.lastName}</StyledErrorMessage>
@@ -93,7 +95,7 @@ export const SignupForm = () => {
           placeholder="Enter username"
           onChange={handleChange}
           onBlur={handleBlur}
-          outline={inputOutline(errors.username, touched.username)}
+          iserror={Boolean(touched.username && errors.username)}
         />
         {touched.username && errors.username ? (
           <StyledErrorMessage>{errors.username}</StyledErrorMessage>
@@ -110,7 +112,7 @@ export const SignupForm = () => {
           placeholder="Enter email"
           onChange={handleChange}
           onBlur={handleBlur}
-          outline={inputOutline(errors.email, touched.email)}
+          iserror={Boolean(touched.email && errors.email)}
         />
         {touched.email && errors.email ? (
           <StyledErrorMessage>{errors.email}</StyledErrorMessage>
@@ -127,7 +129,7 @@ export const SignupForm = () => {
           placeholder="Enter password"
           onChange={handleChange}
           onBlur={handleBlur}
-          outline={inputOutline(errors.password, touched.password)}
+          iserror={Boolean(touched.password && errors.password)}
         />
         {touched.password && errors.password ? (
           <StyledErrorMessage>{errors.password}</StyledErrorMessage>
@@ -144,10 +146,7 @@ export const SignupForm = () => {
           placeholder="Confirm password"
           onChange={handleChange}
           onBlur={handleBlur}
-          outline={inputOutline(
-            errors.confirmPassword,
-            touched.confirmPassword
-          )}
+          iserror={Boolean(touched.confirmPassword && errors.confirmPassword)}
         />
         {touched.confirmPassword && errors.confirmPassword ? (
           <StyledErrorMessage>{errors.confirmPassword}</StyledErrorMessage>
