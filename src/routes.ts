@@ -1,3 +1,4 @@
+import { AdminTabPage } from './pages/AdminTabPage';
 import { LoginPage } from './pages/LoginPage';
 import { MainPage } from './pages/MainPage';
 import { RegistrationPage } from './pages/RegistrationPage';
@@ -12,5 +13,9 @@ export const privateRoutes = [
   {
     component: MainPage,
     path: '/main',
+  },
+  {
+    component: AdminTabPage,
+    path: '/admin_tab',
   },
 ];

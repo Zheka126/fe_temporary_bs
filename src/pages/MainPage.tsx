@@ -3,7 +3,7 @@ import { BookList } from '../components/BookList/BookList';
 import { Header } from '../components/Header/Header';
 import { Pagination } from '../components/Pagination/Pagination';
 import {Container} from '../components/common/Container.styles'
-import { MainPageContainer } from './styles';
+import { MainPageContainer } from './styles/MainPage.styles';
 
 export const MainPage = () => {
   return (
