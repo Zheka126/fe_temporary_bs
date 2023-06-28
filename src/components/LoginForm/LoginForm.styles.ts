@@ -5,7 +5,6 @@ export const StyledParagraph = styled.p`
   display: flex;
   justify-content: center;
   font-weight: 600;
-  font-weight: 600;
   color: gray;
   margin-top: 0;
   a {

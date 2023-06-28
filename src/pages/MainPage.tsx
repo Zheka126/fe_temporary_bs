@@ -1,16 +1,21 @@
 import { BookFilter } from 'src/components/BookFilter/BookFilter';
-import { BookList } from 'src/components/BookList/BookList';
-import { Container } from 'src/styles';
-
+import { BookList } from '../components/BookList/BookList';
+import { Header } from '../components/Header/Header';
+import { Pagination } from '../components/Pagination/Pagination';
+import {Container} from '../components/common/Container.styles'
 import { MainPageContainer } from './styles';
 
 export const MainPage = () => {
   return (
-    <Container>
-      <MainPageContainer>
-        <BookList />
-        <BookFilter />
-      </MainPageContainer>
-    </Container>
+    <>
+      <Header />
+      <Container>
+        <MainPageContainer>
+          <BookList />
+          <BookFilter />
+        </MainPageContainer>
+      </Container>
+      <Pagination />
+    </>
   );
 };

@@ -1,4 +1,4 @@
-import { BookItem, BookListContainer } from './BookList.styles';
+import { BookItem, BookListWrapper } from './BookList.styles';
 
 const books = [
   {
@@ -65,7 +65,7 @@ const books = [
 
 export const BookList = () => {
   return (
-    <BookListContainer>
+    <BookListWrapper>
       {books.map((book) => {
         return (
           <BookItem to="/#" key={book.id}>
@@ -74,6 +74,6 @@ export const BookList = () => {
           </BookItem>
         );
       })}
-    </BookListContainer>
+    </BookListWrapper>
   );
 };
