@@ -1,14 +1,14 @@
 import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { Button } from '../Button/Button';
+import { Button } from '../common/Button/Button';
 import {
   InputContainer,
   StyledErrorMessage,
   StyledForm,
   StyledInput,
   Title,
-} from '../SignupForm/SignupForm.styles';
+} from '../common/common.styles';
 import { ForgotPasswordLink, StyledParagraph } from './LoginForm.styles';
 import { loginValidation } from './loginValidation';
 
@@ -21,11 +21,6 @@ const initialValues: LoginValues = {
   username: '',
   password: '',
 };
-
-const inputOutline = (
-  error: string | undefined,
-  touched: boolean | undefined
-) => (error && touched ? '1px solid red' : 'none');
 
 export const LoginForm = () => {
   const navigate = useNavigate();
@@ -53,7 +48,7 @@ export const LoginForm = () => {
           id="username"
           type="text"
           placeholder="Enter username"
-          iserror={Boolean(touched.username && errors.username)}
+          isError={Boolean(touched.username && errors.username)}
           {...getFieldProps('username')}
         />
         {touched.username && errors.username ? (
@@ -67,7 +62,7 @@ export const LoginForm = () => {
           id="password"
           type="password"
           placeholder="Enter password"
-          iserror={Boolean(touched.password && errors.password)}
+          isError={Boolean(touched.password && errors.password)}
           {...getFieldProps('password')}
         />
         {touched.password && errors.password ? (

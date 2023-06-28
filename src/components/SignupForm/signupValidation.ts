@@ -37,7 +37,7 @@ export const signupValidation = Yup.object({
     .min(3, SIGNUP_ERROR_MESSAGES.password)
     .max(30, SIGNUP_ERROR_MESSAGES.password)
     .required('Required'),
-  confirmPassword: Yup.string()
+  confirmPass: Yup.string()
     .oneOf([Yup.ref('password')], 'Passwords must match')
     .required('Required'),
 });

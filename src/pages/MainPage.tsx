@@ -1,12 +1,13 @@
 import { BookList } from '../components/BookList/BookList';
+import { Header } from '../components/Header/Header';
 import { Pagination } from '../components/Pagination/Pagination';
-import { Container } from '../styles';
 
 export const MainPage = () => {
   return (
-    <Container>
+    <>
+      <Header />
       <BookList />
       <Pagination />
-    </Container>
+    </>
   );
 };
