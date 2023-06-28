@@ -31,7 +31,7 @@ export const LoginForm = () => {
   const navigate = useNavigate();
 
   const onSubmit = (values: LoginValues) => {
-    navigate('/main');
+    navigate('/main')
   };
 
   const { touched, errors, handleSubmit, getFieldProps } = useFormik({
@@ -52,7 +52,7 @@ export const LoginForm = () => {
           id="username"
           type="text"
           placeholder="Enter username"
-          outline={inputOutline(errors.username, touched.username)}
+          iserror={Boolean(touched.username && errors.username)}
           {...getFieldProps('username')}
         />
         {touched.username && errors.username ? (
@@ -66,7 +66,7 @@ export const LoginForm = () => {
           id="password"
           type="password"
           placeholder="Enter password"
-          outline={inputOutline(errors.password, touched.password)}
+          iserror={Boolean(touched.password && errors.password)}
           {...getFieldProps('password')}
         />
         {touched.password && errors.password ? (

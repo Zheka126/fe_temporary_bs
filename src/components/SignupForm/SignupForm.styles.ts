@@ -1,8 +1,8 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 
-interface InputProps {
-  outline?: string;
-}
+// interface InputProps {
+//   outline?: string;
+// }
 
 export const StyledForm = styled.form`
   display: flex;
@@ -25,11 +25,15 @@ export const InputContainer = styled.div`
   margin-bottom: 25px;
 `;
 
-export const StyledInput = styled.input<InputProps>`
+export const StyledInput = styled.input<{ iserror: boolean }>`
   width: 100%;
 
   padding: 15px 25px;
-  outline: ${({ outline }) => outline};
+  ${({ iserror, theme }) =>
+    iserror &&
+    css`
+      outline: 1px solid ${theme.colors.error};
+    `}
   border: none;
   border-radius: 1px;
 

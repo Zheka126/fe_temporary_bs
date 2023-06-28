@@ -1,21 +1,14 @@
 import { useState } from 'react';
-import { ReactComponent as StarIcon } from 'src/assets/star.svg';
 
-import {
-  CheckboxContainer,
-  SearchInput,
-  StarItem,
-  StarsList,
-} from './BookFilter.styles';
+import { Rating } from '../Rating/Rating';
+import { CheckboxContainer, SearchInput } from './BookFilter.styles';
 
 export const BookFilter = () => {
-  const stars = Array(5).fill({ isClicked: false });
-  const [selectedRating, setSelectedRating] = useState(0);
-
   const [filters, setFilters] = useState({
     search: '',
     genres: { fiction: false, adventure: false },
     status: { free: false, busy: false },
+    selectedRating: 0,
   });
 
   return (
@@ -75,19 +68,12 @@ export const BookFilter = () => {
       </CheckboxContainer>
 
       <h4>Popularity</h4>
-      <StarsList>
-        {stars.map((_, ind) => {
-          return (
-            <StarItem
-              key={ind!}
-              filled={ind <= selectedRating}
-              onClick={() => setSelectedRating(ind)}
-            >
-              <StarIcon />
-            </StarItem>
-          );
-        })}
-      </StarsList>
+      <Rating
+        selectedRating={filters.selectedRating}
+        setSelectedRating={(ind) =>
+          setFilters({ ...filters, selectedRating: ind })
+        }
+      />
     </div>
   );
 };
