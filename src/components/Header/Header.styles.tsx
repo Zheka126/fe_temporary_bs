@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import { styled } from 'styled-components';
 
 export const StyledHeader = styled.header`
   display: flex;
@@ -24,8 +24,7 @@ export const BtnsContainer = styled.div``;
 export const NavBtn = styled.button`
   position: relative;
   margin: 0px 15px;
-  padding: 15px;
-  padding-right: 20px;
+  margin-right: 20px;
   font-size: 14px;
   font-weight: 500;
   color: white;
@@ -38,6 +37,7 @@ export const NavBtn = styled.button`
   cursor: pointer;
 
   a {
+    padding: 15px;
     color: white;
     text-decoration: none;
   }
@@ -53,14 +53,14 @@ export const NavBtnWithDropdown = styled(NavBtn)<{ isDropdownShowed: boolean }>`
     width: 8px;
     padding: 0 6px;
     transform: ${({ isDropdownShowed }) =>
-      isDropdownShowed ? "rotate(180deg)" : "rotate(0deg)"};
+      isDropdownShowed ? 'rotate(180deg)' : 'rotate(0deg)'};
     transition: transform 0.2s ease-in-out;
   }
 `;
 
-export const Dropdown = styled("ul")<{ isDropdownShowed: boolean }>`
+export const Dropdown = styled('ul')<{ isDropdownShowed: boolean }>`
   display: ${({ isDropdownShowed: isDropdownShowed }) =>
-    isDropdownShowed ? "block" : "none"};
+    isDropdownShowed ? 'block' : 'none'};
   position: absolute;
   right: -30px;
   width: 150px;

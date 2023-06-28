@@ -68,7 +68,7 @@ export const BookList = () => {
     <BookListContainer>
       {books.map((book) => {
         return (
-          <BookItem to="/#" key={book.id}>
+          <BookItem to="/book_details" key={book.id}>
             <img src={book.img} alt="book title" />
             <span>{book.title}</span>
           </BookItem>

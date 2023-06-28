@@ -31,12 +31,12 @@ export const Header = () => {
 
   return (
     <StyledHeader ref={headerRef}>
-      <Link to="/Catalog">
+      <Link to="/main">
         <img src="src/assets/darkLogo.png" alt="Endava Logo" />
       </Link>
       <BtnsContainer>
         <NavBtn>
-          <Link to="/Catalog">Catalog</Link>
+          <Link to="/main">Catalog</Link>
         </NavBtn>
         <NavBtnWithDropdown
           className="active"
