@@ -32,8 +32,9 @@
     "react/no-unescaped-entities": 0,
     "prettier/prettier": 0,
     "no-param-reassign": 0,
-    "endOfLine": "auto",
+    "endOfLine": 0,
     "react/jsx-props-no-spreading": 0,
-    "react/require-default-props": 0
+    "react/require-default-props": 0,
+    "no-nested-ternary": 0
   }
 }

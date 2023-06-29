@@ -16,6 +16,6 @@ export const privateRoutes = [
   },
   {
     component: AdminTabPage,
-    path: '/admin_tab',
+    path: '/admin_tab/*',
   },
 ];

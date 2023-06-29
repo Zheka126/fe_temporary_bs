@@ -59,7 +59,7 @@ export const NavBtnWithDropdown = styled(NavBtn)<{ isDropdownShowed: boolean }>`
 `;
 
 export const Dropdown = styled("ul")<{ isDropdownShowed: boolean }>`
-  display: ${({ isDropdownShowed: isDropdownShowed }) =>
+  display: ${({ isDropdownShowed }) =>
     isDropdownShowed ? "block" : "none"};
   position: absolute;
   right: -30px;

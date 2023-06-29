@@ -1,69 +1,31 @@
-import { Link } from "react-router-dom"
-import { Container } from "src/components/common/Container.styles"
-import { RolesPanel, Tabs, UserItem, UserItemButtons, UsersList } from "./styles/AdminTabPage.styles"
+import { Link, Route, Routes } from "react-router-dom";
+import { AdminRoles } from "src/components/AdminRoles/AdminRoles";
+import { UsersList } from "src/components/AdminRoles/UsersList/UsersList";
+import { Container } from "src/components/common/Container.styles";
 
-const users = [
-  {
-    username: 'ion',
-    role: 'user'
-  },
-  {
-    username: 'costya',
-    role: 'admin'
-  },
-  {
-    username: 'eugen',
-    role: 'admin'
-  },
-  {
-    username: 'julian',
-    role: 'super-admin'
-  },
-]
+import { Tabs } from "./styles/AdminTabPage.styles";
+
+const AdminAssignments = () => {
+  return <div>Assignments</div>;
+};
+const AdminReviews = () => {
+  return <div>Reviews</div>;
+};
 
 export const AdminTabPage = () => {
   return (
     <Container>
       <Tabs>
-        <Link to='#'>Manage Roles</Link>
-        <Link to='#'>Approve assignments</Link>
-        <Link to='#'>Delete reviews</Link>
+        <Link to="/admin_tab/roles">Manage Roles</Link>
+        <Link to="/admin_tab/assignments">Approve assignments</Link>
+        <Link to="/admin_tab/reviews">Delete reviews</Link>
       </Tabs>
 
-      <RolesPanel>
-        <li>Username</li>
-        <li>Roles</li>
-        <li>Actions</li>
-      </RolesPanel>
-
-      <UsersList>
-        {
-          users.map(user => {
-            return (
-              <UserItem>
-                <span>{user.username}</span>
-                <span>{user.role}</span>
-                {
-                  user.role === 'user'
-                  ?
-                  <UserItemButtons>
-                    <button>Assign</button>
-                    <button>Remove</button>
-                  </UserItemButtons>
-                  :
-                  user.role === 'admin'
-                  ?
-                  <UserItemButtons>
-                    <button>Remove</button>
-                  </UserItemButtons>
-                  :
-                  <p>super-admin role cannot be removed, please contact technical support</p>
-                }
-              </UserItem>
-            )
-          })
-        }
-      </UsersList>
+      <Routes>
+        <Route index path="roles" element={<AdminRoles />} />
+        <Route path="assignments" element={<AdminAssignments />} />
+        <Route path="reviews" element={<AdminReviews />} />
+      </Routes>
     </Container>
-  )
-}
+  );
+};
