@@ -6,30 +6,23 @@ import { store } from './redux/store';
 import { openRoutes, privateRoutes } from './routes';
 import { theme } from './theme';
 
+interface RouteProps {
+  path: string;
+  component: () => JSX.Element;
+}
+
+const createRoute = ({ path, component }: RouteProps) => {
+  return <Route key={path} path={path} element={component()} />;
+};
+
 export const App = () => {
   return (
     <Provider store={store}>
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <Routes>
-            {openRoutes.map((route) => {
-              return (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={<route.component />}
-                />
-              );
-            })}
-            {privateRoutes.map((route) => {
-              return (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={<route.component />}
-                />
-              );
-            })}
+            {openRoutes.map((route) => createRoute(route))}
+            {privateRoutes.map((route) => createRoute(route))}
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

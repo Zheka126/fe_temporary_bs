@@ -6,6 +6,7 @@ interface StyledTheme extends DefaultTheme {
     lightGray: string;
     outline: string;
     error: string;
+    blue: string;
   };
   flexStyles: (
     justifyContent?: string,
@@ -19,6 +20,7 @@ export const theme: StyledTheme = {
     lightGray: '#f7f7f7',
     outline: '#9d9d9d',
     error: '#de6b67',
+    blue: '#00aaff',
   },
 
   flexStyles: (justifyContent = 'center', alignItems = 'center') => css`

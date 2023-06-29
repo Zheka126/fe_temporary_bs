@@ -66,11 +66,11 @@ const books = [
 export const BookList = () => {
   return (
     <BookListContainer>
-      {books.map((book) => {
+      {books.map(({ id, img, title }) => {
         return (
-          <BookItem to="/book_details" key={book.id}>
-            <img src={book.img} alt="book title" />
-            <span>{book.title}</span>
+          <BookItem to={`/book_details`} key={id}>
+            <img src={img} alt="book title" />
+            <span>{title}</span>
           </BookItem>
         );
       })}
