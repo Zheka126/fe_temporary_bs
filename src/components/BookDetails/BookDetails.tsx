@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import Modal from 'react-modal';
-import { StyledParagraph } from '../LoginForm/LoginForm.styles';
-import { ButtonsContainer } from '../SignupForm/SignupForm.styles';
+
 import { Button } from '../common/Button/Button';
 import { InputContainer } from '../common/common.styles';
+import { StyledParagraph } from '../LoginForm/LoginForm.styles';
+import { ButtonsContainer } from '../SignupForm/SignupForm.styles';
+import { BookDetail } from './BookDetail';
 import {
   BookCoverSection,
-  BookDetailItem,
   BookDetailsContainer,
   BookDetailsSection,
   BookGenre,
@@ -15,9 +16,9 @@ import {
   Details,
   EditInput,
   ModalButtonsContainer,
+  modalStyles,
   ModalTitle,
   StyledModalContent,
-  modalStyles,
 } from './BookDetails.styles';
 
 interface BookDetailsProps {
@@ -34,61 +35,42 @@ interface BookDetailsProps {
   };
 }
 
-const createDetail = (text: string, value: string | JSX.Element[]) => {
-  return (
-    <BookDetailItem>
-      <p>{text}</p>
-      <span>{value}</span>
-    </BookDetailItem>
-  );
+const mockUser = {
+  id: '1',
+  books: ['The Lord of the Rings', 'Othello', 'Little Prince'],
 };
 
-const editModalContent = () => {
-  return (
-    <StyledModalContent>
-      <div>
-        <InputContainer>
-          <label htmlFor="author">Edit author</label>
-          <EditInput id="author" />
-        </InputContainer>
-        <InputContainer>
-          <label htmlFor="genres">Edit genres</label>
-          <EditInput id="genres" />
-        </InputContainer>
-        <InputContainer>
-          <label htmlFor="description">Edit description</label>
-          <EditInput id="description" />
-        </InputContainer>
-      </div>
-      <div>
-        <InputContainer>
-          <label htmlFor="uploadedBy">Edit uploaded by</label>
-          <EditInput id="uploadedBy" />
-        </InputContainer>
-        <InputContainer>
-          <label htmlFor="publicationDate">Edit publication date</label>
-          <EditInput id="publicationDate" />
-        </InputContainer>
-        <InputContainer>
-          <label htmlFor="language">Edit language</label>
-          <EditInput id="language" />
-        </InputContainer>
-        <InputContainer>
-          <label htmlFor="availability">Edit availability</label>
-          <EditInput id="availability" />
-        </InputContainer>
-      </div>
-    </StyledModalContent>
-  );
-};
+const createEditInput = (id: string, label: string) => (
+  <InputContainer>
+    <label htmlFor={id}>{label}</label>
+    <EditInput id={id} />
+  </InputContainer>
+);
 
-const deleteModalContent = () => {
+// where to store modal content?
+// should it be here or inside JSX or in separate file?
+const modalContent = (actionType: string) => {
+  if (actionType === 'edit') {
+    return (
+      <StyledModalContent>
+        <div>
+          {createEditInput('author', 'Edit author')}
+          {createEditInput('genres', 'Edit genres')}
+          {createEditInput('description', 'Edit description')}
+        </div>
+        <div>
+          {createEditInput('uploadedBy', 'Edit uploaded by')}
+          {createEditInput('publicationDate', 'Edit uploaded by')}
+          {createEditInput('language', 'Edit language')}
+          {createEditInput('availability', 'Edit availability')}
+        </div>
+      </StyledModalContent>
+    );
+  }
   return (
-    <>
-      <StyledParagraph>
-        Are you sure you want to delete this book?
-      </StyledParagraph>
-    </>
+    <StyledParagraph>
+      Are you sure you want to delete this book?
+    </StyledParagraph>
   );
 };
 
@@ -106,7 +88,7 @@ export const BookDetails = ({ bookDetails }: BookDetailsProps) => {
   } = bookDetails;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalTitle, setModalTitle] = useState('');
+  const [modal, setModal] = useState({ modalTitle: '', actionType: '' });
 
   const genreElements = genres.map((genre) => (
     <BookGenre key={genre}>{genre}</BookGenre>
@@ -116,19 +98,19 @@ export const BookDetails = ({ bookDetails }: BookDetailsProps) => {
     setIsModalOpen(false);
   };
 
-  const handleDelete = () => {
+  const openDeleteModal = () => {
     setIsModalOpen(true);
-    setModalTitle('Confirm deletion');
+    setModal({ actionType: 'delete', modalTitle: 'Confirm deletion' });
   };
 
-  const handleEdit = () => {
+  const openEditModal = () => {
     setIsModalOpen(true);
-    setModalTitle(`Edit book "${title}"`);
+    setModal({ actionType: 'edit', modalTitle: `Edit book "${title}"` });
   };
 
   const handleConfirm = () => {
-    // should do something more 
     setIsModalOpen(false);
+    // send request to server about about deletion
   };
 
   return (
@@ -140,31 +122,33 @@ export const BookDetails = ({ bookDetails }: BookDetailsProps) => {
         <h1>{title}</h1>
         <Details>
           <div>
-            {createDetail('Author', author)}
-            {createDetail('Genres', genreElements)}
-            {createDetail('Description', description)}
+            <BookDetail title="Author" value={author} />
+            <BookDetail title="Genres" value={genreElements} />
+            <BookDetail title="Description" value={description} />
           </div>
+
           <div>
-            {createDetail('Uploaded by', uploadedBy)}
-            {createDetail('Publication Date', publicationDate)}
-            {createDetail('Language', language)}
-            {createDetail('Availability', availability)}
+            <BookDetail title="Uploaded by" value={uploadedBy} />
+            <BookDetail title="Publication Date" value={publicationDate} />
+            <BookDetail title="Language" value={language} />
+            <BookDetail title="Availability" value={availability} />
           </div>
         </Details>
-        <ButtonsContainer>
-          <Button title="Edit" onClick={handleEdit} />
-          <Button title="Delete" onClick={handleDelete} />
-        </ButtonsContainer>
+        {mockUser.books.includes(title) && (
+          <ButtonsContainer>
+            <Button title="Edit" onClick={openEditModal} />
+            <Button title="Delete" onClick={openDeleteModal} />
+          </ButtonsContainer>
+        )}
       </BookDetailsSection>
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         style={modalStyles}
-        contentLabel={modalTitle}
+        contentLabel={modal.modalTitle}
       >
-        <ModalTitle>{modalTitle}</ModalTitle>
-        {editModalContent()}
-        {/* {deleteModalContent()} */}
+        <ModalTitle>{modal.modalTitle}</ModalTitle>
+        {modalContent(modal.actionType)}
         <ModalButtonsContainer>
           <ConfirmBtn title="Confirm" onClick={handleConfirm} />
           <CancelBtn title="Cancel" onClick={closeModal} />

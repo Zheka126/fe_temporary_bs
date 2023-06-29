@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import {
   BtnsContainer,
   Dropdown,
@@ -15,18 +16,16 @@ export const Header = () => {
   const closeDropdown = () => setIsDropdownShowed(false);
   const toggleDropdown = () => setIsDropdownShowed((prev) => !prev);
 
-  const handleEscapeKey = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') closeDropdown();
-  };
-
   useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeDropdown();
+    };
+
     const container = headerRef.current;
-    if (container) {
-      container.addEventListener('keydown', handleEscapeKey);
+      container?.addEventListener('keydown', handleEscapeKey);
       return () => {
-        container.removeEventListener('keydown', handleEscapeKey);
+        container?.removeEventListener('keydown', handleEscapeKey);
       };
-    }
   }, []);
 
   return (

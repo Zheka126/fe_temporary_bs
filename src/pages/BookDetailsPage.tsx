@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import { BookDetails } from '../components/BookDetails/BookDetails';
 import { Header } from '../components/Header/Header';
 
@@ -16,9 +15,6 @@ const bookDetails = {
 };
 
 export const BookDetailsPage = () => {
-  const params = useParams();
-  console.log('params: ', params);
-
   return (
     <>
       <Header />
