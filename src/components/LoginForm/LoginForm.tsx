@@ -1,14 +1,16 @@
+import axios from 'axios';
 import { useFormik } from 'formik';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { API } from 'src/api/requests';
 
-import { Button } from '../Button/Button';
+import { Button } from '../common/Button/Button';
 import {
   InputContainer,
   StyledErrorMessage,
   StyledForm,
   StyledInput,
   Title,
-} from '../SignupForm/SignupForm.styles';
+} from '../common/Input.styles';
 import { ForgotPasswordLink, StyledParagraph } from './LoginForm.styles';
 import { loginValidation } from './loginValidation';
 
@@ -28,8 +30,19 @@ const inputOutline = (
 ) => (error && touched ? '1px solid red' : 'none');
 
 export const LoginForm = () => {
-  const onSubmit = (values: LoginValues) => {
-    console.log(values);
+  const navigate = useNavigate();
+
+  const onSubmit = async (values: LoginValues) => {
+    try {
+      const { status, data: token } = await API.login(values);
+      if (status && token) {
+        localStorage.setItem('token', token);
+        console.log(token);
+        // navigate("/main");
+      }
+    } catch (err) {
+      console.log(err.response.data);
+    }
   };
 
   const { touched, errors, handleSubmit, getFieldProps } = useFormik({
@@ -50,7 +63,7 @@ export const LoginForm = () => {
           id="username"
           type="text"
           placeholder="Enter username"
-          outline={inputOutline(errors.username, touched.username)}
+          isError={Boolean(touched.username && errors.username)}
           {...getFieldProps('username')}
         />
         {touched.username && errors.username ? (
@@ -64,7 +77,7 @@ export const LoginForm = () => {
           id="password"
           type="password"
           placeholder="Enter password"
-          outline={inputOutline(errors.password, touched.password)}
+          isError={Boolean(touched.password && errors.password)}
           {...getFieldProps('password')}
         />
         {touched.password && errors.password ? (
