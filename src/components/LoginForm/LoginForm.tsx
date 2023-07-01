@@ -12,6 +12,7 @@ import {
   StyledInput,
   Title
 } from "../common/Input.styles";
+import { Loader } from "../common/Loader/Loader";
 import { ForgotPasswordLink, StyledParagraph } from "./LoginForm.styles";
 import { loginValidation } from "./loginValidation";
 
@@ -23,16 +24,20 @@ const initialValues: LoginValues = {
 export const LoginForm = () => {
   const navigate = useNavigate();
   const [submitErr, setSubmitErr] = useState("");
+  const [isSubmitLoading, setSubmitLoading] = useState(false);
 
   const onSubmit = async (values: LoginValues) => {
     try {
+      setSubmitLoading(true);
       const { status, data: token } = await API.login(values);
       if (status === 200 && token) {
         localStorage.setItem("token", token);
-        navigate('/main')
+        navigate("/main");
       }
     } catch (err: any) {
       setSubmitErr(err.response.data);
+    } finally {
+      setSubmitLoading(false);
     }
   };
 
@@ -83,11 +88,15 @@ export const LoginForm = () => {
 
       <ForgotPasswordLink to="">Forgot password?</ForgotPasswordLink>
 
-      <Button
-        type="submit"
-        title="Log in"
-        // disabled={Object.keys(errors).length}
-      />
+      {isSubmitLoading ? (
+        <Loader size="mini"/>
+      ) : (
+        <Button
+          type="submit"
+          title="Log in"
+          // disabled={Object.keys(errors).length}
+        />
+      )}
     </StyledForm>
   );
 };
