@@ -1,8 +1,25 @@
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { increment } from '../redux/reducers/counterReducer';
+import { useState } from 'react';
+import { BookFilter } from 'src/components/BookFilter/BookFilter';
+
+import { BookList } from '../components/BookList/BookList';
+import {Container} from '../components/common/Container.styles'
+import { Header } from '../components/Header/Header';
+import { Pagination } from '../components/Pagination/Pagination';
+import { MainPageContainer } from './styles';
 
 export const MainPage = () => {
-  const dispatch = useAppDispatch();
-  const count = useAppSelector((state) => state.count.value);
-  return <div />;
+  const [currentPage, setCurrentPage] = useState(1)
+  
+  return (
+    <>
+      <Header />
+      <Container>
+        <MainPageContainer>
+          <BookList />
+          <BookFilter />
+        </MainPageContainer>
+      </Container>
+      <Pagination currentPage={currentPage} setCurrentPage={(page) => setCurrentPage(page)}/>
+    </>
+  );
 };

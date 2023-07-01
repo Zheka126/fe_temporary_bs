@@ -1,54 +1,45 @@
-import axios from 'axios';
-import { useFormik } from 'formik';
-import { Link, useNavigate } from 'react-router-dom';
-import { API } from 'src/api/requests';
+import { useFormik } from "formik";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { API } from "src/api/requests";
+import { LoginValues } from "src/types/LoginReq";
 
-import { Button } from '../common/Button/Button';
+import { Button } from "../common/Button/Button";
 import {
   InputContainer,
   StyledErrorMessage,
   StyledForm,
   StyledInput,
-  Title,
-} from '../common/Input.styles';
-import { ForgotPasswordLink, StyledParagraph } from './LoginForm.styles';
-import { loginValidation } from './loginValidation';
-
-export interface LoginValues {
-  username: string;
-  password: string;
-}
+  Title
+} from "../common/Input.styles";
+import { ForgotPasswordLink, StyledParagraph } from "./LoginForm.styles";
+import { loginValidation } from "./loginValidation";
 
 const initialValues: LoginValues = {
-  username: '',
-  password: '',
+  username: "",
+  password: ""
 };
-
-const inputOutline = (
-  error: string | undefined,
-  touched: boolean | undefined
-) => (error && touched ? '1px solid red' : 'none');
 
 export const LoginForm = () => {
   const navigate = useNavigate();
+  const [submitErr, setSubmitErr] = useState("");
 
   const onSubmit = async (values: LoginValues) => {
     try {
       const { status, data: token } = await API.login(values);
-      if (status && token) {
-        localStorage.setItem('token', token);
-        console.log(token);
-        // navigate("/main");
+      if (status === 200 && token) {
+        localStorage.setItem("token", token);
+        navigate('/main')
       }
-    } catch (err) {
-      console.log(err.response.data);
+    } catch (err: any) {
+      setSubmitErr(err.response.data);
     }
   };
 
   const { touched, errors, handleSubmit, getFieldProps } = useFormik({
     initialValues,
     validationSchema: loginValidation,
-    onSubmit,
+    onSubmit
   });
 
   return (
@@ -64,7 +55,7 @@ export const LoginForm = () => {
           type="text"
           placeholder="Enter username"
           isError={Boolean(touched.username && errors.username)}
-          {...getFieldProps('username')}
+          {...getFieldProps("username")}
         />
         {touched.username && errors.username ? (
           <StyledErrorMessage>{errors.username}</StyledErrorMessage>
@@ -78,12 +69,17 @@ export const LoginForm = () => {
           type="password"
           placeholder="Enter password"
           isError={Boolean(touched.password && errors.password)}
-          {...getFieldProps('password')}
+          {...getFieldProps("password")}
         />
         {touched.password && errors.password ? (
           <StyledErrorMessage>{errors.password}</StyledErrorMessage>
         ) : null}
       </InputContainer>
+      {submitErr ? (
+        <InputContainer>
+          <StyledErrorMessage>{submitErr}</StyledErrorMessage>
+        </InputContainer>
+      ) : null}
 
       <ForgotPasswordLink to="">Forgot password?</ForgotPasswordLink>
 

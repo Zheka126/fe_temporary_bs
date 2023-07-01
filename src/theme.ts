@@ -4,8 +4,8 @@ interface StyledTheme extends DefaultTheme {
   colors: {
     black: string;
     lightGray: string;
-    outline: string;
-    error: string;
+    gray: string;
+    red: string;
   };
   flexStyles: (
     justifyContent?: string,
@@ -17,8 +17,8 @@ export const theme: StyledTheme = {
   colors: {
     black: '#1a1a1a',
     lightGray: '#f7f7f7',
-    outline: '#9d9d9d',
-    error: '#de6b67',
+    gray: '#9d9d9d',
+    red: '#de6b67',
   },
 
   flexStyles: (justifyContent = 'center', alignItems = 'center') => css`
