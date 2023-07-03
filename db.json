@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Cosya",
+      "lastName": "Danilov",
+      "companyId": "1"
+    },
+    {
+      "id": "2",
+      "name": "Nikita",
+      "lastName": "Barbara",
+      "companyId": "2"
+    },
+    {
+      "id": "3",
+      "name": "Valenok",
+      "lastName": "Pedro",
+      "companyId": "3"
+    }
+  ],
+  "companies": [
+    {
+      "id": 1,
+      "name": "Apple"
+    },
+    {
+      "id": 2,
+      "name": "Microsoft"
+    },
+    {
+      "id": 3,
+      "name": "Google"
+    }
+  ]
+}
