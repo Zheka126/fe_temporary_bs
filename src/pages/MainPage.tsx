@@ -4,19 +4,19 @@ import { BookList } from '../components/BookList/BookList';
 import {Container} from '../components/common/Container.styles'
 import { Header } from '../components/Header/Header';
 import { Pagination } from '../components/Pagination/Pagination';
-import { MainPageContainer } from './styles/MainPage.styles';
+import { MainPageContainer, MainPageContentContainer } from './styles/MainPage.styles';
 
 export const MainPage = () => {
   return (
-    <>
+    <MainPageContainer>
       <Header />
       <Container>
-        <MainPageContainer>
+        <MainPageContentContainer>
           <BookList />
           <BookFilter />
-        </MainPageContainer>
+        </MainPageContentContainer>
       </Container>
       <Pagination />
-    </>
+    </MainPageContainer>
   );
 };
