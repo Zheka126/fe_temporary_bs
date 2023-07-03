@@ -4,8 +4,7 @@ import arrowRight from "src/assets/chevronRight.png";
 import { PaginationContainer, StyledPagination } from "./Pagination.styles";
 
 export const Pagination = () => {
-  const handlePageChange = ({ selected }: number) => {
-    // sent selected page to backend
+  const handlePageChange = (page: number) => {
   };
 
   return (
@@ -14,7 +13,7 @@ export const Pagination = () => {
         pageCount={20}
         marginPagesDisplayed={0}
         pageRangeDisplayed={5}
-        onPageChange={handlePageChange}
+        onPageChange={({ selected }) => handlePageChange(selected + 1)}
         activeClassName="active"
         breakLabel=""
         previousLabel={<img src={arrowLeft} alt="Previous" />}
