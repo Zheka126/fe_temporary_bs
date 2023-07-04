@@ -1,7 +1,9 @@
 import { useFormik } from "formik";
+import jwt_decode from "jwt-decode";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { API } from "src/api/requests";
+import { useAppDispatch } from "src/redux/hooks";
+import { login, setUser } from "src/redux/slices/authSlice";
 import { LoginValues } from "src/types/LoginReq";
 
 import { Button } from "../common/Button/Button";
@@ -21,21 +23,39 @@ const initialValues: LoginValues = {
   password: ""
 };
 
+interface UserTokenData {
+  unique_name: string;
+  role: string;
+  nameid: string;
+}
+
 export const LoginForm = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [submitErr, setSubmitErr] = useState("");
   const [isSubmitLoading, setSubmitLoading] = useState(false);
 
   const onSubmit = async (values: LoginValues) => {
     try {
       setSubmitLoading(true);
-      const { status, data: token } = await API.login(values);
+      const { status, data: token } = await dispatch(login(values)).unwrap();
+
       if (status === 200 && token) {
         localStorage.setItem("token", token);
+
+        const {
+          unique_name: userName,
+          role,
+          nameid: userId
+        }: UserTokenData = jwt_decode(token);
+
+        const user = { userName, role, userId };
+
+        dispatch(setUser(user));
         navigate("/main");
       }
     } catch (err: any) {
-      setSubmitErr(err.response.data);
+      setSubmitErr(err.message);
     } finally {
       setSubmitLoading(false);
     }
@@ -89,7 +109,7 @@ export const LoginForm = () => {
       <ForgotPasswordLink to="">Forgot password?</ForgotPasswordLink>
 
       {isSubmitLoading ? (
-        <Loader size="mini"/>
+        <Loader size="mini" />
       ) : (
         <Button
           type="submit"
