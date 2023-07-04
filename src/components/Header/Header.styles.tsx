@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import { styled } from 'styled-components';
 
 export const StyledHeader = styled.header`
   display: flex;
@@ -19,9 +19,12 @@ export const StyledHeader = styled.header`
   }
 `;
 
-export const BtnsContainer = styled.div``;
+export const BtnsContainer = styled.div`
+  display: flex;
+`;
 
 export const NavBtn = styled.button`
+  display: flex;
   position: relative;
   margin: 0px 15px;
   padding: 15px;
@@ -48,22 +51,20 @@ export const NavBtn = styled.button`
   }
 `;
 
-export const NavBtnWithDropdown = styled(NavBtn)<{ isDropdownShowed: boolean }>`
+export const NavBtnWithDropdown = styled.div<{ isDropdownShowed: boolean }>`
   img {
-    width: 8px;
+    width: 20px;
     padding: 0 6px;
     transform: ${({ isDropdownShowed }) =>
-      isDropdownShowed ? "rotate(180deg)" : "rotate(0deg)"};
+      isDropdownShowed ? 'rotate(180deg)' : 'rotate(0deg)'};
     transition: transform 0.2s ease-in-out;
   }
 `;
 
-export const Dropdown = styled("ul")<{ isDropdownShowed: boolean }>`
-  display: ${({ isDropdownShowed: isDropdownShowed }) =>
-    isDropdownShowed ? "block" : "none"};
+export const StyledDropdown = styled.ul`
   position: absolute;
-  right: -30px;
   width: 150px;
+  margin: 0;
   padding: 10px 0;
   list-style: none;
   background-color: white;
@@ -72,8 +73,6 @@ export const Dropdown = styled("ul")<{ isDropdownShowed: boolean }>`
 
   li {
     padding: 2px 5px;
-    text-align: left;
-    cursor: default;
     &:last-child {
       margin-top: 8px;
       padding-top: 10px;
@@ -83,7 +82,7 @@ export const Dropdown = styled("ul")<{ isDropdownShowed: boolean }>`
 
   a {
     text-align: left;
-    font-size: 11px;
+    font-size: 12px;
     color: black;
     padding: 5px 30px 5px 20px;
     text-decoration: none;
