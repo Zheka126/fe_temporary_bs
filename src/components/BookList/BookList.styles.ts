@@ -8,7 +8,7 @@ export const BookListWrapper = styled.div`
   padding: 20px;
 `;
 
-export const BookItem = styled(Link)`
+export const StyledBookItem = styled(Link)`
   ${({ theme }) => theme.flexStyles()}
   flex-direction: column;
   gap: 10px;

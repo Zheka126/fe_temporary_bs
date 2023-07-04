@@ -13,13 +13,6 @@ export const Header = () => {
   const [isDropdownShowed, setIsDropdownShowed] = useState(false);
   const headerRef = useRef<HTMLHeadingElement>(null);
 
-  const closeDropdown = () => setIsDropdownShowed(false);
-  const toggleDropdown = () => setIsDropdownShowed((prev) => !prev);
-
-  const handleEscapeKey = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') closeDropdown();
-  };
-
   useEffect(() => {
     const container = headerRef.current;
     if (container) {
@@ -29,6 +22,13 @@ export const Header = () => {
       };
     }
   }, []);
+
+  const closeDropdown = () => setIsDropdownShowed(false)
+  const toggleDropdown = () => setIsDropdownShowed(true);
+
+  const handleEscapeKey = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') closeDropdown();
+  };
 
   return (
     <StyledHeader ref={headerRef}>

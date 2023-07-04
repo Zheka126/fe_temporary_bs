@@ -1,0 +1,124 @@
+{
+  "books": [
+    {
+      "id": 1,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "historical",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book"
+    },
+    {
+      "id": 2,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "historical",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book"
+    },
+    {
+      "id": 3,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "historical",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book"
+    },
+    {
+      "id": 4,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "historical",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book"
+    },
+    {
+      "id": 5,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "historical",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book"
+    },
+    {
+      "id": 6,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "historical",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book"
+    },
+    {
+      "id": 7,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "historical",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book"
+    },
+    {
+      "id": 8,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "historical",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book"
+    },
+    {
+      "id": 9,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "historical",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book"
+    },
+    {
+      "id": 10,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "historical",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book"
+    },
+    {
+      "id": 11,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "historical",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book"
+    },
+    {
+      "id": 12,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "historical",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book"
+    }
+  ]
+}

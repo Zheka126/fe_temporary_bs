@@ -1,4 +1,7 @@
-import { PaginationContainer, StyledPagination } from './Pagination.styles';
+import arrowLeft from "src/assets/chevronLeft.png";
+import arrowRight from "src/assets/chevronRight.png";
+
+import { PaginationContainer, StyledPagination } from "./Pagination.styles";
 
 interface PaginationProps {
   currentPage: number
@@ -21,8 +24,8 @@ export const Pagination = ({ currentPage, setCurrentPage }: PaginationProps) => 
         onPageChange={({ selected }) => handlePageChange(selected + 1)}
         activeClassName="active"
         breakLabel=""
-        previousLabel={<img src="src/assets/chevronLeft.png" alt="Previous" />}
-        nextLabel={<img src="src/assets/chevronRight.png" alt="Next" />}
+        previousLabel={<img src={arrowLeft} alt="Previous" />}
+        nextLabel={<img src={arrowRight} alt="Next" />}
       />
     </PaginationContainer>
   );

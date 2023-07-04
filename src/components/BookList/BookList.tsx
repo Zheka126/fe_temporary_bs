@@ -1,77 +1,20 @@
-import { BookItem, BookListWrapper } from './BookList.styles';
+import { BookItem } from "src/types/BookItem";
 
-const books = [
-  {
-    id: 1,
-    img: 'https://edit.org/images/cat/book-covers-big-2019101610.jpg',
-    title: 'This is a book',
-  },
-  {
-    id: 2,
-    img: 'https://edit.org/images/cat/book-covers-big-2019101610.jpg',
-    title: 'This is a book',
-  },
-  {
-    id: 3,
-    img: 'https://edit.org/images/cat/book-covers-big-2019101610.jpg',
-    title: 'This is a book',
-  },
-  {
-    id: 4,
-    img: 'https://edit.org/images/cat/book-covers-big-2019101610.jpg',
-    title: 'This is a book',
-  },
-  {
-    id: 5,
-    img: 'https://edit.org/images/cat/book-covers-big-2019101610.jpg',
-    title: 'This is a book',
-  },
-  {
-    id: 6,
-    img: 'https://edit.org/images/cat/book-covers-big-2019101610.jpg',
-    title: 'This is a book',
-  },
-  {
-    id: 7,
-    img: 'https://edit.org/images/cat/book-covers-big-2019101610.jpg',
-    title: 'This is a book',
-  },
-  {
-    id: 8,
-    img: 'https://edit.org/images/cat/book-covers-big-2019101610.jpg',
-    title: 'This is a book',
-  },
-  {
-    id: 9,
-    img: 'https://edit.org/images/cat/book-covers-big-2019101610.jpg',
-    title: 'This is a book',
-  },
-  {
-    id: 10,
-    img: 'https://edit.org/images/cat/book-covers-big-2019101610.jpg',
-    title: 'This is a book',
-  },
-  {
-    id: 11,
-    img: 'https://edit.org/images/cat/book-covers-big-2019101610.jpg',
-    title: 'This is a book',
-  },
-  {
-    id: 12,
-    img: 'https://edit.org/images/cat/book-covers-big-2019101610.jpg',
-    title: 'This is a book',
-  },
-];
+import { BookListWrapper, StyledBookItem } from "./BookList.styles";
 
-export const BookList = () => {
+interface BookListProps {
+  books: BookItem[];
+}
+
+export const BookList = ({ books }: BookListProps) => {
   return (
     <BookListWrapper>
       {books.map((book) => {
         return (
-          <BookItem to="/#" key={book.id}>
-            <img src={book.img} alt="book title" />
+          <StyledBookItem to="/#" key={book.id}>
+            <img src={book.imageSrc} alt="book title" />
             <span>{book.title}</span>
-          </BookItem>
+          </StyledBookItem>
         );
       })}
     </BookListWrapper>
