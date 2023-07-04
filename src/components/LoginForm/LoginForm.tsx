@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
-import jwt_decode from "jwt-decode";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { getUserTokenData } from "src/helpers";
 import { useAppDispatch } from "src/redux/hooks";
 import { login, setUser } from "src/redux/slices/authSlice";
 import { LoginValues } from "src/types/LoginReq";
@@ -23,12 +23,6 @@ const initialValues: LoginValues = {
   password: ""
 };
 
-interface UserTokenData {
-  unique_name: string;
-  role: string;
-  nameid: string;
-}
-
 export const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -43,13 +37,7 @@ export const LoginForm = () => {
       if (status === 200 && token) {
         localStorage.setItem("token", token);
 
-        const {
-          unique_name: userName,
-          role,
-          nameid: userId
-        }: UserTokenData = jwt_decode(token);
-
-        const user = { userName, role, userId };
+        const user = getUserTokenData(token);
 
         dispatch(setUser(user));
         navigate("/main");
