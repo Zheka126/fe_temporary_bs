@@ -37,12 +37,12 @@ export const LoginForm = () => {
   });
 
   return (
-    <StyledForm onSubmit={handleSubmit}>
-      <Title>Login</Title>
-      <StyledParagraph>
+    <StyledForm onSubmit={handleSubmit} data-testid="login-form">
+      <Title data-testid="login-title">Login</Title>
+      <StyledParagraph data-testid="signup-link">
         Don't have an account yet? <Link to="/registration">Sign up</Link>
       </StyledParagraph>
-      <InputContainer>
+      <InputContainer data-testid="username-input-container">
         <label htmlFor="username">Username</label>
         <StyledInput
           id="username"
@@ -52,11 +52,13 @@ export const LoginForm = () => {
           {...getFieldProps('username')}
         />
         {touched.username && errors.username ? (
-          <StyledErrorMessage>{errors.username}</StyledErrorMessage>
+          <StyledErrorMessage data-testid="username-error">
+            {errors.username}
+          </StyledErrorMessage>
         ) : null}
       </InputContainer>
 
-      <InputContainer>
+      <InputContainer data-testid="password-input-container">
         <label htmlFor="password">Password</label>
         <StyledInput
           id="password"
@@ -66,15 +68,20 @@ export const LoginForm = () => {
           {...getFieldProps('password')}
         />
         {touched.password && errors.password ? (
-          <StyledErrorMessage>{errors.password}</StyledErrorMessage>
+          <StyledErrorMessage data-testid="username-error">
+            {errors.password}
+          </StyledErrorMessage>
         ) : null}
       </InputContainer>
 
-      <ForgotPasswordLink to="">Forgot password?</ForgotPasswordLink>
+      <ForgotPasswordLink to="" data-testid="forgot-password-link">
+        Forgot password?
+      </ForgotPasswordLink>
 
       <Button
         type="submit"
         title="Log in"
+        data-testid="login-button"
         // disabled={Object.keys(errors).length}
       />
     </StyledForm>

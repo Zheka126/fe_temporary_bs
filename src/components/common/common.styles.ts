@@ -18,11 +18,15 @@ export const InputContainer = styled.div`
   position: relative;
   width: 100%;
   margin-bottom: 25px;
+
+  & label {
+    font-size: 14px;
+  }
 `;
 
 export const StyledInput = styled.input<{ isError: boolean }>`
   width: 100%;
-  padding: 15px 25px;
+  padding: 12px 22px;
   ${({ isError: iserror, theme }) =>
     iserror &&
     css`
@@ -38,6 +42,10 @@ export const StyledInput = styled.input<{ isError: boolean }>`
   &:focus {
     outline: 1px solid ${({ theme }) => theme.colors.outline};
     box-shadow: 0px 5px 15px -3px rgba(0, 0, 0, 0.08);
+  }
+
+  &::placeholder {
+    font-size: 14px;
   }
 `;
 
