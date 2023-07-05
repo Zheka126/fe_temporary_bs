@@ -5,6 +5,7 @@ import { CheckboxContainer, SearchInput } from "./BookFilter.styles";
 
 interface BookFilterProps {
   filters: FilterValues;
+  searchTerm: string
   setSearchValue: (val: string) => void;
   setCheckboxValue: (
     type: "genre" | "status",
@@ -16,6 +17,7 @@ interface BookFilterProps {
 
 export const BookFilter = ({
   filters,
+  searchTerm,
   setSearchValue,
   setCheckboxValue,
   setRating
@@ -26,7 +28,7 @@ export const BookFilter = ({
       <SearchInput
         type="search"
         placeholder="Search"
-        value={filters.search}
+        value={searchTerm}
         onChange={(e) => setSearchValue(e.target.value)}
       />
       <CheckboxContainer>

@@ -1,9 +1,8 @@
-import axios from "axios";
-import { useEffect, useReducer, useState } from "react";
+import debounce from "lodash.debounce";
+import { useCallback, useEffect, useReducer, useState } from "react";
 import { BookFilter } from "src/components/BookFilter/BookFilter";
 import { useAppDispatch, useAppSelector } from "src/redux/hooks";
 import { getBooks } from "src/redux/slices/bookSlice";
-import { BookItem } from "src/types/BookItem";
 import { FilterValues } from "src/types/FilterValues";
 
 import { BookList } from "../components/BookList/BookList";
@@ -28,7 +27,7 @@ type Action =
   | { type: "genre"; genre: "fiction" | "adventure"; isChecked: boolean }
   | { type: "status"; status: "free" | "busy"; isChecked: boolean }
   | { type: "rating"; rating: number }
-  | { type: "pagination"; page: number }
+  | { type: "pagination"; page: number };
 
 const reducer = (state: FilterValues, action: Action) => {
   switch (action.type) {
@@ -64,12 +63,13 @@ export const MainPage = () => {
   const dispatch = useAppDispatch();
 
   const [filters, dispatchReducer] = useReducer(reducer, initialState);
+  const [searchTerm, setSearchTerm] = useState("");
   const booksArr = useAppSelector(({ books }) => books.books);
 
   useEffect(() => {
     (async () => {
       try {
-        const { search } = filters
+        const { search } = filters;
         await dispatch(getBooks({ search })).unwrap();
       } catch (err: any) {
         console.log(err.message);
@@ -77,8 +77,16 @@ export const MainPage = () => {
     })();
   }, [dispatch, filters]);
 
+  const debouncedSearch = useCallback(
+    debounce((value: string) => {
+      dispatchReducer({ type: "search", value });
+    }, 700),
+    []
+  );
+
   const setSearchValue = (value: string) => {
-    dispatchReducer({ type: "search", value });
+    setSearchTerm(value);
+    debouncedSearch(value);
   };
 
   const setCheckboxValue = (
@@ -117,6 +125,7 @@ export const MainPage = () => {
           <BookList books={booksArr} />
           <BookFilter
             filters={filters}
+            searchTerm={searchTerm}
             setSearchValue={setSearchValue}
             setCheckboxValue={setCheckboxValue}
             setRating={setRating}
