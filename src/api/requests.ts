@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { BookItem } from 'src/types/BookItem';
+import { FilterValues } from 'src/types/FilterValues';
 import { LoginValues } from 'src/types/LoginReq';
 
 import { instance } from './instance';
@@ -10,7 +11,11 @@ export const API = {
   },
 
   // MOCK REQUEST
-  getBooks: () => {
-    return axios.get<BookItem[]>('http://localhost:3000/books');
+  getBooks: ({ search }: FilterValues) => {
+    return axios.get<BookItem[]>(`http://localhost:3000/books`, {
+      params: {
+        ...(search ? { title: search } : {}),
+      },
+    });
   },
 };

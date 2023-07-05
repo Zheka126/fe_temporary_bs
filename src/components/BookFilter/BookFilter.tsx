@@ -1,75 +1,25 @@
-import { useReducer } from 'react';
+import { FilterValues } from "src/types/FilterValues";
 
-import { Rating } from '../Rating/Rating';
-import { CheckboxContainer, SearchInput } from './BookFilter.styles';
+import { Rating } from "../Rating/Rating";
+import { CheckboxContainer, SearchInput } from "./BookFilter.styles";
 
-const initialState = {
-  search: '',
-  genre: { fiction: false, adventure: false },
-  status: { free: false, busy: false },
-  selectedRating: 0,
-};
-
-type Action =
-  | { type: 'search'; value: string }
-  | { type: 'genre'; genre: 'fiction' | 'adventure'; isChecked: boolean }
-  | { type: 'status'; status: 'free' | 'busy'; isChecked: boolean }
-  | { type: 'rating'; ind: number };
-
-const reducer = (state: typeof initialState, action: Action) => {
-  switch (action.type) {
-    case 'search':
-      return { ...state, search: action.value };
-
-    case 'genre': {
-      return {
-        ...state,
-        genre: { ...state.genre, [action.genre]: action.isChecked },
-      };
-    }
-
-    case 'status': {
-      return {
-        ...state,
-        status: { ...state.status, [action.status]: action.isChecked },
-      };
-    }
-
-    case 'rating':
-      return { ...state, selectedRating: action.ind };
-
-    default:
-      return state;
-  }
-};
-
-export const BookFilter = () => {
-  const [filters, dispatch] = useReducer(reducer, initialState);
-
-  const setSearchValue = (value: string) => {
-    dispatch({ type: 'search', value });
-  };
-
-  const setCheckboxValue = (
-    type: 'genre' | 'status',
-    key: 'fiction' | 'adventure' | 'free' | 'busy',
+interface BookFilterProps {
+  filters: FilterValues;
+  setSearchValue: (val: string) => void;
+  setCheckboxValue: (
+    type: "genre" | "status",
+    key: "fiction" | "adventure" | "free" | "busy",
     isChecked: boolean
-  ) => {
-    if (type === 'genre') {
-      dispatch({
-        type: 'genre',
-        genre: key as 'fiction' | 'adventure',
-        isChecked,
-      });
-    } else if (type === 'status') {
-      dispatch({ type: 'status', status: key as 'free' | 'busy', isChecked });
-    }
-  };
+  ) => void;
+  setRating: (val: number) => void;
+}
 
-  const setRating = (ind: number) => {
-    dispatch({ type: 'rating', ind });
-  };
-
+export const BookFilter = ({
+  filters,
+  setSearchValue,
+  setCheckboxValue,
+  setRating
+}: BookFilterProps) => {
   return (
     <div>
       <h4>Genres</h4>
@@ -87,7 +37,7 @@ export const BookFilter = () => {
           value="fiction"
           checked={filters.genre.fiction}
           onChange={(e) =>
-            setCheckboxValue('genre', 'fiction', e.target.checked)
+            setCheckboxValue("genre", "fiction", e.target.checked)
           }
         />
         <label htmlFor="fiction">Fiction</label>
@@ -100,7 +50,7 @@ export const BookFilter = () => {
           value="adventure"
           checked={filters.genre.adventure}
           onChange={(e) =>
-            setCheckboxValue('genre', 'adventure', e.target.checked)
+            setCheckboxValue("genre", "adventure", e.target.checked)
           }
         />
         <label htmlFor="adventure">Adventure</label>
@@ -114,7 +64,7 @@ export const BookFilter = () => {
           name="free"
           value="free"
           checked={filters.status.free}
-          onChange={(e) => setCheckboxValue('status', 'free', e.target.checked)}
+          onChange={(e) => setCheckboxValue("status", "free", e.target.checked)}
         />
         <label htmlFor="free">Free</label>
       </CheckboxContainer>
@@ -125,15 +75,15 @@ export const BookFilter = () => {
           name="busy"
           value="busy"
           checked={filters.status.busy}
-          onChange={(e) => setCheckboxValue('status', 'busy', e.target.checked)}
+          onChange={(e) => setCheckboxValue("status", "busy", e.target.checked)}
         />
         <label htmlFor="busy">Busy</label>
       </CheckboxContainer>
 
       <h4>Popularity</h4>
       <Rating
-        selectedRating={filters.selectedRating}
-        setSelectedRating={(ind) => setRating(ind)}
+        selectedRating={filters.selectedRating - 1}
+        setSelectedRating={(ind) => setRating(ind + 1)}
       />
     </div>
   );

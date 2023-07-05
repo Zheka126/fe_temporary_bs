@@ -9,14 +9,18 @@ interface BookListProps {
 export const BookList = ({ books }: BookListProps) => {
   return (
     <BookListWrapper>
-      {books.map((book) => {
-        return (
-          <StyledBookItem to="/#" key={book.id}>
-            <img src={book.imageSrc} alt="book title" />
-            <span>{book.title}</span>
-          </StyledBookItem>
-        );
-      })}
+      {books.length ? (
+        books.map((book) => {
+          return (
+            <StyledBookItem to="/#" key={book.id}>
+              <img src={book.imageSrc} alt="book title" />
+              <span>{book.title}</span>
+            </StyledBookItem>
+          );
+        })
+      ) : (
+        <div>No books yet</div>
+      )}
     </BookListWrapper>
   );
 };

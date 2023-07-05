@@ -2,10 +2,11 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { API } from 'src/api/requests';
 import { BookItem } from 'src/types/BookItem';
+import { FilterValues } from 'src/types/FilterValues';
 
-export const getBooks = createAsyncThunk('getBooksThunk', async () => {
+export const getBooks = createAsyncThunk('getBooksThunk', async ({ search }: FilterValues) => {
   try {
-    const { data } = await API.getBooks();
+    const { data } = await API.getBooks({ search });
     return data;
   } catch (err) {
     throw Error('Something went wrong');
