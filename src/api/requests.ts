@@ -1,9 +1,9 @@
-import { UserCredentials, UserRegistrationData } from 'src/types/user';
+import { LoginDTO, UserRegistrationDTO } from 'src/types/user';
 
 import { instance } from './instance';
 
-export const API = {
-  login: (values: UserCredentials) => instance.post<string>('/login', values),
-  register: (values: UserRegistrationData) => instance.post<string>('/register', values),
-//   where to catch exceptions and errors
-};
+export const login = (values: LoginDTO) =>
+  instance.post<string>('/login', values);
+
+export const register = (values: UserRegistrationDTO) =>
+  instance.post<string>('/register', values);

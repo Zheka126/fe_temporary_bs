@@ -3,16 +3,26 @@ import arrowRight from 'src/assets/chevronRight.png';
 
 import { PaginationContainer, StyledPagination } from './Pagination.styles';
 
-export const Pagination = () => {
+interface PaginationProps {
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
+}
+
+export const Pagination = ({
+  currentPage,
+  setCurrentPage,
+}: PaginationProps) => {
+  // make it controlable
   const handlePageChange = ({ selected }: { selected: number }) => {
     // sent selected page to backend
-    console.log(selected + 1);
+    setCurrentPage(selected + 1);
   };
 
   return (
     <PaginationContainer data-testid="pagination-container">
       <StyledPagination
         pageCount={20}
+        forcePage={currentPage - 1}
         marginPagesDisplayed={0}
         pageRangeDisplayed={5}
         onPageChange={handlePageChange}

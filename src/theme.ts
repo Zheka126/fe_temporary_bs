@@ -1,7 +1,7 @@
 import { css, DefaultTheme } from 'styled-components';
 
 // should it be here or at types folder?
-interface StyledTheme extends DefaultTheme {
+export interface StyledTheme extends DefaultTheme {
   colors: {
     black: string;
     lightGray: string;

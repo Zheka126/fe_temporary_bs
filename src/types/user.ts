@@ -1,9 +1,9 @@
-export interface UserCredentials {
+export interface LoginDTO {
   username: string;
   password: string;
 }
 
-export interface UserRegistrationData {
+export interface UserRegistrationDTO {
   firstName: string;
   lastName: string;
   username: string;
@@ -17,3 +17,4 @@ export interface UserTokenData {
   role: string;
   nameId: string;
 }
+ 

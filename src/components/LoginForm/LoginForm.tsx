@@ -1,9 +1,10 @@
-import { useFormik } from 'formik';
+import { FormikHelpers, useFormik } from 'formik';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from 'src/redux/hooks';
-import { LoaderType } from 'src/types/general';
-import { UserCredentials } from 'src/types/user';
+import { loginThunk, setUser } from 'src/redux/slices/authSlice';
+import { LoginDTO } from 'src/types/user';
+import { getUserTokenData } from 'src/utils';
 
 import { Button } from '../common/Button/Button';
 import {
@@ -13,35 +14,51 @@ import {
   StyledInput,
   Title,
 } from '../common/common.styles';
-import { Loader } from '../common/Loader';
+import { Loader } from '../common/Loader/Loader';
 import { ForgotPasswordLink, StyledParagraph } from './LoginForm.styles';
 import { loginValidation } from './loginValidation';
 
-const initialValues: UserCredentials = {
+const initialValues: LoginDTO = {
   username: '',
   password: '',
 };
 
 export const LoginForm = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [submitError, setSubmitError] = useState('');
 
-  const onSubmit = (props: UserCredentials) => {
-    setIsLoading(true);
+  const onSubmit = async (
+    values: LoginDTO,
+    { setSubmitting }: FormikHelpers<LoginDTO>
+  ) => {
+    try {
+      setSubmitting(true);
+      const { status, data: token } = await dispatch(
+        loginThunk(values)
+      ).unwrap();
 
-    // Mock API call
-    setTimeout(() => {
-      navigate('/main');
-      setIsLoading(false);
-    }, 2000);
+      if (status === 200 && token) {
+        localStorage.setItem('token', token);
+
+        const user = getUserTokenData(token);
+
+        dispatch(setUser(user));
+        navigate('/main');
+      }
+    } catch (error: any) {
+      setSubmitError(error.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  const { touched, errors, handleSubmit, getFieldProps } = useFormik({
-    initialValues,
-    validationSchema: loginValidation,
-    onSubmit,
-  });
+  const { touched, errors, handleSubmit, getFieldProps, isSubmitting } =
+    useFormik({
+      initialValues,
+      validationSchema: loginValidation,
+      onSubmit,
+    });
 
   return (
     <StyledForm onSubmit={handleSubmit} data-testid="login-form">
@@ -58,11 +75,11 @@ export const LoginForm = () => {
           isError={Boolean(touched.username && errors.username)}
           {...getFieldProps('username')}
         />
-        {touched.username && errors.username ? (
+        {touched.username && errors.username && (
           <StyledErrorMessage data-testid="username-error">
             {errors.username}
           </StyledErrorMessage>
-        ) : null}
+        )}
       </InputContainer>
 
       <InputContainer data-testid="password-input-container">
@@ -74,20 +91,25 @@ export const LoginForm = () => {
           isError={Boolean(touched.password && errors.password)}
           {...getFieldProps('password')}
         />
-        {touched.password && errors.password ? (
+        {touched.password && errors.password && (
           <StyledErrorMessage data-testid="username-error">
             {errors.password}
           </StyledErrorMessage>
-        ) : null}
+        )}
       </InputContainer>
+
+      {submitError && (
+        <InputContainer>
+          <StyledErrorMessage>{submitError}</StyledErrorMessage>
+        </InputContainer>
+      )}
 
       <ForgotPasswordLink to="" data-testid="forgot-password-link">
         Forgot password?
       </ForgotPasswordLink>
 
-{/* how to position Loader into the center? */}
-      {isLoading ? (
-        <Loader type={LoaderType.Spin} />
+      {isSubmitting ? (
+        <Loader size="mini" />
       ) : (
         <Button type="submit" title="Log in" data-testid="login-button" />
       )}
