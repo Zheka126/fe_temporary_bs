@@ -87,7 +87,7 @@ export const BookFilter = ({
 
       <h4>Popularity</h4>
       <Rating
-        selectedRating={filters.selectedRating - 1}
+        selectedRating={filters.selectedRating}
         setSelectedRating={(ind) => setRating(ind + 1)}
       />
     </div>

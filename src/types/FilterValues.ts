@@ -3,7 +3,9 @@ export interface FilterValues {
   genre: {
     [key: string]: boolean;
   };
-  status: { free: boolean; busy: boolean };
-  selectedRating: number;
+  status: {
+    [key: string]: boolean;
+  };
+  selectedRating: number | null;
   currentPage: number;
 }

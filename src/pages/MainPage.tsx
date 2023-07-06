@@ -29,7 +29,7 @@ const initialState = {
     dystopian: false,
   },
   status: { free: false, busy: false },
-  selectedRating: 1,
+  selectedRating: null,
   currentPage: 1
 };
 
@@ -37,7 +37,7 @@ type Action =
   | { type: "search"; value: string }
   | { type: "genre"; genre: string; isChecked: boolean }
   | { type: "status"; status: "free" | "busy"; isChecked: boolean }
-  | { type: "rating"; rating: number }
+  | { type: "rating"; rating: number | null }
   | { type: "pagination"; page: number };
 
 const reducer = (state: FilterValues, action: Action) => {
@@ -80,10 +80,12 @@ export const MainPage = () => {
   useEffect(() => {
     (async () => {
       try {
-        const { search, genre } = filters;
-        const selectedGenres = Object.keys(genre).filter((key) => genre[key]);
+        // const { search, genre, status, selectedRating, currentPage } = filters;
+        // const selectedGenres = Object.keys(genre).filter((key) => genre[key]);
+        // const selectedstatus = Object.keys(status).filter((key) => status[key]);
 
-        await dispatch(getBooks({ search, selectedGenres })).unwrap();
+        // const getBooksParams = { search, selectedGenres, selectedstatus, selectedRating, currentPage }
+        await dispatch(getBooks(filters)).unwrap();
       } catch (err: any) {
         console.log(err.message);
       }
@@ -122,14 +124,15 @@ export const MainPage = () => {
     }
   };
 
-  const setRating = (rating: number) => {
+  const setRating = (rate: number) => {
+    const rating = rate === 1 && filters.selectedRating === 1 ? null : rate
     dispatchReducer({ type: "rating", rating });
   };
 
   const setCurrentPage = (page: number) => {
     dispatchReducer({ type: "pagination", page });
   };
-
+  
   return (
     <MainPageContainer>
       <Header />
@@ -146,6 +149,8 @@ export const MainPage = () => {
         </MainPageContentContainer>
       </Container>
       <Pagination
+        // pageCount={Math.ceil(booksArr.length / 12)}
+        pageCount={20}
         currentPage={filters.currentPage}
         setCurrentPage={(page) => setCurrentPage(page)}
       />

@@ -7,7 +7,7 @@ const stars = Array(5)
   .map((_, ind) => ind);
 
 interface RatingProps {
-  selectedRating: number;
+  selectedRating: number | null;
   setSelectedRating: (ind: number) => void;
 }
 
@@ -18,7 +18,7 @@ export const Rating = ({ selectedRating, setSelectedRating }: RatingProps) => {
         return (
           <StarItem
             key={ind}
-            filled={ind <= selectedRating}
+            filled={selectedRating ? ind < selectedRating : false}
             onClick={() => setSelectedRating(ind)}
           >
             <StarIcon />

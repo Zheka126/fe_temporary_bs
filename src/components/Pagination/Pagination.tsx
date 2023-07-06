@@ -5,10 +5,11 @@ import { PaginationContainer, StyledPagination } from "./Pagination.styles";
 
 interface PaginationProps {
   currentPage: number
+  pageCount: number
   setCurrentPage: (page: number) => void
 }
 
-export const Pagination = ({ currentPage, setCurrentPage }: PaginationProps) => {
+export const Pagination = ({ currentPage, pageCount, setCurrentPage }: PaginationProps) => {
   
   const handlePageChange = (selectedPage: any) => {
     setCurrentPage(selectedPage);
@@ -17,7 +18,7 @@ export const Pagination = ({ currentPage, setCurrentPage }: PaginationProps) => 
   return (
     <PaginationContainer>
       <StyledPagination
-        pageCount={20}
+        pageCount={pageCount}
         forcePage={currentPage - 1}
         marginPagesDisplayed={0}
         pageRangeDisplayed={5}

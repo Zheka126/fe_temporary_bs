@@ -4,9 +4,9 @@ import { API } from 'src/api/requests';
 import { BookItem } from 'src/types/BookItem';
 import { FilterValues } from 'src/types/FilterValues';
 
-export const getBooks = createAsyncThunk('getBooksThunk', async ({ search, selectedGenres }: FilterValues) => {
+export const getBooks = createAsyncThunk('getBooksThunk', async (filters: FilterValues) => {
   try {
-    const { data } = await API.getBooks({ search, selectedGenres });
+    const { data } = await API.getBooks(filters);
     return data;
   } catch (err) {
     throw Error('Something went wrong');

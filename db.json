@@ -8,7 +8,9 @@
       "publicationDate": "2023-07-01",
       "language": "Russian",
       "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
-      "title": "This is a book"
+      "title": "This is a book 1",
+      "availability": "free",
+      "rating": 1
     },
     {
       "id": 2,
@@ -18,7 +20,9 @@
       "publicationDate": "2023-07-01",
       "language": "Russian",
       "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
-      "title": "This is a book"
+      "title": "This is a book 2",
+      "availability": "busy",
+      "rating": 2
     },
     {
       "id": 3,
@@ -28,7 +32,9 @@
       "publicationDate": "2023-07-01",
       "language": "Russian",
       "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
-      "title": "This is a book"
+      "title": "This is a book 3",
+      "availability": "free",
+      "rating": 3
     },
     {
       "id": 4,
@@ -38,7 +44,9 @@
       "publicationDate": "2023-07-01",
       "language": "Russian",
       "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
-      "title": "This is a book"
+      "title": "This is a book 4",
+      "availability": "busy",
+      "rating": 4
     },
     {
       "id": 5,
@@ -48,7 +56,9 @@
       "publicationDate": "2023-07-01",
       "language": "Russian",
       "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
-      "title": "This is a book"
+      "title": "This is a book 5",
+      "availability": "free",
+      "rating": 5
     },
     {
       "id": 6,
@@ -58,7 +68,9 @@
       "publicationDate": "2023-07-01",
       "language": "Russian",
       "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
-      "title": "This is a book"
+      "title": "This is a book 6",
+      "availability": "busy",
+      "rating": 1
     },
     {
       "id": 7,
@@ -68,7 +80,9 @@
       "publicationDate": "2023-07-01",
       "language": "Russian",
       "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
-      "title": "This is a book"
+      "title": "This is a book 7",
+      "availability": "free",
+      "rating": 2
     },
     {
       "id": 8,
@@ -78,7 +92,9 @@
       "publicationDate": "2023-07-01",
       "language": "Russian",
       "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
-      "title": "This is a book"
+      "title": "This is a book 8",
+      "availability": "busy",
+      "rating": 3
     },
     {
       "id": 9,
@@ -88,7 +104,9 @@
       "publicationDate": "2023-07-01",
       "language": "Russian",
       "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
-      "title": "This is a book"
+      "title": "This is a book 9",
+      "availability": "busy",
+      "rating": 4
     },
     {
       "id": 10,
@@ -98,7 +116,9 @@
       "publicationDate": "2023-07-01",
       "language": "Russian",
       "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
-      "title": "This is a book"
+      "title": "This is a book 10",
+      "availability": "busy",
+      "rating": 5
     },
     {
       "id": 11,
@@ -108,7 +128,9 @@
       "publicationDate": "2023-07-01",
       "language": "Russian",
       "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
-      "title": "This is a book"
+      "title": "This is a book 11",
+      "availability": "busy",
+      "rating": 3
     },
     {
       "id": 12,
@@ -118,7 +140,81 @@
       "publicationDate": "2023-07-01",
       "language": "Russian",
       "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
-      "title": "This is a book"
+      "title": "This is a book 12",
+      "availability": "busy",
+      "rating": 2
+    },
+    {
+      "id": 13,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "adventure",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book 13",
+      "availability": "busy",
+      "rating": 2
+    },
+    {
+      "id": 14,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "adventure",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book 14",
+      "availability": "busy",
+      "rating": 2
+    },
+    {
+      "id": 15,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "adventure",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book 15",
+      "availability": "busy",
+      "rating": 2
+    },
+    {
+      "id": 16,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "adventure",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book 16",
+      "availability": "busy",
+      "rating": 2
+    },
+    {
+      "id": 17,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "adventure",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book 17",
+      "availability": "busy",
+      "rating": 2
+    },
+    {
+      "id": 18,
+      "author": "John Wick",
+      "uploadedBy": "Endava",
+      "genres": "adventure",
+      "publicationDate": "2023-07-01",
+      "language": "Russian",
+      "imageSrc": "https://edit.org/images/cat/book-covers-big-2019101610.jpg",
+      "title": "This is a book 18",
+      "availability": "busy",
+      "rating": 2
     }
   ]
 }
