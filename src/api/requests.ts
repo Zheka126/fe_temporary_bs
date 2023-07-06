@@ -11,11 +11,14 @@ export const API = {
   },
 
   // MOCK REQUEST
-  getBooks: ({ search }: FilterValues) => {
+  getBooks: ({ search, selectedGenres }: FilterValues) => {
+
     return axios.get<BookItem[]>(`http://localhost:3000/books`, {
       params: {
         ...(search ? { title: search } : {}),
+        ...(selectedGenres ? { genres: selectedGenres } : {}),
       },
+      paramsSerializer: {indexes: null}
     });
   },
 };

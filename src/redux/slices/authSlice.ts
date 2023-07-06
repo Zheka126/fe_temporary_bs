@@ -23,7 +23,7 @@ interface UserData {
   userId: string;
 }
 
-export interface AuthState {
+interface AuthState {
   user: null | UserData;
 }
 

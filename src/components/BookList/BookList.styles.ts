@@ -9,7 +9,7 @@ export const BookListWrapper = styled.div`
 `;
 
 export const StyledBookItem = styled(Link)`
-  ${({ theme }) => theme.flexStyles()}
+  ${({ theme }) => theme.flexStyles('start', 'center')}
   flex-direction: column;
   gap: 10px;
   color: black;

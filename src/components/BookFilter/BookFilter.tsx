@@ -5,15 +5,28 @@ import { CheckboxContainer, SearchInput } from "./BookFilter.styles";
 
 interface BookFilterProps {
   filters: FilterValues;
-  searchTerm: string
+  searchTerm: string;
   setSearchValue: (val: string) => void;
   setCheckboxValue: (
     type: "genre" | "status",
-    key: "fiction" | "adventure" | "free" | "busy",
+    key: string,
     isChecked: boolean
   ) => void;
   setRating: (val: number) => void;
 }
+
+const genres = [
+  { id: 1, key: 'fiction', value: 'Fiction' },
+  { id: 2, key: 'adventure', value: 'Adventure' },
+  { id: 3, key: 'horror', value: 'Horror' },
+  { id: 4, key: 'historical', value: 'Historical' },
+  { id: 5, key: 'romance', value: 'Romance' },
+  { id: 6, key: 'western', value: 'Western' },
+  { id: 7, key: 'mystery', value: 'Mystery' },
+  { id: 8, key: 'science_fiction', value: 'Science fiction' },
+  { id: 9, key: 'fantasy', value: 'Fantasy' },
+  { id: 10, key: 'dystopian', value: 'Dystopian' }
+]
 
 export const BookFilter = ({
   filters,
@@ -31,33 +44,23 @@ export const BookFilter = ({
         value={searchTerm}
         onChange={(e) => setSearchValue(e.target.value)}
       />
-      <CheckboxContainer>
-        <input
-          type="checkbox"
-          id="fiction"
-          name="fiction"
-          value="fiction"
-          checked={filters.genre.fiction}
-          onChange={(e) =>
-            setCheckboxValue("genre", "fiction", e.target.checked)
-          }
-        />
-        <label htmlFor="fiction">Fiction</label>
-      </CheckboxContainer>
-      <CheckboxContainer>
-        <input
-          type="checkbox"
-          id="adventure"
-          name="adventure"
-          value="adventure"
-          checked={filters.genre.adventure}
-          onChange={(e) =>
-            setCheckboxValue("genre", "adventure", e.target.checked)
-          }
-        />
-        <label htmlFor="adventure">Adventure</label>
-      </CheckboxContainer>
-
+      {genres.map((genre) => {
+        return (
+          <CheckboxContainer key={genre.id}>
+            <input
+              type="checkbox"
+              id={genre.value}
+              name={genre.value}
+              value={genre.value}
+              checked={filters.genre[genre.key]}
+              onChange={(e) =>
+                setCheckboxValue("genre", genre.key, e.target.checked)
+              }
+            />
+            <label htmlFor={genre.value}>{genre.value}</label>
+          </CheckboxContainer>
+        );
+      })}
       <h4>Status</h4>
       <CheckboxContainer>
         <input
