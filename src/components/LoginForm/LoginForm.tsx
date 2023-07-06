@@ -1,5 +1,9 @@
 import { useFormik } from 'formik';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch } from 'src/redux/hooks';
+import { LoaderType } from 'src/types/general';
+import { UserCredentials } from 'src/types/user';
 
 import { Button } from '../common/Button/Button';
 import {
@@ -9,25 +13,28 @@ import {
   StyledInput,
   Title,
 } from '../common/common.styles';
+import { Loader } from '../common/Loader';
 import { ForgotPasswordLink, StyledParagraph } from './LoginForm.styles';
 import { loginValidation } from './loginValidation';
 
-export interface LoginValues {
-  username: string;
-  password: string;
-}
-
-const initialValues: LoginValues = {
+const initialValues: UserCredentials = {
   username: '',
   password: '',
 };
 
 export const LoginForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const onSubmit = (props: LoginValues) => {
-    console.log(props);
-    navigate('/main');
+  const onSubmit = (props: UserCredentials) => {
+    setIsLoading(true);
+
+    // Mock API call
+    setTimeout(() => {
+      navigate('/main');
+      setIsLoading(false);
+    }, 2000);
   };
 
   const { touched, errors, handleSubmit, getFieldProps } = useFormik({
@@ -78,12 +85,12 @@ export const LoginForm = () => {
         Forgot password?
       </ForgotPasswordLink>
 
-      <Button
-        type="submit"
-        title="Log in"
-        data-testid="login-button"
-        // disabled={Object.keys(errors).length}
-      />
+{/* how to position Loader into the center? */}
+      {isLoading ? (
+        <Loader type={LoaderType.Spin} />
+      ) : (
+        <Button type="submit" title="Log in" data-testid="login-button" />
+      )}
     </StyledForm>
   );
 };

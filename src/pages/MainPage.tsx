@@ -1,6 +1,7 @@
-import { BookList } from '../components/BookList/BookList';
-import { Header } from '../components/Header/Header';
-import { Pagination } from '../components/Pagination/Pagination';
+import { BookList } from 'src/components/BookList/BookList';
+import { Header } from 'src/components/Header/Header';
+import { Pagination } from 'src/components/Pagination/Pagination';
+
 
 export const MainPage = () => {
   return (

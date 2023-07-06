@@ -1,5 +1,6 @@
 import arrowLeft from 'src/assets/chevronLeft.png';
 import arrowRight from 'src/assets/chevronRight.png';
+
 import { PaginationContainer, StyledPagination } from './Pagination.styles';
 
 export const Pagination = () => {

@@ -18,6 +18,6 @@ export const StyledButton = styled.button`
   }
 
   &:focus {
-    outline: 3px solid ${({theme}) => theme.colors.outline};
+    outline: 3px solid ${({theme}) => theme.colors.gray};
   }
 `;

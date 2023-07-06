@@ -1,4 +1,5 @@
 import { useFormik } from 'formik';
+import { UserRegistrationData } from 'src/types/user';
 
 import { Button } from '../common/Button/Button';
 import {
@@ -11,16 +12,7 @@ import {
 import { ButtonsContainer } from './SignupForm.styles';
 import { signupValidation } from './signupValidation';
 
-export interface RegistrationValues {
-  firstName: string;
-  lastName: string;
-  username: string;
-  email: string;
-  password: string;
-  confirmPass: string;
-}
-
-const initialValues: RegistrationValues = {
+const initialValues: UserRegistrationData = {
   firstName: '',
   lastName: '',
   username: '',
@@ -29,7 +21,7 @@ const initialValues: RegistrationValues = {
   confirmPass: '',
 };
 
-const onSubmit = (values: RegistrationValues) => {
+const onSubmit = (values: UserRegistrationData) => {
   // fetch('http://localhost:5001/api/register', {
   //   method: 'POST',
   //   headers: {
@@ -136,7 +128,9 @@ export const SignupForm = () => {
           {...getFieldProps('password')}
         />
         {touched.password && errors.password ? (
-          <StyledErrorMessage data-testid="password-error">{errors.password}</StyledErrorMessage>
+          <StyledErrorMessage data-testid="password-error">
+            {errors.password}
+          </StyledErrorMessage>
         ) : null}
       </InputContainer>
 
@@ -150,7 +144,9 @@ export const SignupForm = () => {
           {...getFieldProps('confirmPass')}
         />
         {touched.confirmPass && errors.confirmPass ? (
-          <StyledErrorMessage data-testid="confirmPass-error">{errors.confirmPass}</StyledErrorMessage>
+          <StyledErrorMessage data-testid="confirmPass-error">
+            {errors.confirmPass}
+          </StyledErrorMessage>
         ) : null}
       </InputContainer>
 
