@@ -1,0 +1,125 @@
+{
+  "books": [
+    {
+      "id": "1",
+      "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/To_Kill_a_Mockingbird_%28first_edition_cover%29.jpg/1200px-To_Kill_a_Mockingbird_%28first_edition_cover%29.jpg",
+      "title": "To Kill a Mockingbird",
+      "author": "Harper Lee",
+      "genres": ["Fiction", "Classic"],
+      "uploadedBy": "Publisher A",
+      "publicationDate": "11.05.1960",
+      "language": "English",
+      "description": "To Kill a Mockingbird is a classic novel that explores racial injustice and loss of innocence in a small Southern town. It is widely regarded as one of the greatest American novels of all time.",
+      "availability": "Yes"
+    },
+    {
+      "id": "2",
+      "img": "https://www.moscowbooks.ru/image/book/714/orig/i714896.jpg?cu=20210302173553",
+      "title": "1984",
+      "author": "George Orwell",
+      "genres": ["Fiction", "Dystopian"],
+      "uploadedBy": "Publisher B",
+      "publicationDate": "06.08.1949",
+      "language": "English",
+      "description": "1984 is a dystopian novel set in a totalitarian society ruled by the Party. It is a chilling exploration of surveillance, manipulation, and the power of language.",
+      "availability": "Yes"
+    },
+    {
+      "id": "3",
+      "img": "https://www.teachersdiscovery.com/images/uploads/4P2151LM_1.jpg",
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "genres": ["Fiction", "Classic"],
+      "uploadedBy": "Publisher C",
+      "publicationDate": "04.10.1925",
+      "language": "English",
+      "description": "The Great Gatsby is a novel set in the Roaring Twenties, exploring themes of wealth, love, and the American Dream. It is considered a masterpiece of American literature.",
+      "availability": "Yes"
+    },
+    {
+      "id": "4",
+      "img": "https://images.squarespace-cdn.com/content/v1/58c180edff7c50dd0e51a2ad/1596042032039-IN7LLXRVDKGVC854LVHE/9780241375273.jpg",
+      "title": "Pride and Prejudice",
+      "author": "Jane Austen",
+      "genres": ["Fiction", "Romance"],
+      "uploadedBy": "Publisher D",
+      "publicationDate": "01.28.1813",
+      "language": "English",
+      "description": "Pride and Prejudice follows the story of Elizabeth Bennet as she navigates societal expectations, love, and the clash of pride and prejudice. It is one of Jane Austen's most beloved novels.",
+      "availability": "Yes"
+    },
+    {
+      "id": "5",
+      "img": "https://upload.wikimedia.org/wikipedia/commons/8/89/The_Catcher_in_the_Rye_%281951%2C_first_edition_cover%29.jpg",
+      "title": "The Catcher in the Rye",
+      "author": "J.D. Salinger",
+      "genres": ["Fiction", "Coming-of-age"],
+      "uploadedBy": "Publisher E",
+      "publicationDate": "07.16.1951",
+      "language": "English",
+      "description": "The Catcher inthe Rye is a coming-of-age novel that follows the journey of Holden Caulfield, a disillusioned teenager navigating the complexities of adulthood. It has become a classic of American literature and has had a significant influence on modern literature.",
+      "availability": "Yes"
+    },
+    {
+      "id": "6",
+      "img": "https://m.media-amazon.com/images/I/A1E+USP9f8L._AC_UF1000,1000_QL80_.jpg",
+      "title": "The Hobbit",
+      "author": "J.R.R. Tolkien",
+      "genres": ["Fantasy", "Adventure"],
+      "uploadedBy": "Publisher F",
+      "publicationDate": "09.21.1937",
+      "language": "English",
+      "description": "The Hobbit is a fantasy adventure novel that serves as a prequel to The Lord of the Rings. Follow Bilbo Baggins on his unexpected journey to reclaim the dwarves' lost treasure from the fearsome dragon Smaug.",
+      "availability": "Yes"
+    },
+    {
+      "id": "7",
+      "img": "https://www.rif.org/sites/default/files/images/2022/06/14/Book_Covers/sorcerersstone.jpg",
+      "title": "Harry Potter and the Sorcerer's Stone",
+      "author": "J.K. Rowling",
+      "genres": ["Fantasy", "Young Adult"],
+      "uploadedBy": "Publisher G",
+      "publicationDate": "06.26.1997",
+      "language": "English",
+      "description": "Harry Potter and the Sorcerer's Stone is the first book in the Harry Potter series. Join Harry Potter as he discovers the magical world, attends Hogwarts School of Witchcraft and Wizardry, and faces the dark wizard Voldemort.",
+      "availability": "Yes"
+    },
+    {
+      "id": "8",
+      "img": "https://rukminim1.flixcart.com/image/850/1000/kdga1zk0/poster/2/p/i/large-breakingbad04-breaking-bad-poster-breaking-bad-series-original-imafuc2fvfjyackz.jpeg?q=90",
+      "title": "The Alchemist",
+      "author": "Paulo Coelho",
+      "genres": ["Fiction", "Philosophical"],
+      "uploadedBy": "Publisher H",
+      "publicationDate": "1988",
+      "language": "English",
+      "description": "The Alchemist is a philosophical novel that follows the journey of a young Andalusian shepherd named Santiago as he searches for a hidden treasure in the Egyptian desert. It is a story of self-discovery and finding one's destiny.",
+      "availability": "Yes"
+    },
+    {
+      "id": "9",
+      "img": "https://almabooks.com/wp-content/uploads/2016/10/9781847494863.jpg",
+      "title": "Treasure Island",
+      "author": "Robert Louis Stevenson",
+      "genres": ["Adventure", "Pirates"],
+      "uploadedBy": "Publisher I",
+      "publicationDate": "11.14.1883",
+      "language": "English",
+      "description": "Treasure Island is an adventure novel that follows the story of Jim Hawkins, a young boy who embarks on a journey to find Captain Flint's buried treasure. Filled with pirates, treasure maps, and high-sea escapades, this classic tale is a thrilling adventure for all ages.",
+      "availability": "Yes"
+    },
+
+    {
+      "id": "10",
+      "img": "https://m.media-amazon.com/images/I/614SwlZNtJL._AC_UF1000,1000_QL80_.jpg",
+      "title": "The Hunger Games",
+      "author": "Suzanne Collins",
+      "genres": ["Young Adult", "Dystopian"],
+      "uploadedBy": "Publisher J",
+      "publicationDate": "09.14.2008",
+      "language": "English",
+      "description": "The Hunger Games is a dystopian young adult novel set in a post-apocalyptic society. Follow Katniss Everdeen as she fights for survival in the brutal Hunger Games, a televised event where teenagers are forced to compete to the death.",
+      "availability": "Yes"
+    }
+  ]
+}

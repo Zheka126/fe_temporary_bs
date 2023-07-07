@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { Button } from '../common/Button/Button';
 import { InputContainer } from '../common/common.styles';
@@ -21,23 +23,9 @@ import {
   StyledModalContent,
 } from './BookDetails.styles';
 
-interface BookDetailsProps {
-  bookDetails: {
-    img: string;
-    title: string;
-    author: string;
-    genres: string[];
-    description: string;
-    uploadedBy: string;
-    publicationDate: string;
-    language: string;
-    availability: string;
-  };
-}
-
 const mockUser = {
   id: '1',
-  books: ['The Lord of the Rings', 'Othello', 'Little Prince'],
+  books: ['The Great Gatsby', 'The Hobbit', 'The Alchemist'],
 };
 
 const createEditInput = (id: string, label: string) => (
@@ -74,17 +62,54 @@ const modalContent = (actionType: string) => {
   );
 };
 
-export const BookDetails = ({ bookDetails }: BookDetailsProps) => {
+interface BookDetailsType {
+  img?: string;
+  title?: string;
+  author?: string;
+  genres?: string[];
+  uploadedBy?: string;
+  publicationDate?: string;
+  language?: string;
+  description?: string;
+  availability?: string;
+}
+
+export const BookDetails = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const [bookDetails, setBookDetails] = useState<BookDetailsType>({});
+
+  useEffect(() => {
+    const fetchBookDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/books/${id}`);
+        console.log('response: ', response);
+        if (response.ok) {
+          const bookData = await response.json();
+          console.log('bookData: ', bookData);
+          setBookDetails(bookData);
+        } else {
+          console.log('Error:', response.status);
+        }
+      } catch (error: any) {
+        console.log('Error:', error.message);
+      }
+    };
+
+    fetchBookDetails();
+  }, [id]);
+
   const {
-    img,
-    title,
-    author,
-    genres,
-    uploadedBy,
-    publicationDate,
-    language,
-    description,
-    availability,
+    img = '',
+    title = '',
+    author = '',
+    genres = [],
+    uploadedBy = '',
+    publicationDate = '',
+    language = '',
+    description = '',
+    availability = '',
   } = bookDetails;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -108,9 +133,46 @@ export const BookDetails = ({ bookDetails }: BookDetailsProps) => {
     setModal({ actionType: 'edit', modalTitle: `Edit book "${title}"` });
   };
 
-  const handleConfirm = () => {
+  const deleteBook = async () => {
+    try {
+      const response = await axios.delete(`http://localhost:3000/books/${id}`);
+      if (response.status === 200) {
+        // Deletion successful
+        navigate('/main'); // Navigate to the "main" page
+      } else {
+        // Handle unsuccessful deletion
+        console.log('Deletion failed:', response.status);
+      }
+    } catch (error: any) {
+      // Error occurred during the deletion request, handle the error condition
+      console.log('Error:', error.message);
+    }
+  };
+
+  const updateBook = async () => {
+    let updatedBook;
+    try {
+      const response = await axios.put(`http://localhost:3000/books/${id}`, updatedBook);
+      if (response.status === 200) {
+        // Update successful
+      } else {
+        // Handle unsuccessful update
+        console.log('Update failed:', response.status);
+      }
+    } catch (error: any) {
+      // Error occurred during the update request, handle the error condition
+      console.log('Error:', error.message);
+    }
+  };
+
+  const handleConfirm = async () => {
+    if (modal.actionType === 'delete') {
+      deleteBook();
+    } else {
+      updateBook();
+    }
+
     setIsModalOpen(false);
-    // send request to server about about deletion
   };
 
   return (
