@@ -1,7 +1,7 @@
 import { FilterValues } from "src/types/FilterValues";
 
 import { Rating } from "../Rating/Rating";
-import { CheckboxContainer, SearchInput } from "./BookFilter.styles";
+import { CheckboxContainer, GenresContainer, SearchInput } from "./BookFilter.styles";
 
 interface BookFilterProps {
   filters: FilterValues;
@@ -44,23 +44,25 @@ export const BookFilter = ({
         value={searchTerm}
         onChange={(e) => setSearchValue(e.target.value)}
       />
-      {genres.map((genre) => {
-        return (
-          <CheckboxContainer key={genre.id}>
-            <input
-              type="checkbox"
-              id={genre.value}
-              name={genre.value}
-              value={genre.value}
-              checked={filters.genre[genre.key]}
-              onChange={(e) =>
-                setCheckboxValue("genre", genre.key, e.target.checked)
-              }
-            />
-            <label htmlFor={genre.value}>{genre.value}</label>
-          </CheckboxContainer>
-        );
-      })}
+      <GenresContainer>
+        {genres.map((genre) => {
+          return (
+            <CheckboxContainer key={genre.id}>
+              <input
+                type="checkbox"
+                id={genre.value}
+                name={genre.value}
+                value={genre.value}
+                checked={filters.genre[genre.key]}
+                onChange={(e) =>
+                  setCheckboxValue("genre", genre.key, e.target.checked)
+                }
+              />
+              <label htmlFor={genre.value}>{genre.value}</label>
+            </CheckboxContainer>
+          );
+        })}
+      </GenresContainer>
       <h4>Status</h4>
       <CheckboxContainer>
         <input

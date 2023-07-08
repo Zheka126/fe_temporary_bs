@@ -1,1 +1,1 @@
-export const baseURL = 'http://localhost:5001/api/';
+export const baseURL = 'http://backend.book-sharing.app.mddinternship.com/api';

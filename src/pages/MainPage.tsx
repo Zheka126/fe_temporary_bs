@@ -80,11 +80,6 @@ export const MainPage = () => {
   useEffect(() => {
     (async () => {
       try {
-        // const { search, genre, status, selectedRating, currentPage } = filters;
-        // const selectedGenres = Object.keys(genre).filter((key) => genre[key]);
-        // const selectedstatus = Object.keys(status).filter((key) => status[key]);
-
-        // const getBooksParams = { search, selectedGenres, selectedstatus, selectedRating, currentPage }
         await dispatch(getBooks(filters)).unwrap();
       } catch (err: any) {
         console.log(err.message);

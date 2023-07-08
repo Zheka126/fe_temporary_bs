@@ -13,17 +13,15 @@ export const API = {
   // MOCK REQUEST
   getBooks: (filters: FilterValues) => {
     const { search, genre, status, selectedRating, currentPage } = filters;
-    const selectedGenres = Object.keys(genre).filter((key) => genre[key]);
-    const selectedstatus = Object.keys(status).filter((key) => status[key]);
+    // const selectedGenres = Object.keys(genre).filter((key) => genre[key]);
+    const Availability = Object.keys(status).filter((key) => status[key]);
 
-    return axios.get<BookItem[]>(`http://localhost:3000/books`, {
+    return instance.get<BookItem[]>('/books', {
       params: {
-        _limit: 12,
-        _page: currentPage,
-        ...(search ? { title: search } : {}),
-        ...(selectedGenres ? { genres: selectedGenres } : {}),
-        ...(selectedstatus ? { availability: selectedstatus } : {}),
-        ...(selectedRating ? { rating: selectedRating } : {}),
+        // Pagination.PageSize=
+        ...(currentPage !== 1 ? { 'Pagination.Page': currentPage } : {}),
+        ...(status ? { Availability } : {}),
+        ...(selectedRating ? { Rating: selectedRating } : {}),
       },
       paramsSerializer: { indexes: null },
     });

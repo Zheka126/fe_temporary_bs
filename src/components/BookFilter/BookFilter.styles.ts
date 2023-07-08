@@ -23,3 +23,22 @@ export const SearchInput = styled.input`
     color: white;
   }
 `;
+
+export const GenresContainer = styled.div`
+  height: 100px;
+  width: fit-content;
+  padding-right: 20px;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 10px;
+    background-color: ${({ theme }) => theme.colors.lightGray};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${({ theme }) => theme.colors.gray};
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+` 
