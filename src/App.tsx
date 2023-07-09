@@ -13,14 +13,12 @@ interface RouteType {
 
 export const App = () => {
   const dispatch = useAppDispatch();
-
   const isAuth = useAppSelector(isAuthSelector);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       const user = getUserTokenData(token);
-
       dispatch(setUser(user));
     }
   }, [dispatch]);

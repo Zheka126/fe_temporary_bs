@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from 'src/redux/hooks';
 import { loginThunk, setUser } from 'src/redux/slices/authSlice';
-import { LoginDTO } from 'src/types/user';
+import { LoginValues } from 'src/types/user';
 import { getUserTokenData } from 'src/utils';
 
 import { Button } from '../common/Button/Button';
@@ -18,7 +18,7 @@ import { Loader } from '../common/Loader/Loader';
 import { ForgotPasswordLink, StyledParagraph } from './LoginForm.styles';
 import { loginValidation } from './loginValidation';
 
-const initialValues: LoginDTO = {
+const initialValues: LoginValues = {
   username: '',
   password: '',
 };
@@ -29,10 +29,11 @@ export const LoginForm = () => {
   const [submitError, setSubmitError] = useState('');
 
   const onSubmit = async (
-    values: LoginDTO,
-    { setSubmitting }: FormikHelpers<LoginDTO>
+    values: LoginValues,
+    { setSubmitting }: FormikHelpers<LoginValues>
   ) => {
     try {
+      setSubmitError('');
       setSubmitting(true);
       const { status, data: token } = await dispatch(
         loginThunk(values)

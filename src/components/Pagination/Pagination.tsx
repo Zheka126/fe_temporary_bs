@@ -6,22 +6,22 @@ import { PaginationContainer, StyledPagination } from './Pagination.styles';
 interface PaginationProps {
   currentPage: number;
   setCurrentPage: (page: number) => void;
+  pageCount: number; 
 }
 
 export const Pagination = ({
   currentPage,
   setCurrentPage,
+  pageCount
 }: PaginationProps) => {
-  // make it controlable
   const handlePageChange = ({ selected }: { selected: number }) => {
-    // sent selected page to backend
     setCurrentPage(selected + 1);
   };
 
   return (
     <PaginationContainer data-testid="pagination-container">
       <StyledPagination
-        pageCount={20}
+        pageCount={pageCount}
         forcePage={currentPage - 1}
         marginPagesDisplayed={0}
         pageRangeDisplayed={5}
@@ -31,14 +31,14 @@ export const Pagination = ({
         previousLabel={
           <img
             src={arrowLeft}
-            alt="Previous"
+            alt="Go to the previous page"
             data-testid="previous-pagination-button"
           />
         }
         nextLabel={
           <img
             src={arrowRight}
-            alt="Next"
+            alt="Go to the next page"
             data-testid="next-pagination-button"
           />
         }

@@ -10,3 +10,7 @@ export const getUserTokenData = (token: string) => {
   }: UserTokenData = jwt_decode(token);
   return { userName, role, userId };
 };
+
+export const getTotalPages = (totalItems: number, itemsPerPage: number) => {
+  return Math.ceil(totalItems / itemsPerPage);
+};

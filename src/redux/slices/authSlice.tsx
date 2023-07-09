@@ -1,13 +1,13 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { login } from 'src/api/requests';
-import { LoginDTO } from 'src/types/user';
+import { LoginValues } from 'src/types/user';
 
 import { RootState } from '../store';
 
 export const loginThunk = createAsyncThunk(
   'loginThunk',
-  async (values: LoginDTO) => {
+  async (values: LoginValues) => {
     try {
       return login(values);
     } catch (err: any) {

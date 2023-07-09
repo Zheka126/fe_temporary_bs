@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { StatusCodes } from 'src/api/constants';
 import { register } from 'src/api/requests';
-import { UserRegistrationDTO } from 'src/types/user';
+import { UserRegistrationData } from 'src/types/user';
 
 import { Button } from '../common/Button/Button';
 import {
@@ -17,7 +17,7 @@ import { Loader } from '../common/Loader/Loader';
 import { ButtonsContainer } from './SignupForm.styles';
 import { signupValidation } from './signupValidation';
 
-const initialValues: UserRegistrationDTO = {
+const initialValues: UserRegistrationData = {
   firstName: '',
   lastName: '',
   username: '',
@@ -31,8 +31,8 @@ export const SignupForm = () => {
   const [submitError, setSubmitError] = useState('');
 
   const onSubmit = async (
-    values: UserRegistrationDTO,
-    { setSubmitting, resetForm }: FormikHelpers<UserRegistrationDTO>
+    values: UserRegistrationData,
+    { setSubmitting, resetForm }: FormikHelpers<UserRegistrationData>
   ) => {
     try {
       setSubmitting(true);

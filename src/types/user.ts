@@ -1,9 +1,9 @@
-export interface LoginDTO {
+export interface LoginValues {
   username: string;
   password: string;
 }
 
-export interface UserRegistrationDTO {
+export interface UserRegistrationData {
   firstName: string;
   lastName: string;
   username: string;
@@ -17,4 +17,3 @@ export interface UserTokenData {
   role: string;
   nameId: string;
 }
- 
