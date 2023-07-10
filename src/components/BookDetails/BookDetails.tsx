@@ -1,6 +1,6 @@
 import axios from 'axios';
+import { Modal } from 'components/Modal/Modal';
 import { useEffect, useState } from 'react';
-import Modal from 'react-modal';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Button } from '../common/Button/Button';
@@ -13,13 +13,8 @@ import {
   BookDetailsContainer,
   BookDetailsSection,
   BookGenre,
-  CancelBtn,
-  ConfirmBtn,
   Details,
   EditInput,
-  ModalButtonsContainer,
-  modalStyles,
-  ModalTitle,
   StyledModalContent,
 } from './BookDetails.styles';
 
@@ -152,7 +147,10 @@ export const BookDetails = () => {
   const updateBook = async () => {
     let updatedBook;
     try {
-      const response = await axios.put(`http://localhost:3000/books/${id}`, updatedBook);
+      const response = await axios.put(
+        `http://localhost:3000/books/${id}`,
+        updatedBook
+      );
       if (response.status === 200) {
         // Update successful
       } else {
@@ -204,17 +202,13 @@ export const BookDetails = () => {
         )}
       </BookDetailsSection>
       <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        style={modalStyles}
+        isModalOpen={isModalOpen}
+        onCloseModal={closeModal}
         contentLabel={modal.modalTitle}
+        title={modal.modalTitle}
+        onConfirm={handleConfirm}
       >
-        <ModalTitle>{modal.modalTitle}</ModalTitle>
         {modalContent(modal.actionType)}
-        <ModalButtonsContainer>
-          <ConfirmBtn title="Confirm" onClick={handleConfirm} />
-          <CancelBtn title="Cancel" onClick={closeModal} />
-        </ModalButtonsContainer>
       </Modal>
     </BookDetailsContainer>
   );
