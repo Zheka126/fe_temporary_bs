@@ -1,6 +1,8 @@
+import 'react-toastify/dist/ReactToastify.css';
+
 import { FormikHelpers, useFormik } from 'formik';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
 import { StatusCodes } from 'src/api/constants';
 import { register } from 'src/api/requests';
 import { UserRegistrationData } from 'src/types/user';
@@ -28,7 +30,6 @@ const initialValues: UserRegistrationData = {
 
 export const SignupForm = () => {
   const navigate = useNavigate();
-  const [submitError, setSubmitError] = useState('');
 
   const onSubmit = async (
     values: UserRegistrationData,
@@ -38,11 +39,26 @@ export const SignupForm = () => {
       setSubmitting(true);
       const { status } = await register(values);
       if (status === StatusCodes.CREATED) {
+        toast.success('New account has been successfully created!');
         resetForm();
         navigate('/login');
       }
     } catch (error: any) {
-      setSubmitError(error.response.data);
+      switch (error.response.status) {
+        case StatusCodes.BAD_REQUEST:
+          toast.error(
+            'Please check your data and try again.'
+          );
+          break;
+        case StatusCodes.INTERNAL_SERVER_ERROR:
+          toast.error(
+            'Your registration attempt has failed due to an internal server error. Please try again later.'
+          );
+          break;
+        default:
+          toast.error(error.message);
+          break;
+      }
     } finally {
       setSubmitting(false);
     }
@@ -154,19 +170,15 @@ export const SignupForm = () => {
         )}
       </InputContainer>
 
-      <InputContainer>
-        {submitError && (
-          <StyledErrorMessage data-testid="register-error">
-            {submitError}
-          </StyledErrorMessage>
-        )}
-      </InputContainer>
-
       {isSubmitting ? (
         <Loader size="mini" />
       ) : (
         <ButtonsContainer data-testid="buttons-container">
-          <Button type="submit" title="Sign up" data-testid="signup-button" />
+          <Button
+            type="submit"
+            title="Sign up"
+            data-testid="signup-button"
+          />
           <Button
             type="button"
             title="Log in"
@@ -176,6 +188,7 @@ export const SignupForm = () => {
         </ButtonsContainer>
       )}
       <StyledErrorMessage />
+      <ToastContainer autoClose={3000} />
     </StyledForm>
   );
 };

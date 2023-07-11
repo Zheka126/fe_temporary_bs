@@ -9,7 +9,7 @@ export const loginThunk = createAsyncThunk(
   'loginThunk',
   async (values: LoginValues) => {
     try {
-      return login(values);
+      return await login(values);
     } catch (err: any) {
       throw Error(err.response.data);
     }

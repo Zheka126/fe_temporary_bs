@@ -1,6 +1,9 @@
+import 'react-toastify/dist/ReactToastify.css';
+
 import { FormikHelpers, useFormik } from 'formik';
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { StatusCodes } from 'src/api/constants';
 import { useAppDispatch } from 'src/redux/hooks';
 import { loginThunk, setUser } from 'src/redux/slices/authSlice';
 import { LoginValues } from 'src/types/user';
@@ -26,29 +29,40 @@ const initialValues: LoginValues = {
 export const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [submitError, setSubmitError] = useState('');
 
   const onSubmit = async (
     values: LoginValues,
-    { setSubmitting }: FormikHelpers<LoginValues>
+    { setSubmitting, resetForm }: FormikHelpers<LoginValues>
   ) => {
     try {
-      setSubmitError('');
       setSubmitting(true);
       const { status, data: token } = await dispatch(
         loginThunk(values)
       ).unwrap();
 
-      if (status === 200 && token) {
+      if (status === StatusCodes.SUCCESS && token) {
+        toast.success('Login is successful!');
+        resetForm();
         localStorage.setItem('token', token);
 
         const user = getUserTokenData(token);
-
         dispatch(setUser(user));
         navigate('/main');
       }
     } catch (error: any) {
-      setSubmitError(error.message);
+      switch (error.code) {
+        case 'ERR_BAD_REQUEST':
+          toast.error('Please check your username and password and try again.');
+          break;
+        case 'ERR_BAD_RESPONSE':
+          toast.error(
+            'Your login attempt has failed due to an internal server error. Please try again later.'
+          );
+          break;
+        default:
+          toast.error(error.message);
+          break;
+      }
     } finally {
       setSubmitting(false);
     }
@@ -98,12 +112,6 @@ export const LoginForm = () => {
           </StyledErrorMessage>
         )}
       </InputContainer>
-
-      {submitError && (
-        <InputContainer>
-          <StyledErrorMessage>{submitError}</StyledErrorMessage>
-        </InputContainer>
-      )}
 
       <ForgotPasswordLink to="" data-testid="forgot-password-link">
         Forgot password?

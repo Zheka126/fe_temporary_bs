@@ -5,6 +5,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import { ThemeProvider } from 'styled-components';
 
 import { App } from './App';
@@ -19,6 +20,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <App />
         </ThemeProvider>
       </BrowserRouter>
+      <ToastContainer autoClose={3000} pauseOnFocusLoss={false} />
     </Provider>
   </React.StrictMode>
 );
