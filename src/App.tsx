@@ -1,38 +1,38 @@
-import { Provider } from 'react-redux';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
+import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
 
-import { store } from './redux/store';
+import { useAppDispatch, useAppSelector } from './redux/hooks';
+import { isAuthSelector, setUser } from './redux/slices/authSlice';
 import { openRoutes, privateRoutes } from './routes';
-import { theme } from './theme';
+import { getUserTokenData } from './utils';
+
+interface RouteType {
+  component: () => JSX.Element;
+  path: string;
+}
 
 export const App = () => {
+  const dispatch = useAppDispatch();
+  const isAuth = useAppSelector(isAuthSelector);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const user = getUserTokenData(token);
+      dispatch(setUser(user));
+    }
+  }, [dispatch]);
+
+  const renderRoutes = (routes: RouteType[]) => {
+    return routes.map(({ path, component: Component }) => (
+      <Route key={path} path={path} element={<Component />} />
+    ));
+  };
+
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <Routes>
-            {openRoutes.map((route) => {
-              return (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={<route.component />}
-                />
-              );
-            })}
-            {privateRoutes.map((route) => {
-              return (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={<route.component />}
-                />
-              );
-            })}
-          </Routes>
-        </ThemeProvider>
-      </BrowserRouter>
-    </Provider>
+    <Routes>
+      {renderRoutes(openRoutes)}
+      {isAuth ? renderRoutes(privateRoutes) : null}
+    </Routes>
   );
 };

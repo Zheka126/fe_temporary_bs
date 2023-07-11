@@ -8,9 +8,4 @@ export const openRoutes = [
   { component: MainPage, path: '/main' },
 ];
 
-export const privateRoutes = [
-  {
-    component: MainPage,
-    path: '/main',
-  },
-];
+export const privateRoutes = [{ component: MainPage, path: '/main' }];

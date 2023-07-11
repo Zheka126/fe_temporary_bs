@@ -1,13 +1,20 @@
-import { BookList } from '../components/BookList/BookList';
-import { Header } from '../components/Header/Header';
-import { Pagination } from '../components/Pagination/Pagination';
+import { useState } from 'react';
+import { BookList, Header, Pagination } from 'src/components';
+import { getTotalPages } from 'src/utils';
 
 export const MainPage = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageCount = getTotalPages(20, 12);
+
   return (
     <>
       <Header />
       <BookList />
-      <Pagination />
+      <Pagination
+        pageCount={pageCount}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
     </>
   );
 };
