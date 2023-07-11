@@ -65,12 +65,12 @@ const books = [
 
 export const BookList = () => {
   return (
-    <BookListContainer>
+    <BookListContainer data-testid="book-list-container">
       {books.map((book) => {
         return (
-          <BookItem to="/#" key={book.id}>
-            <img src={book.img} alt="book title" />
-            <span>{book.title}</span>
+          <BookItem to="/#" key={book.id} data-testid={`book-item-${book.id}`}>
+            <img src={book.img} alt="book title" data-testid={`book-image-${book.id}`} />
+            <span data-testid={`book-title-${book.id}`}>{book.title}</span>
           </BookItem>
         );
       })}

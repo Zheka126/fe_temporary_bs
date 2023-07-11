@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import {
   BtnsContainer,
   Dropdown,
@@ -30,33 +31,45 @@ export const Header = () => {
   }, []);
 
   return (
-    <StyledHeader ref={headerRef}>
-      <Link to="/Catalog">
+    <StyledHeader ref={headerRef} data-testid="header">
+      <Link to="/Catalog" data-testid="logo-link">
         <img src="src/assets/darkLogo.png" alt="Endava Logo" />
       </Link>
-      <BtnsContainer>
+      <BtnsContainer data-testid="buttons-container">
         <NavBtn>
-          <Link to="/Catalog">Catalog</Link>
+          <Link to="/Catalog" data-testid="catalog-link">
+            Catalog
+          </Link>
         </NavBtn>
         <NavBtnWithDropdown
           className="active"
           onClick={toggleDropdown}
           onBlur={closeDropdown}
           isDropdownShowed={isDropdownShowed}
+          data-testid="dropdown-button"
         >
           {/* Should be displayed real username of current user */}
           Username
           <img src="src\assets\arrow-down.svg" alt="Drop down" />
-          <Dropdown isDropdownShowed={isDropdownShowed}>
+          <Dropdown
+            isDropdownShowed={isDropdownShowed}
+            data-testid="dropdown-menu"
+          >
             <li>
-              <Link to="/Profile">My profile</Link>
+              <Link to="/Profile" data-testid="profile-link">
+                My profile
+              </Link>
             </li>
             {/* should display admin only if user has admin rights */}
             <li>
-              <Link to="/Admin">Admin</Link>
+              <Link to="/Admin" data-testid="admin-link">
+                Admin
+              </Link>
             </li>
             <li>
-              <Link to="/SignOut">Sign out</Link>
+              <Link to="/SignOut" data-testid="signout-link">
+                Sign out
+              </Link>
             </li>
           </Dropdown>
         </NavBtnWithDropdown>
