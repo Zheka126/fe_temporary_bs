@@ -1,4 +1,11 @@
-import { useFormik } from 'formik';
+import 'react-toastify/dist/ReactToastify.css';
+
+import { FormikHelpers, useFormik } from 'formik';
+import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import { StatusCodes } from 'src/api/constants';
+import { register } from 'src/api/requests';
+import { UserRegistrationData } from 'src/types/user';
 
 import { Button } from '../common/Button/Button';
 import {
@@ -8,19 +15,11 @@ import {
   StyledInput,
   Title,
 } from '../common/common.styles';
+import { Loader } from '../common/Loader/Loader';
 import { ButtonsContainer } from './SignupForm.styles';
 import { signupValidation } from './signupValidation';
 
-export interface RegistrationValues {
-  firstName: string;
-  lastName: string;
-  username: string;
-  email: string;
-  password: string;
-  confirmPass: string;
-}
-
-const initialValues: RegistrationValues = {
+const initialValues: UserRegistrationData = {
   firstName: '',
   lastName: '',
   username: '',
@@ -29,35 +28,48 @@ const initialValues: RegistrationValues = {
   confirmPass: '',
 };
 
-const onSubmit = (values: RegistrationValues) => {
-  // fetch('http://localhost:5001/api/register', {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //   },
-  //   body: JSON.stringify(values),
-  // })
-  //   .then((response) => {
-  //     if (response.ok) {
-  //       console.log('Регистрация прошла успешно!');
-  //       // Дополнительный код, который нужно выполнить при успешной регистрации
-  //     } else {
-  //       console.error('Ошибка при регистрации:', response.statusText);
-  //       // Дополнительный код для обработки ошибки регистрации
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.error('Ошибка при выполнении запроса:', error);
-  //     // Дополнительный код для обработки ошибки выполнения запроса
-  //   });
-};
-
 export const SignupForm = () => {
-  const { errors, touched, handleSubmit, getFieldProps } = useFormik({
-    initialValues,
-    validationSchema: signupValidation,
-    onSubmit,
-  });
+  const navigate = useNavigate();
+
+  const onSubmit = async (
+    values: UserRegistrationData,
+    { setSubmitting, resetForm }: FormikHelpers<UserRegistrationData>
+  ) => {
+    try {
+      setSubmitting(true);
+      const { status } = await register(values);
+      if (status === StatusCodes.CREATED) {
+        toast.success('New account has been successfully created!');
+        resetForm();
+        navigate('/login');
+      }
+    } catch (error: any) {
+      switch (error.response.status) {
+        case StatusCodes.BAD_REQUEST:
+          toast.error(
+            'Please check your data and try again.'
+          );
+          break;
+        case StatusCodes.INTERNAL_SERVER_ERROR:
+          toast.error(
+            'Your registration attempt has failed due to an internal server error. Please try again later.'
+          );
+          break;
+        default:
+          toast.error(error.message);
+          break;
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const { errors, touched, handleSubmit, getFieldProps, isSubmitting } =
+    useFormik({
+      initialValues,
+      validationSchema: signupValidation,
+      onSubmit,
+    });
 
   return (
     <StyledForm onSubmit={handleSubmit} data-testid="signup-form">
@@ -71,11 +83,11 @@ export const SignupForm = () => {
           isError={Boolean(touched.firstName && errors.firstName)}
           {...getFieldProps('firstName')}
         />
-        {touched.firstName && errors.firstName ? (
+        {touched.firstName && errors.firstName && (
           <StyledErrorMessage data-testid="firstName-error">
             {errors.firstName}
           </StyledErrorMessage>
-        ) : null}
+        )}
       </InputContainer>
 
       <InputContainer data-testid="lastName-input-container">
@@ -87,11 +99,11 @@ export const SignupForm = () => {
           isError={Boolean(touched.lastName && errors.lastName)}
           {...getFieldProps('lastName')}
         />
-        {touched.lastName && errors.lastName ? (
+        {touched.lastName && errors.lastName && (
           <StyledErrorMessage data-testid="lastName-error">
             {errors.lastName}
           </StyledErrorMessage>
-        ) : null}
+        )}
       </InputContainer>
 
       <InputContainer data-testid="username-input-container">
@@ -103,11 +115,11 @@ export const SignupForm = () => {
           isError={Boolean(touched.username && errors.username)}
           {...getFieldProps('username')}
         />
-        {touched.username && errors.username ? (
+        {touched.username && errors.username && (
           <StyledErrorMessage data-testid="username-error">
             {errors.username}
           </StyledErrorMessage>
-        ) : null}
+        )}
       </InputContainer>
 
       <InputContainer data-testid="email-input-container">
@@ -119,11 +131,11 @@ export const SignupForm = () => {
           isError={Boolean(touched.email && errors.email)}
           {...getFieldProps('email')}
         />
-        {touched.email && errors.email ? (
+        {touched.email && errors.email && (
           <StyledErrorMessage data-testid="email-error">
             {errors.email}
           </StyledErrorMessage>
-        ) : null}
+        )}
       </InputContainer>
 
       <InputContainer data-testid="password-input-container">
@@ -135,9 +147,11 @@ export const SignupForm = () => {
           isError={Boolean(touched.password && errors.password)}
           {...getFieldProps('password')}
         />
-        {touched.password && errors.password ? (
-          <StyledErrorMessage data-testid="password-error">{errors.password}</StyledErrorMessage>
-        ) : null}
+        {touched.password && errors.password && (
+          <StyledErrorMessage data-testid="password-error">
+            {errors.password}
+          </StyledErrorMessage>
+        )}
       </InputContainer>
 
       <InputContainer data-testid="confirmPass-input-container">
@@ -149,15 +163,32 @@ export const SignupForm = () => {
           isError={Boolean(touched.confirmPass && errors.confirmPass)}
           {...getFieldProps('confirmPass')}
         />
-        {touched.confirmPass && errors.confirmPass ? (
-          <StyledErrorMessage data-testid="confirmPass-error">{errors.confirmPass}</StyledErrorMessage>
-        ) : null}
+        {touched.confirmPass && errors.confirmPass && (
+          <StyledErrorMessage data-testid="confirmPass-error">
+            {errors.confirmPass}
+          </StyledErrorMessage>
+        )}
       </InputContainer>
 
-      <ButtonsContainer data-testid="buttons-container">
-        <Button type="submit" title="Sign up" data-testid="signup-button" />
-        <Button type="submit" title="Log in" data-testid="login-button" />
-      </ButtonsContainer>
+      {isSubmitting ? (
+        <Loader size="mini" />
+      ) : (
+        <ButtonsContainer data-testid="buttons-container">
+          <Button
+            type="submit"
+            title="Sign up"
+            data-testid="signup-button"
+          />
+          <Button
+            type="button"
+            title="Log in"
+            data-testid="login-button"
+            onClick={() => navigate('/login')}
+          />
+        </ButtonsContainer>
+      )}
+      <StyledErrorMessage />
+      <ToastContainer autoClose={3000} />
     </StyledForm>
   );
 };
