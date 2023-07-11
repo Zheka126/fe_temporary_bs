@@ -16,28 +16,26 @@ export const Header = () => {
   const closeDropdown = () => setIsDropdownShowed(false);
   const toggleDropdown = () => setIsDropdownShowed((prev) => !prev);
 
-  const handleEscapeKey = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') closeDropdown();
-  };
-
   useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeDropdown();
+    };
+
     const container = headerRef.current;
-    if (container) {
-      container.addEventListener('keydown', handleEscapeKey);
+      container?.addEventListener('keydown', handleEscapeKey);
       return () => {
-        container.removeEventListener('keydown', handleEscapeKey);
+        container?.removeEventListener('keydown', handleEscapeKey);
       };
-    }
   }, []);
 
   return (
     <StyledHeader ref={headerRef} data-testid="header">
-      <Link to="/Catalog" data-testid="logo-link">
+      <Link to="/main" data-testid="logo-link">
         <img src="src/assets/darkLogo.png" alt="Endava Logo" />
       </Link>
       <BtnsContainer data-testid="buttons-container">
         <NavBtn>
-          <Link to="/Catalog" data-testid="catalog-link">
+          <Link to="/main" data-testid="catalog-link">
             Catalog
           </Link>
         </NavBtn>

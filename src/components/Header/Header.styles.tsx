@@ -24,8 +24,7 @@ export const BtnsContainer = styled.div``;
 export const NavBtn = styled.button`
   position: relative;
   margin: 0px 15px;
-  padding: 15px;
-  padding-right: 20px;
+  margin-right: 20px;
   font-size: 14px;
   font-weight: 500;
   color: white;
@@ -38,6 +37,7 @@ export const NavBtn = styled.button`
   cursor: pointer;
 
   a {
+    padding: 15px;
     color: white;
     text-decoration: none;
   }
