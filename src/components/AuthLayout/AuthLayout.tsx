@@ -14,15 +14,15 @@ export interface AuthLayoutProps {
 
 export const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (
-    <Container>
-      <LeftSection>
-        <LogoImg src="src/assets/logo.png" alt="Endava Logo" />
-        <CenterText>
+    <Container data-testid="auth-container">
+      <LeftSection data-testid="left-section">
+        <LogoImg src="src/assets/logo.png" alt="Endava Logo" data-testid="logo-img" />
+        <CenterText data-testid="center-text">
           <p>Book </p>
           <p>Sharing</p>
         </CenterText>
       </LeftSection>
-      <RightSection>{children}</RightSection>
+      <RightSection data-testid="right-section">{children}</RightSection>
     </Container>
   );
 };
