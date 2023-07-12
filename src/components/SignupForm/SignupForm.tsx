@@ -4,7 +4,7 @@ import { FormikHelpers, useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { StatusCodes } from 'src/api/constants';
-import { register } from 'src/api/requests';
+import { register } from 'src/api/requests/auth';
 import { UserRegistrationData } from 'src/types/user';
 
 import { Button } from '../common/Button/Button';

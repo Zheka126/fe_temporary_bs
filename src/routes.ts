@@ -10,5 +10,5 @@ export const openRoutes = [
 
 export const privateRoutes = [
   { component: MainPage, path: '/main' },
-  { component: BookDetailsPage, path: '/book_details/:id' },
+  { component: BookDetailsPage, path: '/books/:id' },
 ];

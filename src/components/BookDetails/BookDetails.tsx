@@ -1,11 +1,14 @@
-import axios from 'axios';
-import { Modal } from 'components/Modal/Modal';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { StatusCodes } from 'src/api/constants';
+import { deleteBook, getBookById, updateBook } from 'src/api/requests/book';
+import { BookType } from 'src/types/book';
 
 import { Button } from '../common/Button/Button';
 import { InputContainer } from '../common/common.styles';
 import { StyledParagraph } from '../LoginForm/LoginForm.styles';
+import { Modal } from '../Modal/Modal';
 import { ButtonsContainer } from '../SignupForm/SignupForm.styles';
 import { BookDetail } from './BookDetail';
 import {
@@ -57,35 +60,33 @@ const modalContent = (actionType: string) => {
   );
 };
 
-interface BookDetailsType {
-  img?: string;
-  title?: string;
-  author?: string;
-  genres?: string[];
-  uploadedBy?: string;
-  publicationDate?: string;
-  language?: string;
-  description?: string;
-  availability?: string;
-}
-
 export const BookDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [bookDetails, setBookDetails] = useState<BookDetailsType>({});
+  const initialValues = {
+    img: '',
+    title: '',
+    author: '',
+    genres: [],
+    uploadedBy: '',
+    publicationDate: '',
+    language: '',
+    description: '',
+    availability: '',
+  };
+
+  const [bookDetails, setBookDetails] = useState<BookType>(initialValues);
 
   useEffect(() => {
     const fetchBookDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/books/${id}`);
-        console.log('response: ', response);
-        if (response.ok) {
-          const bookData = await response.json();
-          console.log('bookData: ', bookData);
-          setBookDetails(bookData);
-        } else {
-          console.log('Error:', response.status);
+        const { status, data } = await getBookById(id);
+
+        if (status === StatusCodes.SUCCESS) {
+          // const bookData = await response.json();
+          console.log('data: ', data);
+          // setBookDetails(bookData);
         }
       } catch (error: any) {
         console.log('Error:', error.message);
@@ -94,18 +95,6 @@ export const BookDetails = () => {
 
     fetchBookDetails();
   }, [id]);
-
-  const {
-    img = '',
-    title = '',
-    author = '',
-    genres = [],
-    uploadedBy = '',
-    publicationDate = '',
-    language = '',
-    description = '',
-    availability = '',
-  } = bookDetails;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modal, setModal] = useState({ modalTitle: '', actionType: '' });
@@ -125,51 +114,45 @@ export const BookDetails = () => {
 
   const openEditModal = () => {
     setIsModalOpen(true);
-    setModal({ actionType: 'edit', modalTitle: `Edit book "${title}"` });
+    setModal({
+      actionType: 'edit',
+      modalTitle: `Edit book "${bookDetails.title}"`,
+    });
   };
 
-  const deleteBook = async () => {
+  const fethcDeletingBook = async () => {
     try {
-      const response = await axios.delete(`http://localhost:3000/books/${id}`);
-      if (response.status === 200) {
-        // Deletion successful
-        navigate('/main'); // Navigate to the "main" page
-      } else {
-        // Handle unsuccessful deletion
-        console.log('Deletion failed:', response.status);
+      const { status } = await deleteBook(id);
+      if (status === StatusCodes.SUCCESS) {
+        toast.success('The book has been successfully deleted!');
+        navigate('/main');
       }
     } catch (error: any) {
-      // Error occurred during the deletion request, handle the error condition
+      toast.error('Something went wrong. Please try again later.');
       console.log('Error:', error.message);
     }
   };
 
-  const updateBook = async () => {
-    let updatedBook;
+  const fetchUpdatingBook = async () => {
     try {
-      const response = await axios.put(
-        `http://localhost:3000/books/${id}`,
-        updatedBook
-      );
-      if (response.status === 200) {
-        // Update successful
-      } else {
-        // Handle unsuccessful update
-        console.log('Update failed:', response.status);
+      let updatedBook;
+      const { status } = await updateBook(id, updatedBook);
+      if (status === StatusCodes.SUCCESS) {
+        toast.success('The book has been successfully updated!');
+        navigate('/main');
       }
     } catch (error: any) {
-      // Error occurred during the update request, handle the error condition
+      toast.error('Something went wrong. Please try again later.');
       console.log('Error:', error.message);
     }
   };
 
   const handleConfirm = async () => {
     if (modal.actionType === 'delete') {
-      deleteBook();
+      fethcDeletingBook();
     } else {
-      updateBook();
+      fetchUpdatingBook();
     }
-
     setIsModalOpen(false);
   };
 
@@ -179,22 +162,25 @@ export const BookDetails = () => {
         <img src={img} alt="book cover" />
       </BookCoverSection>
       <BookDetailsSection>
-        <h1>{title}</h1>
+        <h1>{bookDetails.title}</h1>
         <Details>
           <div>
-            <BookDetail title="Author" value={author} />
+            <BookDetail title="Author" value={bookDetails.author} />
             <BookDetail title="Genres" value={genreElements} />
-            <BookDetail title="Description" value={description} />
+            <BookDetail title="Description" value={bookDetails.description} />
           </div>
 
           <div>
-            <BookDetail title="Uploaded by" value={uploadedBy} />
-            <BookDetail title="Publication Date" value={publicationDate} />
-            <BookDetail title="Language" value={language} />
-            <BookDetail title="Availability" value={availability} />
+            <BookDetail title="Uploaded by" value={bookDetails.uploadedBy} />
+            <BookDetail
+              title="Publication Date"
+              value={bookDetails.publicationDate}
+            />
+            <BookDetail title="Language" value={bookDetails.language} />
+            <BookDetail title="Availability" value={bookDetails.availability} />
           </div>
         </Details>
-        {mockUser.books.includes(title) && (
+        {mockUser.books.includes(bookDetails.title) && (
           <ButtonsContainer>
             <Button title="Edit" onClick={openEditModal} />
             <Button title="Delete" onClick={openDeleteModal} />
@@ -202,9 +188,8 @@ export const BookDetails = () => {
         )}
       </BookDetailsSection>
       <Modal
-        isModalOpen={isModalOpen}
-        onCloseModal={closeModal}
-        contentLabel={modal.modalTitle}
+        isOpen={isModalOpen}
+        onClose={closeModal}
         title={modal.modalTitle}
         onConfirm={handleConfirm}
       >

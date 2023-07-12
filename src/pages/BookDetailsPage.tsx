@@ -1,5 +1,4 @@
-import { BookDetails } from '../components/BookDetails/BookDetails';
-import { Header } from '../components/Header/Header';
+import { BookDetails, Header } from 'src/components';
 
 export const BookDetailsPage = () => {
   return (

@@ -1,58 +1,49 @@
-import { Button } from 'components/common/Button/Button';
 import styled from 'styled-components';
 
-export const modalStyles = {
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    paddingBottom: '70px',
-    transform: 'translate(-50%, -50%)',
-    transition: 'transform .3s ease-in-out',
-    // background-color: ${({ theme }) => theme.colors.lightGray};
-  },
-};
-/* 
-  How to use styled-component prop interpolation inside modalStyles?
-  The problem is that the modal component from react-modal has it own styles.
-  I could write something like this:
-  export const StyledModalContent = styled.div`
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: ${({ theme }) => theme.colors.lightGray};
-    outline: none;
-    width: 50%;
-    height: 50%;
-  `;
-  
-  but this is overwritting styles from react-modal.
-  
-  This problem appears because modal bg and input bg are the same color.
-  I could make input bg gray but it means i need to rewrites the styles of the input
-  */
+import { Button } from '../common/Button/Button';
 
-export const ModalTitle = styled.h2`
-  margin-top: 0;
+export const ModalContainer = styled.div<{ isOpen: boolean }>`
+  ${({ theme }) => theme.flexStyles()};
+  opacity: ${({ isOpen }) => (!isOpen ? '0' : '1')};
+  pointer-events: ${({ isOpen }) => (!isOpen ? 'none' : 'all')};
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  transition: 0.5s;
 `;
 
-export const ModalButtonsContainer = styled.div`
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
+export const ModalCard = styled.div<{ isOpen: boolean }>`
+  transform: ${({ isOpen }) => (!isOpen ? 'scale(.5)' : 'scale(1)')};
+  color: ${({ theme }) => theme.colors.black};
+  max-width: 50vw;
+  background-color: white;
+  padding: 10px;
+  border-radius: 20px;
+  transition: 0.4s all;
 `;
 
-export const ConfirmBtn = styled(Button)`
-  margin: 0 10px;
-  background-color: ${({ theme }) => theme.colors.blue};
+export const ButtonsContainer = styled.div`
+  ${({ theme }) => theme.flexStyles('end', 'center')};
+  gap: 10px;
+  margin-top: 50px;
 `;
 
-export const CancelBtn = styled(Button)`
-  background-color: ${({ theme }) => theme.colors.error};
+const BaseButton = styled(Button)`
+  max-width: fit-content;
+  padding: 10px;
+  color: ${({ theme }) => theme.colors.black};
+`;
+
+export const ConfirmButton = styled(BaseButton)`
+  background-color: lightgreen;
+`;
+
+export const CancelButton = styled(BaseButton)`
+  background-color: ${({ theme }) => theme.colors.red};
+  max-width: fit-content;
+  padding: 10px;
+  color: ${({ theme }) => theme.colors.black};
 `;

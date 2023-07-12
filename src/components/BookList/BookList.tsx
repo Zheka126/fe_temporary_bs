@@ -29,7 +29,7 @@ export const BookList = () => {
       {books.map(({ id, img, title }) => {
         return (
           <BookItem
-            to={`/book_details/${id}`}
+            to={`/books/${id}`}
             key={id}
             data-testid={`book-item-${id}`}
           >

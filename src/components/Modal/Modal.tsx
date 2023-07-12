@@ -1,43 +1,40 @@
-import ReactModal from 'react-modal';
+import { ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 import {
-  CancelBtn,
-  ConfirmBtn,
-  ModalButtonsContainer,
-  modalStyles,
-  ModalTitle,
-} from './Modal.styles';
+  ButtonsContainer,
+  CancelButton,
+  ConfirmButton,
+  ModalCard,
+  ModalContainer
+} from "./Modal.styles";
 
 interface ModalProps {
   title: string;
-  isModalOpen: boolean;
-  onCloseModal: () => void;
-  contentLabel: string;
-  children: React.ReactNode;
+  children?: ReactNode;
+  isOpen: boolean;
+  onClose: () => void;
   onConfirm: () => void;
 }
 
 export const Modal = ({
+  isOpen,
   title,
-  isModalOpen = false,
-  onCloseModal,
-  contentLabel,
   children,
-  onConfirm,
+  onClose,
+  onConfirm
 }: ModalProps) => {
-  return (
-    <ReactModal
-      isOpen={isModalOpen}
-      onRequestClose={onCloseModal}
-      style={modalStyles}
-      contentLabel={contentLabel}
-    >
-      <ModalTitle>{title}</ModalTitle>
-      {children}
-      <ModalButtonsContainer>
-        <ConfirmBtn title="Confirm" onClick={onConfirm} />
-        <CancelBtn title="Cancel" onClick={onCloseModal} />
-      </ModalButtonsContainer>
-    </ReactModal>
+  return createPortal(
+    <ModalContainer isOpen={isOpen} onClick={onClose}>
+      <ModalCard isOpen={isOpen} onClick={(e) => e.stopPropagation()}>
+        <h3>{title}</h3>
+        {children}
+        <ButtonsContainer>
+          <ConfirmButton title="Confirm" onClick={onConfirm} />
+          <CancelButton title="Cancel" onClick={onClose} />
+        </ButtonsContainer>
+      </ModalCard>
+    </ModalContainer>,
+    document.body
   );
 };
