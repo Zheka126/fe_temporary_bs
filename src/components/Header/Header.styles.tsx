@@ -49,8 +49,8 @@ export const NavBtn = styled.button`
 `;
 
 export const NavBtnWithDropdown = styled(NavBtn)<{ isDropdownShowed: boolean }>`
-  img {
-    width: 8px;
+  svg {
+    width: 20px;
     padding: 0 6px;
     transform: ${({ isDropdownShowed }) =>
       isDropdownShowed ? 'rotate(180deg)' : 'rotate(0deg)'};

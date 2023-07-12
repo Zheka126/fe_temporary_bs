@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import logo from '/assets/darkLogo.png'
+import { ReactComponent as ArrowDownIcon } from '/assets/arrow-down.svg'
 import {
   BtnsContainer,
   Dropdown,
@@ -33,7 +34,7 @@ export const Header = () => {
   return (
     <StyledHeader ref={headerRef} data-testid="header">
       <Link to="/Catalog" data-testid="logo-link">
-        <img src="src/assets/darkLogo.png" alt="Endava Logo" />
+        <img src={logo} alt="Endava Logo" />
       </Link>
       <BtnsContainer data-testid="buttons-container">
         <NavBtn>
@@ -50,7 +51,8 @@ export const Header = () => {
         >
           {/* Should be displayed real username of current user */}
           Username
-          <img src="src\assets\arrow-down.svg" alt="Drop down" />
+          {/* <img src='/assets/arrow-down.svg' alt="Drop down" /> */}
+          <ArrowDownIcon/>
           <Dropdown
             isDropdownShowed={isDropdownShowed}
             data-testid="dropdown-menu"
