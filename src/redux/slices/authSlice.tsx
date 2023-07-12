@@ -1,6 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { login } from 'src/api/requests';
+import { login } from 'src/api/requests/auth';
 import { LoginValues } from 'src/types/user';
 
 import { RootState } from '../store';
