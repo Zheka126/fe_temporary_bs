@@ -33,7 +33,7 @@ export const Header = () => {
   return (
     <StyledHeader ref={headerRef} data-testid="header">
       <Link to="/Catalog" data-testid="logo-link">
-        <img src="src/assets/darkLogo.png" alt="Endava Logo" />
+        <img src="/assets/darkLogo.png" alt="Endava Logo" />
       </Link>
       <BtnsContainer data-testid="buttons-container">
         <NavBtn>
@@ -50,7 +50,7 @@ export const Header = () => {
         >
           {/* Should be displayed real username of current user */}
           Username
-          <img src="src\assets\arrow-down.svg" alt="Drop down" />
+          <img src="/assets/arrow-down.svg" alt="Drop down" />
           <Dropdown
             isDropdownShowed={isDropdownShowed}
             data-testid="dropdown-menu"
