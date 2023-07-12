@@ -1,5 +1,5 @@
-import arrowLeft from "/assets/chevronLeft.png";
-import arrowRight from "/assets/chevronRight.png";
+import arrowLeft from '/assets/chevronLeft.png';
+import arrowRight from '/assets/chevronRight.png';
 
 import { PaginationContainer, StyledPagination } from "./Pagination.styles";
 
