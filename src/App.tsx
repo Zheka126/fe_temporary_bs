@@ -1,28 +1,38 @@
-import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { store } from './redux/store';
-import MainPage from './pages/MainPage';
-import RegistrationPage from './pages/RegistrationPage';
+import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
+
+import { useAppDispatch, useAppSelector } from './redux/hooks';
+import { isAuthSelector, setUser } from './redux/slices/authSlice';
+import { openRoutes, privateRoutes } from './routes';
+import { getUserTokenData } from './utils';
+
+interface RouteType {
+  component: () => JSX.Element;
+  path: string;
+}
 
 export const App = () => {
-  const [state, setState] = useState(false);
-  const age = 12;
+  const dispatch = useAppDispatch();
+  const isAuth = useAppSelector(isAuthSelector);
 
   useEffect(() => {
-    if (!state) setState(true);
-  }, [state]);
+    const token = localStorage.getItem('token');
+    if (token) {
+      const user = getUserTokenData(token);
+      dispatch(setUser(user));
+    }
+  }, [dispatch]);
+
+  const renderRoutes = (routes: RouteType[]) => {
+    return routes.map(({ path, component: Component }) => (
+      <Route key={path} path={path} element={<Component />} />
+    ));
+  };
 
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/registration" element={<RegistrationPage />} />
-          <Route index element={<MainPage />} />
-          {/* <Route path="*" element={<NoPage />} /> */}
-        </Routes>
-      </BrowserRouter>
-    </Provider>
+    <Routes>
+      {renderRoutes(openRoutes)}
+      {isAuth ? renderRoutes(privateRoutes) : null}
+    </Routes>
   );
 };
