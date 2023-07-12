@@ -16,7 +16,7 @@ export const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (
     <Container data-testid="auth-container">
       <LeftSection data-testid="left-section">
-        <LogoImg src="src/assets/logo.png" alt="Endava Logo" data-testid="logo-img" />
+        <LogoImg src="/assets/logo.png" alt="Endava Logo" data-testid="logo-img" />
         <CenterText data-testid="center-text">
           <p>Book </p>
           <p>Sharing</p>
