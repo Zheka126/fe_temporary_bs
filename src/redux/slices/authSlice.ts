@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { login } from 'src/api/requests/auth';
-import { LoginRequest } from 'src/types/user';
+import { LoginRequest, UserData } from 'src/types/user';
 
 import { RootState } from '../store';
 
@@ -16,12 +16,6 @@ export const loginThunk = createAsyncThunk(
     }
   }
 );
-
-interface UserData {
-  userName: string;
-  role: string;
-  userId: string;
-}
 
 interface AuthState {
   user: null | UserData;

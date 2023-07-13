@@ -15,7 +15,6 @@ interface RouteType {
 
 export const App = () => {
   const dispatch = useAppDispatch();
-
   const isAuth = useAppSelector(isAuthSelector);
 
   useEffect(() => {
