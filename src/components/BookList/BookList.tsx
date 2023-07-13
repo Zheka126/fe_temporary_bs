@@ -1,26 +1,15 @@
 import { useEffect, useState } from 'react';
 import { StatusCodes } from 'src/api/constants';
 import { getBooks } from 'src/api/requests/book';
+import { BookType } from 'src/types/book';
 
-import { BookItem, BookListContainer } from './BookList.styles';
+import { BookListContainer } from './BookList.styles';
 
-export const BookList = () => {
-  const [books, setBooks] = useState([]);
+interface BookListProps {
+  books: BookType[];
+}
 
-  useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        const { status, data } = await getBooks();
-        if (status === StatusCodes.SUCCESS) {
-          setBooks(data);
-        }
-      } catch (error: any) {
-        console.log('Error:', error.message);
-      }
-    };
-
-    fetchBooks();
-  }, []);
+export const BookList = ({ books }: BookListProps) => {
 
   return (
     <BookListContainer data-testid="book-list-container">

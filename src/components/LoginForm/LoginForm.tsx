@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { StatusCodes } from 'src/api/constants';
 import { useAppDispatch } from 'src/redux/hooks';
 import { loginThunk, setUser } from 'src/redux/slices/authSlice';
-import { LoginValues } from 'src/types/user';
+import { LoginRequest } from 'src/types/user';
 import { getUserTokenData } from 'src/utils';
 
 import { Button } from '../common/Button/Button';
@@ -16,12 +16,12 @@ import {
   StyledForm,
   StyledInput,
   Title,
-} from '../common/common.styles';
+} from '../common/Input.styles';
 import { Loader } from '../common/Loader/Loader';
 import { ForgotPasswordLink, StyledParagraph } from './LoginForm.styles';
 import { loginValidation } from './loginValidation';
 
-const initialValues: LoginValues = {
+const initialValues: LoginRequest = {
   username: '',
   password: '',
 };
@@ -31,8 +31,8 @@ export const LoginForm = () => {
   const dispatch = useAppDispatch();
 
   const onSubmit = async (
-    values: LoginValues,
-    { setSubmitting, resetForm }: FormikHelpers<LoginValues>
+    values: LoginRequest,
+    { setSubmitting, resetForm }: FormikHelpers<LoginRequest>
   ) => {
     try {
       setSubmitting(true);

@@ -6,13 +6,10 @@ interface LoaderProps {
   size: LoaderSize;
 }
 
-const loaderSize = (size: LoaderSize) => {
-  if (size === 'mini') return '25px';
-  if (size === 'medium') return '50px';
-  return '85px';
-};
+const loaderSize = (size: LoaderSize) =>
+  size === 'mini' ? '25px' : size === 'medium' ? '50px' : '85px';
 
-const spinAnimation = keyframes`
+  const spinAnimation = keyframes`
   0% {
     transform: rotate(0deg);
   }

@@ -1,19 +1,33 @@
-import { BookType } from 'src/types/book';
+import { BookType, FilterValues, GetBooksResponse } from 'src/types/book';
 
 import { instance } from '../instance';
 
-const endPoint = '/books';
+const endpoint = '/books';
 
-export const getBooks = () => instance.get<BookType[]>(endPoint);
+export const getBooks = (filters: FilterValues) => {
+  const { status, selectedRating, currentPage } = filters;
+  // const selectedGenres = Object.keys(genre).filter((key) => genre[key]);
+  const Availability = Object.keys(status).filter((key) => status[key]);
+
+  return instance.get<GetBooksResponse>(endpoint, {
+    params: {
+      // Pagination.PageSize=
+      ...(currentPage !== 1 ? { 'Pagination.Page': currentPage } : {}),
+      ...(status ? { Availability } : {}),
+      ...(selectedRating ? { Rating: selectedRating } : {}),
+    },
+    // paramsSerializer: { indexes: null },
+  });
+};
 
 export const addNewBook = (book: BookType) =>
-  instance.post<BookType>(endPoint, book);
+  instance.post<BookType>(endpoint, book);
 
 export const getBookById = (id: string) =>
-  instance.get<BookType>(`/${endPoint}/${id}`);
+  instance.get<BookType>(`/${endpoint}/${id}`);
 
 export const updateBook = (id: string, book: BookType) =>
-  instance.put<BookType>(`/${endPoint}/${id})`, book);
+  instance.put<BookType>(`/${endpoint}/${id})`, book);
 
 export const deleteBook = (id: string) =>
-  instance.delete<BookType>(`/${endPoint}/${id}`);
+  instance.delete<BookType>(`/${endpoint}/${id}`);

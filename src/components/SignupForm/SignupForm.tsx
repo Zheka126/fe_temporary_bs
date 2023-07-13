@@ -7,6 +7,7 @@ import { StatusCodes } from 'src/api/constants';
 import { register } from 'src/api/requests/auth';
 import { UserRegistrationData } from 'src/types/user';
 
+import { Loader } from '..';
 import { Button } from '../common/Button/Button';
 import {
   InputContainer,
@@ -14,8 +15,7 @@ import {
   StyledForm,
   StyledInput,
   Title,
-} from '../common/common.styles';
-import { Loader } from '../common/Loader/Loader';
+} from '../common/Input.styles';
 import { ButtonsContainer } from './SignupForm.styles';
 import { signupValidation } from './signupValidation';
 

@@ -1,26 +1,21 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { login } from 'src/api/requests/auth';
-import { LoginValues } from 'src/types/user';
+import { LoginRequest, UserData } from 'src/types/user';
 
 import { RootState } from '../store';
 
 export const loginThunk = createAsyncThunk(
   'loginThunk',
-  async (values: LoginValues) => {
+  async (values: LoginRequest) => {
     try {
-      return await login(values);
+      const resp = await login(values);
+      return resp;
     } catch (err: any) {
       throw Error(err.response.data);
     }
   }
 );
-
-interface UserData {
-  userName: string;
-  role: string;
-  userId: string;
-}
 
 interface AuthState {
   user: null | UserData;
@@ -40,6 +35,8 @@ export const authSlice = createSlice({
   },
 });
 
-export const isAuthSelector = (state: RootState) => Boolean(state.auth.user);
+export const isAuthSelector = ({ auth }: RootState) => Boolean(auth.user);
+
 export const { setUser } = authSlice.actions;
+
 export default authSlice.reducer;

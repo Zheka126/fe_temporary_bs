@@ -1,12 +1,12 @@
-import arrowLeft from 'src/assets/chevronLeft.png';
-import arrowRight from 'src/assets/chevronRight.png';
+import arrowLeft from "/assets/chevronLeft.png";
+import arrowRight from "/assets/chevronRight.png";
 
-import { PaginationContainer, StyledPagination } from './Pagination.styles';
+import { PaginationContainer, StyledPagination } from "./Pagination.styles";
 
 interface PaginationProps {
   currentPage: number;
   setCurrentPage: (page: number) => void;
-  pageCount: number; 
+  pageCount: number;
 }
 
 export const Pagination = ({
@@ -14,8 +14,8 @@ export const Pagination = ({
   setCurrentPage,
   pageCount
 }: PaginationProps) => {
-  const handlePageChange = ({ selected }: { selected: number }) => {
-    setCurrentPage(selected + 1);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -25,7 +25,7 @@ export const Pagination = ({
         forcePage={currentPage - 1}
         marginPagesDisplayed={0}
         pageRangeDisplayed={5}
-        onPageChange={handlePageChange}
+        onPageChange={({ selected }) => handlePageChange(selected + 1)}
         activeClassName="active"
         breakLabel=""
         previousLabel={
