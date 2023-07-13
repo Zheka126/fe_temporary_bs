@@ -1,13 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+
+import { ReactComponent as ArrowDownIcon } from "/assets/arrow-down.svg";
+import logo from "/assets/darkLogo.png";
 
 import {
   BtnsContainer,
   Dropdown,
   NavBtn,
   NavBtnWithDropdown,
-  StyledHeader,
-} from './Header.styles';
+  StyledHeader
+} from "./Header.styles";
 
 export const Header = () => {
   const [isDropdownShowed, setIsDropdownShowed] = useState(false);
@@ -17,15 +20,15 @@ export const Header = () => {
   const toggleDropdown = () => setIsDropdownShowed((prev) => !prev);
 
   const handleEscapeKey = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') closeDropdown();
+    if (event.key === "Escape") closeDropdown();
   };
 
   useEffect(() => {
     const container = headerRef.current;
     if (container) {
-      container.addEventListener('keydown', handleEscapeKey);
+      container.addEventListener("keydown", handleEscapeKey);
       return () => {
-        container.removeEventListener('keydown', handleEscapeKey);
+        container.removeEventListener("keydown", handleEscapeKey);
       };
     }
   }, []);
@@ -33,7 +36,7 @@ export const Header = () => {
   return (
     <StyledHeader ref={headerRef} data-testid="header">
       <Link to="/Catalog" data-testid="logo-link">
-        <img src="src/assets/darkLogo.png" alt="Endava Logo" />
+        <img src={logo} alt="Endava Logo" />
       </Link>
       <BtnsContainer data-testid="buttons-container">
         <NavBtn>
@@ -50,7 +53,7 @@ export const Header = () => {
         >
           {/* Should be displayed real username of current user */}
           Username
-          <img src="src\assets\arrow-down.svg" alt="Drop down" />
+          <ArrowDownIcon />
           <Dropdown
             isDropdownShowed={isDropdownShowed}
             data-testid="dropdown-menu"

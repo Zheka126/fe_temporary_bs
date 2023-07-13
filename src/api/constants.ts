@@ -5,4 +5,4 @@ export enum StatusCodes {
   INTERNAL_SERVER_ERROR = 500,
 }
 
-export const baseURL = 'http://backend.book-sharing.app.mddinternship.com/api/';
+export const baseURL = 'https://backend.book-sharing.app.mddinternship.com/api';
