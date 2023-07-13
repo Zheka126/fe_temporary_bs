@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { StatusCodes } from 'src/api/constants';
+import { getBooks } from 'src/api/requests/book';
 
 import { BookItem, BookListContainer } from './BookList.styles';
 
@@ -8,13 +10,9 @@ export const BookList = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch('http://localhost:3000/books/');
-        console.log('response: ', response);
-        if (response.ok) {
-          const booksData = await response.json();
-          setBooks(booksData);
-        } else {
-          console.log('Error:', response.status);
+        const { status, data } = await getBooks();
+        if (status === StatusCodes.SUCCESS) {
+          setBooks(data);
         }
       } catch (error: any) {
         console.log('Error:', error.message);
