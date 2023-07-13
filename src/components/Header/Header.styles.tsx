@@ -51,7 +51,7 @@ export const NavBtn = styled.button`
   }
 `;
 
-export const NavBtnWithDropdown = styled(NavBtn)<{ isDropdownShowed: boolean }>`
+export const NavBtnWithDropdown = styled.div<{ isDropdownShowed: boolean }>`
   svg {
     width: 20px;
     padding: 0 6px;

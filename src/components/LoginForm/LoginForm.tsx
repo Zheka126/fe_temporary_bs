@@ -112,11 +112,6 @@ export const LoginForm = () => {
           </StyledErrorMessage>
         )}
       </InputContainer>
-      {/* {submitErr ? (
-        <InputContainer>
-          <StyledErrorMessage>{submitErr}</StyledErrorMessage>
-        </InputContainer>
-      ) : null} */}
 
       <ForgotPasswordLink to="" data-testid="forgot-password-link">
         Forgot password?

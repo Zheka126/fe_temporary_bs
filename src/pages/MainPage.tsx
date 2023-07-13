@@ -12,7 +12,8 @@ import { Pagination } from '../components/Pagination/Pagination';
 import {
   MainPageContainer,
   MainPageContentContainer,
-} from './styles/MainPage.styles';
+  NoBooksText
+} from "./styles/MainPage.styles";
 
 const initialState = {
   search: '',
@@ -74,8 +75,9 @@ export const MainPage = () => {
   const dispatch = useAppDispatch();
 
   const [filters, dispatchReducer] = useReducer(reducer, initialState);
-  const [searchVal, setSearchVal] = useState('');
-  const booksArr = useAppSelector(({ books }) => books.books);
+  const [searchVal, setSearchVal] = useState("");
+  
+  const books = useAppSelector((state) => state.books.books);
 
   useEffect(() => {
     (async () => {
@@ -133,7 +135,13 @@ export const MainPage = () => {
       <Header />
       <Container>
         <MainPageContentContainer>
-          <BookList books={booksArr} />
+          {
+            books.length
+            ?
+            <BookList books={books} />
+            :
+            <NoBooksText>No books yet 🙁</NoBooksText>
+          }
           <BookFilter
             filters={filters}
             searchTerm={searchVal}

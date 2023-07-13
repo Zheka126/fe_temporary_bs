@@ -14,11 +14,9 @@ export const Dropdown = ({ dropdownRef }: DropdownProps) => {
   return (
     <StyledDropdown ref={dropdownRef}>
       <li>
-        <Link onClick={() => console.log('My profile clicked')} to="/Profile">
-          My profile
-        </Link>
+        <Link to="/Profile">My profile</Link>
       </li>
-      {user?.role === 'admin' && (
+      {user?.role === 'Admin' && (
         <li>
           <Link to="/Admin">Admin</Link>
         </li>

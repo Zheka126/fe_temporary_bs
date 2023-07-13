@@ -1,3 +1,8 @@
+export interface GetBooksResponse {
+  data: BookType[];
+  totalRecords: number;
+}
+
 export interface BookType {
   img: string;
   title: string;
