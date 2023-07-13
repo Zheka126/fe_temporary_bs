@@ -8,6 +8,8 @@ export const getBooksThunk = createAsyncThunk(
   async (filters: FilterValues) => {
     try {
       const { data } = await getBooks(filters);
+      console.log(data);
+      
       return data;
     } catch (err) {
       throw Error('Something went wrong');

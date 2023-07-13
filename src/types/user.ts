@@ -15,5 +15,5 @@ export interface UserRegistrationData {
 export interface UserTokenData {
   unique_name: string;
   role: string;
-  nameId: string;
+  nameid: string;
 }

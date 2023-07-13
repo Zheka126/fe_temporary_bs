@@ -4,15 +4,9 @@ export interface GetBooksResponse {
 }
 
 export interface BookType {
-  img: string;
-  title: string;
-  author: string;
-  genres: string[];
-  uploadedBy: string;
-  publicationDate: string;
-  language: string;
-  description: string;
-  availability: string;
+  id: string
+  imageSrc: string
+  title: string
 }
 
 export interface FilterValues {
