@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { StatusCodes } from 'src/api/constants';
-import { deleteBook, getBookById, updateBook } from 'src/api/requests/book';
-import { getProfileItems } from 'src/api/requests/profile';
-import { BookType } from 'src/types/book';
+import { deleteBook, updateBook } from 'src/api/requests/book';
+import { BookDetailsType } from 'src/types/book';
 
 import { Button } from '../common/Button/Button';
-import { InputContainer } from '../common/common.styles';
+import { InputContainer } from '../common/Input.styles';
 import { StyledParagraph } from '../LoginForm/LoginForm.styles';
 import { Modal } from '../Modal/Modal';
 import { ButtonsContainer } from '../SignupForm/SignupForm.styles';
@@ -21,47 +20,6 @@ import {
   EditInput,
   StyledModalContent,
 } from './BookDetails.styles';
-
-const createEditInput = (id: string, label: string) => (
-  <InputContainer>
-    <label htmlFor={id}>{label}</label>
-    <EditInput id={id} />
-  </InputContainer>
-);
-
-// where to store modal content?
-// should it be here or inside JSX or in separate file?
-const modalContent = (actionType: string) => {
-  switch (actionType) {
-    case 'assignToMe':
-      return (
-        <StyledModalContent>
-          <div>
-            {createEditInput('author', 'Edit author')}
-            {createEditInput('genres', 'Edit genres')}
-            {createEditInput('description', 'Edit description')}
-          </div>
-          <div>
-            {createEditInput('uploadedBy', 'Edit uploaded by')}
-            {createEditInput('publicationDate', 'Edit uploaded by')}
-            {createEditInput('language', 'Edit language')}
-            {createEditInput('availability', 'Edit availability')}
-          </div>
-        </StyledModalContent>
-      );
-    case 'edit':
-      break;
-    case 'delete':
-      return (
-        <StyledParagraph>
-          Are you sure you want to delete this book?
-        </StyledParagraph>
-      );
-
-    default:
-      return <h2>Empty window... How did you get here?</h2>;
-  }
-};
 
 export const BookDetails = () => {
   const { id } = useParams();
@@ -79,32 +37,75 @@ export const BookDetails = () => {
     availability: '',
   };
 
-  const [bookDetails, setBookDetails] = useState<BookType>(initialValues);
+  const [bookDetails, setBookDetails] =
+    useState<BookDetailsType>(initialValues);
   const [assignments, setAssignments] = useState<string[]>([]);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { status, data } = await getBookById(id);
-        console.log('data: ', data);
+  const createEditInput = (inputId: string, label: string) => (
+    <InputContainer>
+      <label htmlFor={inputId}>{label}</label>
+      <EditInput id={inputId} value={bookDetails[inputId]} 
+      onChange={(event: KeyboardEvent) => setBookDetails({...bookDetails, bookDetails[inputId]: event.target.value})} />
+    </InputContainer>
+  );
 
-        // do we even need to check status?
-        // because the async function fires error and the next code won't work
-        if (status === StatusCodes.SUCCESS) {
-          setBookDetails(data);
+  // where to store modal content?
+  // should it be here or inside JSX or in separate file?
+  const modalContent = (actionType: string) => {
+    switch (actionType) {
+      case 'assignToMe':
+        return (
+          <StyledModalContent>
+            <div>
+              {createEditInput('author', 'Edit author')}
+              {createEditInput('genres', 'Edit genres')}
+              {createEditInput('description', 'Edit description')}
+            </div>
+            <div>
+              {createEditInput('uploadedBy', 'Edit uploaded by')}
+              {createEditInput('publicationDate', 'Edit uploaded by')}
+              {createEditInput('language', 'Edit language')}
+              {createEditInput('availability', 'Edit availability')}
+            </div>
+          </StyledModalContent>
+        );
+      case 'edit':
+        break;
+      case 'delete':
+        return (
+          <StyledParagraph>
+            Are you sure you want to delete this book?
+          </StyledParagraph>
+        );
 
-          const { status: assignmentsStatus, data: assignmentsData } =
-            await getProfileItems('assignments');
+      default:
+        return <h2>Empty window... How did you get here?</h2>;
+    }
+  };
 
-          if (assignmentsStatus === StatusCodes.SUCCESS) {
-            setAssignments(assignmentsData);
-          }
-        }
-      } catch (error: any) {
-        console.log('Error:', error.message);
-      }
-    })();
-  }, [id]);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const { status, data } = await getBookById(id);
+  //       console.log('data: ', data);
+
+  //       // do we even need to check status?
+  //       // because the async function fires error and the next code won't work
+  //       if (status === StatusCodes.SUCCESS) {
+  //         setBookDetails(data);
+
+  //         const { status: assignmentsStatus, data: assignmentsData } =
+  //           await getProfileItems('assignments');
+
+  //         if (assignmentsStatus === StatusCodes.SUCCESS) {
+  //           setAssignments(assignmentsData);
+  //         }
+  //       }
+  //     } catch (error: any) {
+  //       console.log('Error:', error.message);
+  //     }
+  //   })();
+  // }, [id]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modal, setModal] = useState({ modalTitle: '', actionType: '' });

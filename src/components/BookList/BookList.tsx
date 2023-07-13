@@ -11,6 +11,13 @@ interface BookListProps {
 
 export const BookList = ({ books }: BookListProps) => {
 
+  useEffect(() => {
+  const {status, data } = await getBooks()
+    
+    }
+  }, [third])
+  
+
   return (
     <BookListContainer data-testid="book-list-container">
       {books.map(({ id, img, title }) => {
