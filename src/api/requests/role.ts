@@ -1,8 +1,15 @@
+import { GetRolesResponse, UpdateRoleRequest } from 'src/types/roles';
+
 import { instance } from '../instance';
 
-const endPoint = '/roles';
-type Role = 'admin' | 'user';
+export const getRoles = (page: number) => {
+  return instance.get<GetRolesResponse>('/users', {
+    params: {
+      ...(page !== 1 ? { Page: page } : {}),
+    },
+  });
+};
 
-export const getRoles = () => instance.get<string[]>(endPoint);
-export const updateRole = (id: string, role: Role) =>
-  instance.put(`${endPoint}/${id}/${role}`);
+export const updateRole = ({ userId, role }: UpdateRoleRequest) => {
+  return instance.put<string>(`/roles/manage?UserId=${userId}&Role=${role}`);
+};
