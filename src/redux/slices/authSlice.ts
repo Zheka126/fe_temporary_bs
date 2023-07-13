@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { login } from 'src/api/requests/auth';
-import { LoginValues } from 'src/types/user';
+import { LoginValues } from 'src/types/LoginRequest';
 
 import { RootState } from '../store';
 
@@ -9,7 +9,8 @@ export const loginThunk = createAsyncThunk(
   'loginThunk',
   async (values: LoginValues) => {
     try {
-      return await login(values);
+      const resp = await login(values);
+      return resp;
     } catch (err: any) {
       throw Error(err.response.data);
     }
@@ -40,6 +41,8 @@ export const authSlice = createSlice({
   },
 });
 
-export const isAuthSelector = (state: RootState) => Boolean(state.auth.user);
+export const isAuthSelector = ({ auth }: RootState) => Boolean(auth.user);
+
 export const { setUser } = authSlice.actions;
+
 export default authSlice.reducer;

@@ -9,21 +9,21 @@ import { loginThunk, setUser } from 'src/redux/slices/authSlice';
 import { LoginValues } from 'src/types/user';
 import { getUserTokenData } from 'src/utils';
 
-import { Button } from '../common/Button/Button';
+import { Button } from "../common/Button/Button";
 import {
   InputContainer,
   StyledErrorMessage,
   StyledForm,
   StyledInput,
   Title,
-} from '../common/common.styles';
+} from '../common/Input.styles';
 import { Loader } from '../common/Loader/Loader';
 import { ForgotPasswordLink, StyledParagraph } from './LoginForm.styles';
 import { loginValidation } from './loginValidation';
 
 const initialValues: LoginValues = {
-  username: '',
-  password: '',
+  username: "",
+  password: ""
 };
 
 export const LoginForm = () => {
@@ -88,7 +88,7 @@ export const LoginForm = () => {
           type="text"
           placeholder="Enter username"
           isError={Boolean(touched.username && errors.username)}
-          {...getFieldProps('username')}
+          {...getFieldProps("username")}
         />
         {touched.username && errors.username && (
           <StyledErrorMessage data-testid="username-error">
@@ -104,7 +104,7 @@ export const LoginForm = () => {
           type="password"
           placeholder="Enter password"
           isError={Boolean(touched.password && errors.password)}
-          {...getFieldProps('password')}
+          {...getFieldProps("password")}
         />
         {touched.password && errors.password && (
           <StyledErrorMessage data-testid="username-error">
@@ -112,6 +112,11 @@ export const LoginForm = () => {
           </StyledErrorMessage>
         )}
       </InputContainer>
+      {/* {submitErr ? (
+        <InputContainer>
+          <StyledErrorMessage>{submitErr}</StyledErrorMessage>
+        </InputContainer>
+      ) : null} */}
 
       <ForgotPasswordLink to="" data-testid="forgot-password-link">
         Forgot password?
