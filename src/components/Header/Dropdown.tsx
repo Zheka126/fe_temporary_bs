@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom';
 import { StyledDropdown } from './Header.styles';
+import { RefObject } from 'react';
 
 interface DropdownProps {
-  isDropdownShowed: boolean;
-  ref: (node: HTMLElement | null) => void;
-  //   style: React.CSSProperties;
+  dropdownRef: RefObject<HTMLUListElement>;
 }
 
-export const Dropdown = ({ isDropdownShowed }: DropdownProps) =>
-  isDropdownShowed && (
-    <StyledDropdown>
+export const Dropdown = ({ dropdownRef }: DropdownProps) => {
+  console.log('ref in dropdown component: ', dropdownRef);
+  return (
+    <StyledDropdown ref={dropdownRef}>
       <li>
         <Link onClick={() => console.log('My profile clicked')} to="/Profile">
           My profile
@@ -24,3 +24,4 @@ export const Dropdown = ({ isDropdownShowed }: DropdownProps) =>
       </li>
     </StyledDropdown>
   );
+};

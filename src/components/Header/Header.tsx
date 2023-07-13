@@ -1,14 +1,4 @@
-import {
-  flip,
-  offset,
-  shift,
-  useClick,
-  useDismiss,
-  useFloating,
-  useInteractions,
-  useRole,
-} from '@floating-ui/react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Dropdown } from './Dropdown';
 import {
@@ -20,18 +10,42 @@ import {
 
 export const Header = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLUListElement | null>(null);
+  const navBtnRef = useRef<HTMLButtonElement | null>(null);
 
-  const { refs, floatingStyles, context } = useFloating({
-    open: isDropdownOpen,
-    onOpenChange: setIsDropdownOpen,
-    middleware: [offset(), flip(), shift()],
-  });
+  const handleOutsideClick = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !navBtnRef.current?.contains(event.target as Node) &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      console.log(
+        'inside handleOutsideClick inside condition:',
+        isDropdownOpen
+      );
 
-  const { getReferenceProps, getFloatingProps } = useInteractions([
-    useClick(context),
-    useDismiss(context),
-    useRole(context),
-  ]);
+      setIsDropdownOpen(false);
+    }
+  };
+
+  const handleEscapeKeyDown = (event: KeyboardEvent) => {
+    if (isDropdownOpen && event.key === 'Escape') {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prevIsDropdownOpen) => !prevIsDropdownOpen);
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener('keydown', handleEscapeKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener('keydown', handleEscapeKeyDown);
+    };
+  }, []);
 
   return (
     <StyledHeader>
@@ -46,17 +60,12 @@ export const Header = () => {
           className="active"
           isDropdownShowed={isDropdownOpen}
         >
-          <NavBtn ref={refs.setReference} {...getReferenceProps()}>
+          <NavBtn ref={navBtnRef} onClick={toggleDropdown}>
             {/* Should be displayed real username of current user */}
             Username
             <img src="src\assets\arrow-down.svg" alt="Drop down" />
           </NavBtn>
-          <Dropdown
-            isDropdownShowed={isDropdownOpen}
-            ref={refs.setFloating}
-            // style={floatingStyles}
-            // {...getFloatingProps()}
-          />
+          {isDropdownOpen && <Dropdown dropdownRef={dropdownRef} />}
         </NavBtnWithDropdown>
       </BtnsContainer>
     </StyledHeader>
