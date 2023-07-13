@@ -1,10 +1,10 @@
 
-import { BookItem } from 'src/types/BookItem';
+import { BookType } from 'src/types/book';
 
 import { BookListContainer,StyledBookItem } from "./BookList.styles";
 
 interface BookListProps {
-  books: BookItem[];
+  books: BookType[];
 }
 
 export const BookList = ({ books }: BookListProps) => {

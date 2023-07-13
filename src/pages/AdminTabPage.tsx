@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { AdminRoles } from "src/components/AdminRoles/AdminRoles";
 import { Container } from "src/components/common/Container.styles";
 import { Pagination } from "src/components/Pagination/Pagination";

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useReducer, useState } from "react";
 import { BookFilter } from "src/components/BookFilter/BookFilter";
 import { useAppDispatch, useAppSelector } from "src/redux/hooks";
 import { getBooksThunk } from "src/redux/slices/bookSlice";
-import { FilterValues } from "src/types/FilterValues";
+import { FilterValues } from 'src/types/book';
 
 import { BookList } from "../components/BookList/BookList";
 import { Container } from "../components/common/Container.styles";

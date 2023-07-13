@@ -29,7 +29,7 @@ export const bookSlice = createSlice({
   name: 'books',
   initialState,
   reducers: {
-    setBooks: (state, action) => {},
+    setBooks: () => {},
   },
   extraReducers: (builder) => {
     builder.addCase(
