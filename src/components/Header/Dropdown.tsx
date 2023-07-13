@@ -1,13 +1,16 @@
-import { Link } from 'react-router-dom';
-import { StyledDropdown } from './Header.styles';
 import { RefObject } from 'react';
+import { Link } from 'react-router-dom';
+import { useAppSelector } from 'src/redux/hooks';
+
+import { StyledDropdown } from './Header.styles';
 
 interface DropdownProps {
   dropdownRef: RefObject<HTMLUListElement>;
 }
 
 export const Dropdown = ({ dropdownRef }: DropdownProps) => {
-  console.log('ref in dropdown component: ', dropdownRef);
+  const user = useAppSelector((state) => state.auth.user);
+
   return (
     <StyledDropdown ref={dropdownRef}>
       <li>
@@ -15,10 +18,11 @@ export const Dropdown = ({ dropdownRef }: DropdownProps) => {
           My profile
         </Link>
       </li>
-      {/* should display admin only if user has admin rights */}
-      <li>
-        <Link to="/Admin">Admin</Link>
-      </li>
+      {user?.role === 'admin' && (
+        <li>
+          <Link to="/Admin">Admin</Link>
+        </li>
+      )}
       <li>
         <Link to="/SignOut">Sign out</Link>
       </li>

@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from 'src/redux/hooks';
+
+import { ReactComponent as ArrowDownIcon } from '/assets/arrow-down.svg';
+import logo from '/assets/darkLogo.png';
+
 import { Dropdown } from './Dropdown';
 import {
   BtnsContainer,
@@ -9,6 +14,8 @@ import {
 } from './Header.styles';
 
 export const Header = () => {
+  const user = useAppSelector((state) => state.auth.user);
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLUListElement | null>(null);
   const navBtnRef = useRef<HTMLButtonElement | null>(null);
@@ -19,19 +26,12 @@ export const Header = () => {
       !navBtnRef.current?.contains(event.target as Node) &&
       !dropdownRef.current.contains(event.target as Node)
     ) {
-      console.log(
-        'inside handleOutsideClick inside condition:',
-        isDropdownOpen
-      );
-
       setIsDropdownOpen(false);
     }
   };
 
   const handleEscapeKeyDown = (event: KeyboardEvent) => {
-    if (isDropdownOpen && event.key === 'Escape') {
-      setIsDropdownOpen(false);
-    }
+    if (isDropdownOpen && event.key === 'Escape') setIsDropdownOpen(false);
   };
 
   const toggleDropdown = () => {
@@ -50,20 +50,21 @@ export const Header = () => {
   return (
     <StyledHeader>
       <Link to="/Catalog">
-        <img src="src/assets/darkLogo.png" alt="Endava Logo" />
+        <img src={logo} alt="Endava Logo" />
       </Link>
-      <BtnsContainer>
+      <BtnsContainer data-testid="buttons-container">
         <NavBtn>
-          <Link to="/Catalog">Catalog</Link>
+          <Link to="/Catalog" data-testid="catalog-link">
+            Catalog
+          </Link>
         </NavBtn>
         <NavBtnWithDropdown
           className="active"
           isDropdownShowed={isDropdownOpen}
         >
           <NavBtn ref={navBtnRef} onClick={toggleDropdown}>
-            {/* Should be displayed real username of current user */}
-            Username
-            <img src="src\assets\arrow-down.svg" alt="Drop down" />
+            {user?.userName}
+            <ArrowDownIcon />
           </NavBtn>
           {isDropdownOpen && <Dropdown dropdownRef={dropdownRef} />}
         </NavBtnWithDropdown>

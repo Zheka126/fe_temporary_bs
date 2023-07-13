@@ -1,21 +1,48 @@
-import { PaginationContainer, StyledPagination } from './Pagination.styles';
+import arrowLeft from "/assets/chevronLeft.png";
+import arrowRight from "/assets/chevronRight.png";
 
-export const Pagination = () => {
-  const handlePageChange = ({ selected }: number) => {
-    // sent selected page to backend
+import { PaginationContainer, StyledPagination } from "./Pagination.styles";
+
+interface PaginationProps {
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
+  pageCount: number;
+}
+
+export const Pagination = ({
+  currentPage,
+  setCurrentPage,
+  pageCount
+}: PaginationProps) => {
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   return (
-    <PaginationContainer>
+    <PaginationContainer data-testid="pagination-container">
       <StyledPagination
-        pageCount={20}
+        pageCount={pageCount}
+        forcePage={currentPage - 1}
         marginPagesDisplayed={0}
         pageRangeDisplayed={5}
-        onPageChange={handlePageChange}
+        onPageChange={({ selected }) => handlePageChange(selected + 1)}
         activeClassName="active"
         breakLabel=""
-        previousLabel={<img src="src/assets/chevronLeft.png" alt="Previous" />}
-        nextLabel={<img src="src/assets/chevronRight.png" alt="Next" />}
+        previousLabel={
+          <img
+            src={arrowLeft}
+            alt="Go to the previous page"
+            data-testid="previous-pagination-button"
+          />
+        }
+        nextLabel={
+          <img
+            src={arrowRight}
+            alt="Go to the next page"
+            data-testid="next-pagination-button"
+          />
+        }
+        data-testid="pagination"
       />
     </PaginationContainer>
   );
