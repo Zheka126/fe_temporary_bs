@@ -1,5 +1,4 @@
-import { AuthLayout } from 'src/components/AuthLayout/AuthLayout';
-import { SignupForm } from 'src/components/SignupForm/SignupForm';
+import { AuthLayout, SignupForm } from 'src/components';
 
 export const RegistrationPage = () => {
   return (

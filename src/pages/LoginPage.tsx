@@ -1,5 +1,4 @@
-import { AuthLayout } from 'src/components/AuthLayout/AuthLayout';
-import { LoginForm } from 'src/components/LoginForm/LoginForm';
+import { AuthLayout, LoginForm } from 'src/components';
 
 export const LoginPage = () => {
   return (

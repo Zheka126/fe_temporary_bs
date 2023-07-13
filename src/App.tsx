@@ -1,14 +1,14 @@
-import { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from "styled-components";
 
-import { getUserTokenData } from "./helpers";
-import { useAppDispatch, useAppSelector } from "./redux/hooks";
-import { isAuthSelector, setUser } from "./redux/slices/authSlice";
-import { openRoutes, privateRoutes } from "./routes";
+import { useAppDispatch, useAppSelector } from './redux/hooks';
+import { isAuthSelector, setUser } from './redux/slices/authSlice';
+import { openRoutes, privateRoutes } from './routes';
 import { theme } from "./theme";
+import { getUserTokenData } from './utils';
 
-interface IRoute {
+interface RouteType {
   component: () => JSX.Element;
   path: string;
 }
@@ -27,7 +27,7 @@ export const App = () => {
     }
   }, [dispatch]);
 
-  const renderRoutes = (routes: IRoute[]) => {
+  const renderRoutes = (routes: RouteType[]) => {
     return routes.map(({ path, component: Component }) => (
       <Route key={path} path={path} element={<Component />} />
     ));

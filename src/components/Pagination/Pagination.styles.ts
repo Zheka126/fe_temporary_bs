@@ -36,7 +36,7 @@ export const StyledPagination = styled(ReactPaginate)`
       box-shadow: 0px 2px 10px -3px rgba(0, 0, 0, 0.18);
     }
     &:focus {
-      outline: 1px solid ${({ theme }) => theme.colors.outline};
+      outline: 1px solid ${({ theme }) => theme.colors.gray};
       box-shadow: 0px 5px 15px -3px rgba(0, 0, 0, 0.08);
     }
   }

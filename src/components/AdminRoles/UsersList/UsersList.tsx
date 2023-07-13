@@ -1,51 +1,52 @@
+import { Loader } from "src/components/common/Loader/Loader";
+import { Role } from "src/types/roles";
+
 import {
   AssignButton,
+  ButtonLoaderWrapper,
   RemoveButton,
   StyledUsersList,
-  UserItem,
-  UserItemButtons
+  UserItem
 } from "./UsersList.styles";
 
-const users = [
-  {
-    id: 1,
-    username: "ion",
-    role: "user"
-  },
-  {
-    id: 2,
-    username: "costya",
-    role: "admin"
-  },
-  {
-    id: 3,
-    username: "eugen",
-    role: "admin"
-  },
-  {
-    id: 4,
-    username: "julian",
-    role: "super-admin"
-  }
-];
+interface UsersListProps {
+  roles: Role[];
+  switchRoleLoadingId: string;
+  openModal: (id: string, role: 'Admin' | 'User') => void
+  // updateRole: (id: string, type: 'toAdmin' | 'toUser') => void;
+}
 
-export const UsersList = () => {
+export const UsersList = ({
+  roles,
+  switchRoleLoadingId,
+  openModal,
+  // updateRole
+}: UsersListProps) => {
   return (
     <StyledUsersList>
-      {users.map((user) => {
+      {roles.map(({ id, username, role }) => {
         return (
-          <UserItem key={user.id}>
-            <span>{user.username}</span>
-            <span>{user.role}</span>
-            {user.role === "user" ? (
-              <UserItemButtons>
-                <AssignButton>Assign</AssignButton>
-                <RemoveButton>Remove</RemoveButton>
-              </UserItemButtons>
-            ) : user.role === "admin" ? (
-              <UserItemButtons>
-                <RemoveButton>Remove</RemoveButton>
-              </UserItemButtons>
+          <UserItem key={id}>
+            <span>{username}</span>
+            <span>{role}</span>
+            {switchRoleLoadingId && switchRoleLoadingId === id ? (
+              <ButtonLoaderWrapper>
+                <Loader size="mini" />
+              </ButtonLoaderWrapper>
+            ) : role === "User" ? (
+              <AssignButton
+                disabled={!!switchRoleLoadingId}
+                onClick={() => openModal(id, 'Admin')}
+              >
+                Assign
+              </AssignButton>
+            ) : role === "Admin" ? (
+              <RemoveButton
+                disabled={!!switchRoleLoadingId}
+                onClick={() => openModal(id, 'User')}
+              >
+                Remove
+              </RemoveButton>
             ) : (
               <p>
                 super-admin role cannot be removed, please contact technical

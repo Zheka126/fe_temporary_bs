@@ -6,7 +6,6 @@ export const AdminTabPageContainer = styled.div`
   flex-direction: column;
   height: 100vh;
   width: 100%;
-  padding-top: 20px;
 `;
 
 export const Tabs = styled.div`

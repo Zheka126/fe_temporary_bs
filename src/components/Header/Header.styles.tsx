@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import { styled } from 'styled-components';
 
 export const StyledHeader = styled.header`
   display: flex;
@@ -49,18 +49,17 @@ export const NavBtn = styled.button`
 `;
 
 export const NavBtnWithDropdown = styled(NavBtn)<{ isDropdownShowed: boolean }>`
-  img {
+  svg {
     width: 20px;
     padding: 0 6px;
     transform: ${({ isDropdownShowed }) =>
-      isDropdownShowed ? "rotate(180deg)" : "rotate(0deg)"};
+      isDropdownShowed ? 'rotate(180deg)' : 'rotate(0deg)'};
     transition: transform 0.2s ease-in-out;
   }
 `;
 
-export const Dropdown = styled("ul")<{ isDropdownShowed: boolean }>`
-  display: ${({ isDropdownShowed }) =>
-    isDropdownShowed ? "block" : "none"};
+export const Dropdown = styled('ul')<{ isDropdownShowed: boolean }>`
+  display: ${({ isDropdownShowed }) => (isDropdownShowed ? 'block' : 'none')};
   position: absolute;
   right: -30px;
   width: 150px;

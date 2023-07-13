@@ -1,6 +1,6 @@
-import { ReactComponent as StarIcon } from 'src/assets/star.svg';
+import { ReactComponent as StarIcon } from '/assets/star.svg';
 
-import { StarItem, StarsList } from './Rating.styles';
+import { StarItem, StarsList } from "./Rating.styles";
 
 const stars = Array(5)
   .fill(1)

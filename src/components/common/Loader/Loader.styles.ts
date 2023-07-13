@@ -20,7 +20,7 @@ const loaderSize = (size: LoaderSize) =>
 
 export const Loadercontainer = styled.div`
   ${({ theme }) => theme.flexStyles()}
-`
+`;
 
 export const StyledLoader = styled.span<LoaderProps>`
   width: ${({ size }) => loaderSize(size)};

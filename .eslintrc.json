@@ -33,10 +33,12 @@
     "prettier/prettier": 0,
     "no-param-reassign": 0,
     "endOfLine": 0,
+    "import/no-cycle": 0,
     "react/jsx-props-no-spreading": 0,
     "react/require-default-props": 0,
     "no-nested-ternary": 0,
     "import/no-cycle": 0,
-    "react-hooks/exhaustive-deps": 0
+    "react-hooks/exhaustive-deps": 0,
+    "import/no-absolute-path": 0
   }
 }

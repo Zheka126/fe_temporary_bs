@@ -10,3 +10,9 @@ export const RolesPanel = styled.ul`
   border-bottom: 2px solid black;
   padding-left: 20px;
 `;
+
+export const RequestError = styled.div`
+  text-align: center;
+  font-size: 32px;
+  font-weight: 500;
+`

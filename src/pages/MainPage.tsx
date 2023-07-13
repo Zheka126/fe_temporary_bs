@@ -2,7 +2,7 @@ import debounce from "lodash.debounce";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import { BookFilter } from "src/components/BookFilter/BookFilter";
 import { useAppDispatch, useAppSelector } from "src/redux/hooks";
-import { getBooks } from "src/redux/slices/bookSlice";
+import { getBooksThunk } from "src/redux/slices/bookSlice";
 import { FilterValues } from "src/types/FilterValues";
 
 import { BookList } from "../components/BookList/BookList";
@@ -11,7 +11,8 @@ import { Header } from "../components/Header/Header";
 import { Pagination } from "../components/Pagination/Pagination";
 import {
   MainPageContainer,
-  MainPageContentContainer
+  MainPageContentContainer,
+  NoBooksText
 } from "./styles/MainPage.styles";
 
 const initialState = {
@@ -75,12 +76,13 @@ export const MainPage = () => {
 
   const [filters, dispatchReducer] = useReducer(reducer, initialState);
   const [searchVal, setSearchVal] = useState("");
-  const booksArr = useAppSelector(({ books }) => books.books);
+  
+  const books = useAppSelector((state) => state.books.books);
 
   useEffect(() => {
     (async () => {
       try {
-        await dispatch(getBooks(filters)).unwrap();
+        await dispatch(getBooksThunk(filters)).unwrap();
       } catch (err: any) {
         console.log(err.message);
       }
@@ -133,7 +135,13 @@ export const MainPage = () => {
       <Header />
       <Container>
         <MainPageContentContainer>
-          <BookList books={booksArr} />
+          {
+            books.length
+            ?
+            <BookList books={books} />
+            :
+            <NoBooksText>No books yet 🙁</NoBooksText>
+          }
           <BookFilter
             filters={filters}
             searchTerm={searchVal}

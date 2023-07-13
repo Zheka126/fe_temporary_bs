@@ -1,24 +1,28 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { API } from 'src/api/requests';
-import { BookItem } from 'src/types/BookItem';
-import { FilterValues } from 'src/types/FilterValues';
+import { getBooks } from 'src/api/requests/book';
+import { BookType, FilterValues, GetBooksResponse } from 'src/types/book';
 
-export const getBooks = createAsyncThunk('getBooksThunk', async (filters: FilterValues) => {
-  try {
-    const { data } = await API.getBooks(filters);
-    return data;
-  } catch (err) {
-    throw Error('Something went wrong');
+export const getBooksThunk = createAsyncThunk(
+  'getBooksThunk',
+  async (filters: FilterValues) => {
+    try {
+      const { data } = await getBooks(filters);
+      return data;
+    } catch (err) {
+      throw Error('Something went wrong');
+    }
   }
-});
+);
 
 export interface BookState {
-  books: BookItem[];
+  books: BookType[];
+  totalRecords: number
 }
 
 const initialState: BookState = {
   books: [],
+  totalRecords: 0
 };
 
 export const bookSlice = createSlice({
@@ -29,9 +33,10 @@ export const bookSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(
-      getBooks.fulfilled,
-      (state, action: PayloadAction<BookItem[]>) => {
-        state.books = action.payload;
+      getBooksThunk.fulfilled,
+      (state, action: PayloadAction<GetBooksResponse>) => {
+        state.books = action.payload.data;
+        state.totalRecords = action.payload.totalRecords
       }
     );
   },
