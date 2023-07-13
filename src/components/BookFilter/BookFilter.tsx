@@ -1,4 +1,4 @@
-import { FilterValues } from "src/types/FilterValues";
+import { FilterValues } from 'src/types/book';
 
 import { Rating } from "../Rating/Rating";
 import { CheckboxContainer, GenresContainer, SearchInput } from "./BookFilter.styles";

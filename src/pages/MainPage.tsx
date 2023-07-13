@@ -1,15 +1,17 @@
 import debounce from "lodash.debounce";
 import { useCallback, useEffect, useReducer, useState } from "react";
+import { Loader } from "src/components";
 import { BookFilter } from "src/components/BookFilter/BookFilter";
 import { useAppDispatch, useAppSelector } from "src/redux/hooks";
 import { getBooksThunk } from "src/redux/slices/bookSlice";
-import { FilterValues } from 'src/types/book';
+import { FilterValues } from "src/types/book";
 
 import { BookList } from "../components/BookList/BookList";
 import { Container } from "../components/common/Container.styles";
 import { Header } from "../components/Header/Header";
 import { Pagination } from "../components/Pagination/Pagination";
 import {
+  BooksLoaderContainer,
   MainPageContainer,
   MainPageContentContainer,
   NoBooksText
@@ -27,7 +29,7 @@ const initialState = {
     mystery: false,
     science_fiction: false,
     fantasy: false,
-    dystopian: false,
+    dystopian: false
   },
   status: { free: false, busy: false },
   selectedRating: null,
@@ -76,15 +78,22 @@ export const MainPage = () => {
 
   const [filters, dispatchReducer] = useReducer(reducer, initialState);
   const [searchVal, setSearchVal] = useState("");
-  
-  const books = useAppSelector((state) => state.books.books);
+
+const { booksArr: books, booksTotalRecords } = useAppSelector((state) => ({
+  booksArr: state.books.books,
+  booksTotalRecords: state.books.totalRecords
+}));
+  const [booksLoading, setBooksLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
       try {
+        setBooksLoading(true);
         await dispatch(getBooksThunk(filters)).unwrap();
       } catch (err: any) {
         console.log(err.message);
+      } finally {
+        setBooksLoading(false);
       }
     })();
   }, [dispatch, filters]);
@@ -122,38 +131,41 @@ export const MainPage = () => {
   };
 
   const setRating = (rate: number) => {
-    const rating = rate === 1 && filters.selectedRating === 1 ? null : rate
+    const rating = rate === 1 && filters.selectedRating === 1 ? null : rate;
     dispatchReducer({ type: "rating", rating });
   };
 
   const setCurrentPage = (page: number) => {
     dispatchReducer({ type: "pagination", page });
   };
-  
+
   return (
     <MainPageContainer>
       <Header />
-      <Container>
-        <MainPageContentContainer>
-          {
-            books.length
-            ?
-            <BookList books={books} />
-            :
-            <NoBooksText>No books yet 🙁</NoBooksText>
-          }
-          <BookFilter
-            filters={filters}
-            searchTerm={searchVal}
-            setSearchValue={onHandleSearchValue}
-            setCheckboxValue={setCheckboxValue}
-            setRating={setRating}
-          />
-        </MainPageContentContainer>
-      </Container>
+      {booksLoading ? (
+        <BooksLoaderContainer>
+          <Loader size="big" />
+        </BooksLoaderContainer>
+      ) : (
+          <Container>
+            <MainPageContentContainer>
+              {books.length ? (
+                <BookList books={books} />
+              ) : (
+                <NoBooksText>No books yet 🙁</NoBooksText>
+              )}
+              <BookFilter
+                filters={filters}
+                searchTerm={searchVal}
+                setSearchValue={onHandleSearchValue}
+                setCheckboxValue={setCheckboxValue}
+                setRating={setRating}
+              />
+            </MainPageContentContainer>
+          </Container>
+      )}
       <Pagination
-        // pageCount={Math.ceil(booksArr.length / 12)}
-        pageCount={20}
+        pageCount={Math.ceil(booksTotalRecords / 12)}
         currentPage={filters.currentPage}
         setCurrentPage={(page) => setCurrentPage(page)}
       />

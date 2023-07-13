@@ -17,3 +17,9 @@ export interface UserTokenData {
   role: string;
   nameid: string;
 }
+
+export interface UserData {
+  userName: string;
+  role: string;
+  userId: string;
+}

@@ -5,7 +5,7 @@ import { instance } from '../instance';
 const endpoint = '/books';
 
 export const getBooks = (filters: FilterValues) => {
-  const { search, genre, status, selectedRating, currentPage } = filters;
+  const { status, selectedRating, currentPage } = filters;
   // const selectedGenres = Object.keys(genre).filter((key) => genre[key]);
   const Availability = Object.keys(status).filter((key) => status[key]);
 

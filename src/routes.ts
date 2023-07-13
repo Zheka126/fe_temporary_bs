@@ -9,12 +9,6 @@ export const openRoutes = [
 ];
 
 export const privateRoutes = [
-  {
-    component: MainPage,
-    path: '/main',
-  },
-  {
-    component: AdminTabPage,
-    path: '/admin_tab/*',
-  },
+  { component: MainPage, path: '/main' },
+  { component: AdminTabPage, path: '/admin_tab/*' },
 ];
