@@ -79,11 +79,11 @@ export const MainPage = () => {
   const [filters, dispatchReducer] = useReducer(reducer, initialState);
   const [searchVal, setSearchVal] = useState("");
 
-const { booksArr: books, booksTotalRecords } = useAppSelector((state) => ({
-  booksArr: state.books.books,
-  booksTotalRecords: state.books.totalRecords
-}));
-  const [booksLoading, setBooksLoading] = useState(false);
+  const { booksArr: books, booksTotalRecords } = useAppSelector((state) => ({
+    booksArr: state.books.books,
+    booksTotalRecords: state.books.totalRecords
+  }));
+  const [booksLoading, setBooksLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -142,28 +142,26 @@ const { booksArr: books, booksTotalRecords } = useAppSelector((state) => ({
   return (
     <MainPageContainer>
       <Header />
-      {booksLoading ? (
-        <BooksLoaderContainer>
-          <Loader size="big" />
-        </BooksLoaderContainer>
-      ) : (
-          <Container>
-            <MainPageContentContainer>
-              {books.length ? (
-                <BookList books={books} />
-              ) : (
-                <NoBooksText>No books yet 🙁</NoBooksText>
-              )}
-              <BookFilter
-                filters={filters}
-                searchTerm={searchVal}
-                setSearchValue={onHandleSearchValue}
-                setCheckboxValue={setCheckboxValue}
-                setRating={setRating}
-              />
-            </MainPageContentContainer>
-          </Container>
-      )}
+      <Container test-id="dd">
+        <MainPageContentContainer>
+          {booksLoading ? (
+            <BooksLoaderContainer>
+              <Loader size="big" />
+            </BooksLoaderContainer>
+          ) : books.length ? (
+            <BookList books={books} />
+          ) : (
+            <NoBooksText>No books yet 🙁</NoBooksText>
+          )}
+          <BookFilter
+            filters={filters}
+            searchTerm={searchVal}
+            setSearchValue={onHandleSearchValue}
+            setCheckboxValue={setCheckboxValue}
+            setRating={setRating}
+          />
+        </MainPageContentContainer>
+      </Container>
       <Pagination
         pageCount={Math.ceil(booksTotalRecords / 12)}
         currentPage={filters.currentPage}
