@@ -16,3 +16,6 @@ export const RequestError = styled.div`
   font-size: 32px;
   font-weight: 500;
 `
+export const RolesLoaderContainer = styled.div`
+  margin-top: 100px;
+`
