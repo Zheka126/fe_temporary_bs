@@ -1,14 +1,14 @@
-import debounce from "lodash.debounce";
-import { useCallback, useEffect, useReducer, useState } from "react";
-import { BookFilter } from "src/components/BookFilter/BookFilter";
-import { useAppDispatch, useAppSelector } from "src/redux/hooks";
-import { getBooksThunk } from "src/redux/slices/bookSlice";
-import { FilterValues } from "src/types/FilterValues";
+import debounce from 'lodash.debounce';
+import { useCallback, useEffect, useReducer, useState } from 'react';
+import { BookFilter } from 'src/components/BookFilter/BookFilter';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { getBooksThunk } from 'src/redux/slices/bookSlice';
+import { FilterValues } from 'src/types/book';
 
-import { BookList } from "../components/BookList/BookList";
-import { Container } from "../components/common/Container.styles";
-import { Header } from "../components/Header/Header";
-import { Pagination } from "../components/Pagination/Pagination";
+import { BookList } from '../components/BookList/BookList';
+import { Container } from '../components/common/Container.styles';
+import { Header } from '../components/Header/Header';
+import { Pagination } from '../components/Pagination/Pagination';
 import {
   MainPageContainer,
   MainPageContentContainer,
@@ -16,7 +16,7 @@ import {
 } from "./styles/MainPage.styles";
 
 const initialState = {
-  search: "",
+  search: '',
   genre: {
     fiction: false,
     adventure: false,
@@ -31,39 +31,39 @@ const initialState = {
   },
   status: { free: false, busy: false },
   selectedRating: null,
-  currentPage: 1
+  currentPage: 1,
 };
 
 type Action =
-  | { type: "search"; value: string }
-  | { type: "genre"; genre: string; isChecked: boolean }
-  | { type: "status"; status: "free" | "busy"; isChecked: boolean }
-  | { type: "rating"; rating: number | null }
-  | { type: "pagination"; page: number };
+  | { type: 'search'; value: string }
+  | { type: 'genre'; genre: string; isChecked: boolean }
+  | { type: 'status'; status: 'free' | 'busy'; isChecked: boolean }
+  | { type: 'rating'; rating: number | null }
+  | { type: 'pagination'; page: number };
 
 const reducer = (state: FilterValues, action: Action) => {
   switch (action.type) {
-    case "search":
+    case 'search':
       return { ...state, search: action.value };
 
-    case "genre": {
+    case 'genre': {
       return {
         ...state,
-        genre: { ...state.genre, [action.genre]: action.isChecked }
+        genre: { ...state.genre, [action.genre]: action.isChecked },
       };
     }
 
-    case "status": {
+    case 'status': {
       return {
         ...state,
-        status: { ...state.status, [action.status]: action.isChecked }
+        status: { ...state.status, [action.status]: action.isChecked },
       };
     }
 
-    case "rating":
+    case 'rating':
       return { ...state, selectedRating: action.rating };
 
-    case "pagination":
+    case 'pagination':
       return { ...state, currentPage: action.page };
 
     default:
@@ -91,7 +91,7 @@ export const MainPage = () => {
 
   const debouncedSearch = useCallback(
     debounce((value: string) => {
-      dispatchReducer({ type: "search", value });
+      dispatchReducer({ type: 'search', value });
     }, 700),
     []
   );
@@ -102,34 +102,34 @@ export const MainPage = () => {
   };
 
   const setCheckboxValue = (
-    type: "genre" | "status",
+    type: 'genre' | 'status',
     key: string,
     isChecked: boolean
   ) => {
-    if (type === "genre") {
+    if (type === 'genre') {
       dispatchReducer({
-        type: "genre",
+        type: 'genre',
         genre: key,
-        isChecked
+        isChecked,
       });
-    } else if (type === "status") {
+    } else if (type === 'status') {
       dispatchReducer({
-        type: "status",
-        status: key as "free" | "busy",
-        isChecked
+        type: 'status',
+        status: key as 'free' | 'busy',
+        isChecked,
       });
     }
   };
 
   const setRating = (rate: number) => {
-    const rating = rate === 1 && filters.selectedRating === 1 ? null : rate
-    dispatchReducer({ type: "rating", rating });
+    const rating = rate === 1 && filters.selectedRating === 1 ? null : rate;
+    dispatchReducer({ type: 'rating', rating });
   };
 
   const setCurrentPage = (page: number) => {
-    dispatchReducer({ type: "pagination", page });
+    dispatchReducer({ type: 'pagination', page });
   };
-  
+
   return (
     <MainPageContainer>
       <Header />
