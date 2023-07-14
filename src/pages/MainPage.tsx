@@ -1,29 +1,28 @@
-import debounce from "lodash.debounce";
-import { useCallback, useEffect, useReducer, useState } from "react";
-import { Loader } from "src/components";
-import { BookFilter } from "src/components/BookFilter/BookFilter";
-import { useAppDispatch, useAppSelector } from "src/redux/hooks";
-import { getBooksThunk } from "src/redux/slices/bookSlice";
-import { getGenresThunk } from "src/redux/slices/genresSlice";
-import { FilterValues } from "src/types/book";
+import debounce from 'lodash.debounce';
+import { useCallback, useEffect, useReducer, useState } from 'react';
+import { Loader } from 'src/components';
+import { BookFilter } from 'src/components/BookFilter/BookFilter';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { getBooksThunk } from 'src/redux/slices/bookSlice';
+import { getGenresThunk } from 'src/redux/slices/genresSlice';
+import { FilterValues } from 'src/types/book';
 
-import { BookList } from "../components/BookList/BookList";
-import { Container } from "../components/common/Container.styles";
-import { Header } from "../components/Header/Header";
-import { Pagination } from "../components/Pagination/Pagination";
+import { BookList } from '../components/BookList/BookList';
+import { Container } from '../components/common/Container.styles';
+import { Pagination } from '../components/Pagination/Pagination';
 import {
   BooksLoaderContainer,
   MainPageContainer,
   MainPageContentContainer,
-  NoBooksText
-} from "./styles/MainPage.styles";
+  NoBooksText,
+} from './styles/MainPage.styles';
 
 const initialState = {
   search: [],
   genre: [],
   status: [],
   selectedRating: null,
-  currentPage: 1
+  currentPage: 1,
 };
 
 type Action =
@@ -38,29 +37,33 @@ const reducer = (state: FilterValues, action: Action) => {
     case "search":
       return { ...state, search: action.search };
 
-    case "genre": {
-      const selectedGenre = action.genre
-      const updatedGenres = state.genre.includes(selectedGenre) ? state.genre.filter(genre => genre !== selectedGenre) : [...state.genre, selectedGenre]
-      
+    case 'genre': {
+      const selectedGenre = action.genre;
+      const updatedGenres = state.genre.includes(selectedGenre)
+        ? state.genre.filter((genre) => genre !== selectedGenre)
+        : [...state.genre, selectedGenre];
+
       return {
         ...state,
-        genre: updatedGenres
-      };
-    }
-    
-    case "status": {
-      const selectedStatus = action.status
-      const updatedStatus = state.status.includes(selectedStatus) ? state.status.filter(status => status !== selectedStatus) : [...state.status, selectedStatus]
-      return {
-        ...state,
-        status: updatedStatus
+        genre: updatedGenres,
       };
     }
 
-    case "rating":
+    case 'status': {
+      const selectedStatus = action.status;
+      const updatedStatus = state.status.includes(selectedStatus)
+        ? state.status.filter((status) => status !== selectedStatus)
+        : [...state.status, selectedStatus];
+      return {
+        ...state,
+        status: updatedStatus,
+      };
+    }
+
+    case 'rating':
       return { ...state, selectedRating: action.rating };
 
-    case "pagination":
+    case 'pagination':
       return { ...state, currentPage: action.page };
 
     default:
@@ -74,10 +77,14 @@ export const MainPage = () => {
   const [filters, dispatchReducer] = useReducer(reducer, initialState);
   const [searchVal, setSearchVal] = useState("");
 
-  const { booksArr: books, booksTotalRecords, genres } = useAppSelector((state) => ({
+  const {
+    booksArr: books,
+    booksTotalRecords,
+    genres,
+  } = useAppSelector((state) => ({
     booksArr: state.books.books,
     booksTotalRecords: state.books.totalRecords,
-    genres: state.genres.genres
+    genres: state.genres.genres,
   }));
   const [booksLoading, setBooksLoading] = useState(true);
 
@@ -118,19 +125,16 @@ const foundBookIdsArr = value ? genres
   debouncedSearch( foundBookIdsArr);
   };
 
-  const setCheckboxValue = (
-    type: "genre" | "status",
-    key: string,
-  ) => {
-    if (type === "genre") {
-      const genreId = genres.find(genre => genre.name === key)?.id
+  const setCheckboxValue = (type: 'genre' | 'status', key: string) => {
+    if (type === 'genre') {
+      const genreId = genres.find((genre) => genre.name === key)?.id;
       dispatchReducer({
-        type: "genre",
+        type: 'genre',
         genre: genreId!,
       });
-    } else if (type === "status") {
+    } else if (type === 'status') {
       dispatchReducer({
-        type: "status",
+        type: 'status',
         status: key,
       });
     }
@@ -138,11 +142,11 @@ const foundBookIdsArr = value ? genres
 
   const setRating = (rate: number) => {
     const rating = rate === 1 && filters.selectedRating === 1 ? null : rate;
-    dispatchReducer({ type: "rating", rating });
+    dispatchReducer({ type: 'rating', rating });
   };
 
   const setCurrentPage = (page: number) => {
-    dispatchReducer({ type: "pagination", page });
+    dispatchReducer({ type: 'pagination', page });
   };
 
   return (

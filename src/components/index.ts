@@ -1,4 +1,5 @@
 import { AuthLayout } from './AuthLayout/AuthLayout';
+import { BookDetails } from './BookDetails/BookDetails';
 import { BookList } from './BookList/BookList';
 import { Button } from './common/Button/Button';
 import { Loader } from './common/Loader/Loader';
@@ -9,6 +10,7 @@ import { SignupForm } from './SignupForm/SignupForm';
 
 export {
   AuthLayout,
+  BookDetails,
   BookList,
   Button,
   Header,

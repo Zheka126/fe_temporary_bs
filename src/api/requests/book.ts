@@ -1,4 +1,4 @@
-import { BookType, FilterValues, GetBooksResponse } from 'src/types/book';
+import { BookDetailsType, BookType, FilterValues, GetBooksResponse } from 'src/types/book';
 
 import { instance } from '../instance';
 
@@ -25,11 +25,11 @@ export const getBooks = (filters: FilterValues) => {
 export const addNewBook = (book: BookType) =>
   instance.post<BookType>(endpoint, book);
 
-export const getBookById = (id: string) =>
-  instance.get<BookType>(`/${endpoint}/${id}`);
+export const getBookById = (id: string | undefined) =>
+  instance.get<BookDetailsType>(`${endpoint}/${id}`);
 
-export const updateBook = (id: string, book: BookType) =>
-  instance.put<BookType>(`/${endpoint}/${id})`, book);
+export const updateBook = (id: string | undefined, book: BookDetailsType | undefined) =>
+  instance.put<BookDetailsType>(`${endpoint}/${id})`, book);
 
-export const deleteBook = (id: string) =>
-  instance.delete<BookType>(`/${endpoint}/${id}`);
+export const deleteBook = (id: string | undefined) =>
+  instance.delete(`${endpoint}/${id}`);

@@ -1,4 +1,5 @@
 import { AdminTabPage } from './pages/AdminTabPage';
+import { BookDetailsPage } from './pages/BookDetailsPage';
 import { LoginPage } from './pages/LoginPage';
 import { MainPage } from './pages/MainPage';
 import { RegistrationPage } from './pages/RegistrationPage';
@@ -10,5 +11,6 @@ export const openRoutes = [
 
 export const privateRoutes = [
   { component: MainPage, path: '/main' },
+  { component: BookDetailsPage, path: '/books/:id' },
   { component: AdminTabPage, path: '/admin_tab/*' },
 ];

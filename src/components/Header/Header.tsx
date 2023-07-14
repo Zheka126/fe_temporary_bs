@@ -48,30 +48,37 @@ export const Header = () => {
   }, []);
 
   return (
-   <>
-    <StyledHeader>
-      <Link to="/Catalog">
-        <img src={logo} alt="Endava Logo" />
-      </Link>
-      <BtnsContainer data-testid="buttons-container">
-        <NavBtn>
-          <Link to="/Catalog" data-testid="catalog-link">
-            Catalog
-          </Link>
-        </NavBtn>
-        <NavBtnWithDropdown
-          className="active"
-          isDropdownShowed={isDropdownOpen}
-        >
-          <NavBtn ref={navBtnRef} onClick={toggleDropdown}>
-            {user?.userName}
-            <ArrowDownIcon />
+    <>
+      <StyledHeader data-testid="header">
+        <Link to="/Catalog" data-testid="logo-link">
+          <img src={logo} alt="Endava Logo" />
+        </Link>
+        <BtnsContainer data-testid="buttons-container">
+          <NavBtn>
+            <Link to="/main" data-testid="catalog-link">
+              Catalog
+            </Link>
           </NavBtn>
-          {isDropdownOpen && <Dropdown dropdownRef={dropdownRef} />}
-        </NavBtnWithDropdown>
-      </BtnsContainer>
-    </StyledHeader>
-    <Outlet />
-   </>
+          <NavBtnWithDropdown
+            className="active"
+            isDropdownShowed={isDropdownOpen}
+            data-testid="dropdown-button"
+          >
+            <NavBtn
+              ref={navBtnRef}
+              onClick={toggleDropdown}
+              data-testid="nav-button-toggle"
+            >
+              {user?.userName}
+              <ArrowDownIcon />
+            </NavBtn>
+            {isDropdownOpen && (
+              <Dropdown dropdownRef={dropdownRef} data-testid="dropdown" />
+            )}
+          </NavBtnWithDropdown>
+        </BtnsContainer>
+      </StyledHeader>
+      <Outlet />
+    </>
   );
 };
