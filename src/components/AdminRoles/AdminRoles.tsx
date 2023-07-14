@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "src/redux/hooks";
 import { getRolesThunk, updateRoleThunk } from "src/redux/slices/rolesSlice";
-import { Role, UpdateRoleRequest } from "src/types/roles";
+import { AvailableRoles, Role, UpdateRoleRequest } from "src/types/roles";
 
 import { Loader } from "../common/Loader/Loader";
 import { Modal } from "../Modal/Modal";
@@ -48,7 +48,7 @@ export const AdminRoles = ({ roles, currentPage }: AdminRolesProps) => {
     })();
   }, [currentPage]);
 
-  const openModal = (userId: string, role: "Admin" | "User") => {
+  const openModal = (userId: string, role: AvailableRoles) => {
     setModalOpen(true);
     setUpdateRoleData({ userId, role });
   };
