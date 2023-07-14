@@ -49,7 +49,7 @@ export const Header = () => {
 
   return (
     <StyledHeader>
-      <Link to="/Catalog">
+      <Link to="/main">
         <img src={logo} alt="Endava Logo" />
       </Link>
       <BtnsContainer data-testid="buttons-container">

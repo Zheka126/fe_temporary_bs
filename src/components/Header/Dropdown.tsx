@@ -14,15 +14,15 @@ export const Dropdown = ({ dropdownRef }: DropdownProps) => {
   return (
     <StyledDropdown ref={dropdownRef}>
       <li>
-        <Link to="/Profile">My profile</Link>
+        <Link to="/profile">My profile</Link>
       </li>
       {user?.role === 'Admin' && (
         <li>
-          <Link to="/Admin">Admin</Link>
+          <Link to="/admin">Admin</Link>
         </li>
       )}
       <li>
-        <Link to="/SignOut">Sign out</Link>
+        <Link to="/signOut">Sign out</Link>
       </li>
     </StyledDropdown>
   );

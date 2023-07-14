@@ -1,6 +1,7 @@
-import { AdminTabPage } from './pages/AdminTabPage';
+import { AdminPage } from './pages/AdminPage';
 import { LoginPage } from './pages/LoginPage';
 import { MainPage } from './pages/MainPage';
+import { ProfilePage } from './pages/ProfilePage';
 import { RegistrationPage } from './pages/RegistrationPage';
 
 export const openRoutes = [
@@ -10,5 +11,6 @@ export const openRoutes = [
 
 export const privateRoutes = [
   { component: MainPage, path: '/main' },
-  { component: AdminTabPage, path: '/admin_tab/*' },
+  { component: ProfilePage, path: '/profile/*' },
+  { component: AdminPage, path: '/admin/*' },
 ];

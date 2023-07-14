@@ -3,7 +3,7 @@ import { ProfileType } from 'src/types/profile';
 import { instance } from '../instance';
 
 const endpoint = '/profile';
-type Items = 'books' | 'assignments';
+type Items = 'books' | 'assignments' | 'wantedbooks';
 
 export const getCurrentProfile = () => instance.get<ProfileType>(endpoint);
 
