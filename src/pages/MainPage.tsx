@@ -146,8 +146,7 @@ console.log(filters.genre);
 
   return (
     <MainPageContainer>
-      <Header />
-      <Container test-id="dd">
+      <Container>
         <MainPageContentContainer>
           {booksLoading ? (
             <BooksLoaderContainer>

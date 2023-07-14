@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider } from 'styled-components';
 
+import { Header } from './components';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { isAuthSelector, setUser } from './redux/slices/authSlice';
 import { openRoutes, privateRoutes } from './routes';
-import { theme } from "./theme";
+import { theme } from './theme';
 import { getUserTokenData } from './utils';
 
 interface RouteType {
@@ -18,7 +19,7 @@ export const App = () => {
   const isAuth = useAppSelector(isAuthSelector);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (token) {
       const user = getUserTokenData(token);
 
@@ -37,7 +38,9 @@ export const App = () => {
       <Routes>
         {renderRoutes(openRoutes)}
 
-        {isAuth ? renderRoutes(privateRoutes) : null}
+        <Route path="/" element={<Header />}>
+          {isAuth ? renderRoutes(privateRoutes) : null}
+        </Route>
       </Routes>
     </ThemeProvider>
   );
