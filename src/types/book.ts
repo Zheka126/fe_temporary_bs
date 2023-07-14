@@ -10,7 +10,7 @@ export interface BookType {
 }
 
 export interface FilterValues {
-  search: string;
+  search: string[];
   genre: string[];
   status: string[]
   selectedRating: number | null;

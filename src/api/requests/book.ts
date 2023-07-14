@@ -5,16 +5,18 @@ import { instance } from '../instance';
 const endpoint = '/books';
 
 export const getBooks = (filters: FilterValues) => {
-  const { status, selectedRating, currentPage } = filters;
+  const { genre, search, status, selectedRating, currentPage } = filters;
   // const selectedGenres = Object.keys(genre).filter((key) => genre[key]);
-  const Availability = Object.keys(status).filter((key) => status[key]);
+  // const Availability = Object.keys(status).filter((key) => status[key]);
 
   return instance.get<GetBooksResponse>(endpoint, {
     params: {
       // Pagination.PageSize=
-      ...(currentPage !== 1 ? { 'Pagination.Page': currentPage } : {}),
-      ...(status ? { Availability } : {}),
+      ...(search.length ? { Genre: search } : {}),
+      ...(genre.length ? { Genre: genre } : {}),
+      ...(status.length ? { Availability: status } : {}),
       ...(selectedRating ? { Rating: selectedRating } : {}),
+      ...(currentPage !== 1 ? { 'Pagination.Page': currentPage } : {}),
     },
     // paramsSerializer: { indexes: null },
   });
