@@ -19,10 +19,6 @@ interface RouteProps {
   component: () => JSX.Element;
 }
 
-const createRoute = ({ path, component }: RouteProps) => {
-  return <Route key={path} path={path} element={component()} />;
-};
-
 export const App = () => {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(isAuthSelector);
