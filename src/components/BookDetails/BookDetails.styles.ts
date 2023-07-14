@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { StyledInput } from '../common/common.styles';
+import { StyledInput } from '../common/Input.styles';
 
 export const BookDetailsContainer = styled.div`
   display: flex;

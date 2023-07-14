@@ -1,12 +1,14 @@
 export interface BookDetailsType {
-  img: string;
+  id: string | undefined;
+  imageSrc: string;
   title: string;
-  author: string;
+  authors: string[];
+  canBorrow: boolean;
   genres: string[];
   uploadedBy: string;
   publicationDate: string;
   language: string;
-  description: string;
+  // description: string;
   availability: string;
 }
 
@@ -23,12 +25,8 @@ export interface BookType {
 
 export interface FilterValues {
   search: string;
-  genre: {
-    [key: string]: boolean;
-  };
-  status: {
-    [key: string]: boolean;
-  };
+  genre: string[];
+  status: string[]
   selectedRating: number | null;
   currentPage: number;
 }

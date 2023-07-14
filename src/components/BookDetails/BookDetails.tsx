@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { StatusCodes } from 'src/api/constants';
-import { deleteBook, updateBook } from 'src/api/requests/book';
+import { baseURL, StatusCodes } from 'src/api/constants';
+import { deleteBook, getBookById, updateBook } from 'src/api/requests/book';
+import { getProfileItems } from 'src/api/requests/profile';
 import { BookDetailsType } from 'src/types/book';
 
 import { Button } from '../common/Button/Button';
@@ -17,7 +18,6 @@ import {
   BookDetailsSection,
   BookGenre,
   Details,
-  EditInput,
   StyledModalContent,
 } from './BookDetails.styles';
 
@@ -26,14 +26,16 @@ export const BookDetails = () => {
   const navigate = useNavigate();
 
   const initialValues = {
-    img: '',
+    id,
+    imageSrc: '',
     title: '',
-    author: '',
+    authors: [],
+    canBorrow: true,
     genres: [],
     uploadedBy: '',
     publicationDate: '',
     language: '',
-    description: '',
+    // description: '',
     availability: '',
   };
 
@@ -44,8 +46,8 @@ export const BookDetails = () => {
   const createEditInput = (inputId: string, label: string) => (
     <InputContainer>
       <label htmlFor={inputId}>{label}</label>
-      <EditInput id={inputId} value={bookDetails[inputId]} 
-      onChange={(event: KeyboardEvent) => setBookDetails({...bookDetails, bookDetails[inputId]: event.target.value})} />
+      {/* <EditInput id={inputId} value={bookDetails[inputId]} */}
+      {/* onChange={(event: KeyboardEvent) => setBookDetails({...bookDetails, bookDetails[inputId]: event.target.value})} /> */}
     </InputContainer>
   );
 
@@ -83,29 +85,29 @@ export const BookDetails = () => {
     }
   };
 
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const { status, data } = await getBookById(id);
-  //       console.log('data: ', data);
+  useEffect(() => {
+    (async () => {
+      try {
+        const { status, data } = await getBookById(id);
+        console.log('data: ', data);
 
-  //       // do we even need to check status?
-  //       // because the async function fires error and the next code won't work
-  //       if (status === StatusCodes.SUCCESS) {
-  //         setBookDetails(data);
+        // do we even need to check status?
+        // because the async function fires error and the next code won't work
+        if (status === StatusCodes.SUCCESS) {
+          setBookDetails(data);
 
-  //         const { status: assignmentsStatus, data: assignmentsData } =
-  //           await getProfileItems('assignments');
+          const { status: assignmentsStatus, data: assignmentsData } =
+            await getProfileItems('assignments');
 
-  //         if (assignmentsStatus === StatusCodes.SUCCESS) {
-  //           setAssignments(assignmentsData);
-  //         }
-  //       }
-  //     } catch (error: any) {
-  //       console.log('Error:', error.message);
-  //     }
-  //   })();
-  // }, [id]);
+          if (assignmentsStatus === StatusCodes.SUCCESS) {
+            setAssignments(assignmentsData);
+          }
+        }
+      } catch (error: any) {
+        console.log('Error:', error.message);
+      }
+    })();
+  }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modal, setModal] = useState({ modalTitle: '', actionType: '' });
@@ -167,7 +169,7 @@ export const BookDetails = () => {
 
   const handleConfirm = async () => {
     if (modal.actionType === 'delete') {
-      fethcDeletingBook();
+       await fethcDeletingBook();
     } else {
       fetchUpdatingBook();
     }
@@ -177,15 +179,16 @@ export const BookDetails = () => {
   return (
     <BookDetailsContainer>
       <BookCoverSection>
-        <img src={bookDetails.img} alt="book cover" />
+        {/* <img src={bookDetails.img} alt="book cover" /> */}
+        <img src={`${baseURL}/${bookDetails.imageSrc}`} alt="book cover" />
       </BookCoverSection>
       <BookDetailsSection>
         <h1>{bookDetails.title}</h1>
         <Details>
           <div>
-            <BookDetail title="Author" value={bookDetails.author} />
+            <BookDetail title="Author" value={bookDetails.authors.join(' ')} />
             <BookDetail title="Genres" value={genreElements} />
-            <BookDetail title="Description" value={bookDetails.description} />
+            {/* <BookDetail title="Description" value={bookDetails.description} /> */}
           </div>
 
           <div>
@@ -198,7 +201,7 @@ export const BookDetails = () => {
             <BookDetail title="Availability" value={bookDetails.availability} />
           </div>
         </Details>
-        {mockUser.books.includes(bookDetails.title) && (
+        {/* {mockUser.books.includes(bookDetails.title) && ( */}
           <ButtonsContainer>
             <Button title="Edit" onClick={openEditModal} />
             <Button title="Delete" onClick={openDeleteModal} />
@@ -208,7 +211,7 @@ export const BookDetails = () => {
               disabled={assignments.length > 2}
             />
           </ButtonsContainer>
-        )}
+        {/* )} */}
       </BookDetailsSection>
       <Modal
         isOpen={isModalOpen}

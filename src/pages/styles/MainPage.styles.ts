@@ -12,6 +12,13 @@ export const MainPageContentContainer = styled.div`
 `;
 
 export const NoBooksText = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 32px;
   font-weight: 500;
+`;
+
+export const BooksLoaderContainer = styled.div`
+  margin-top: 50px;
 `

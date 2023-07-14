@@ -17,12 +17,12 @@ export const getBooksThunk = createAsyncThunk(
 
 export interface BookState {
   books: BookType[];
-  totalRecords: number
+  totalRecords: number;
 }
 
 const initialState: BookState = {
   books: [],
-  totalRecords: 0
+  totalRecords: 0,
 };
 
 export const bookSlice = createSlice({
@@ -36,7 +36,7 @@ export const bookSlice = createSlice({
       getBooksThunk.fulfilled,
       (state, action: PayloadAction<GetBooksResponse>) => {
         state.books = action.payload.data;
-        state.totalRecords = action.payload.totalRecords
+        state.totalRecords = action.payload.totalRecords;
       }
     );
   },

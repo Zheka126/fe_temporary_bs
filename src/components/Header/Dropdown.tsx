@@ -1,8 +1,8 @@
-import { RefObject } from 'react';
-import { Link } from 'react-router-dom';
-import { useAppSelector } from 'src/redux/hooks';
+import { RefObject } from "react";
+import { Link } from "react-router-dom";
+import { useAppSelector } from "src/redux/hooks";
 
-import { StyledDropdown } from './Header.styles';
+import { StyledDropdown } from "./Header.styles";
 
 interface DropdownProps {
   dropdownRef: RefObject<HTMLUListElement>;
@@ -16,9 +16,9 @@ export const Dropdown = ({ dropdownRef }: DropdownProps) => {
       <li>
         <Link to="/Profile">My profile</Link>
       </li>
-      {user?.role === 'Admin' && (
+      {(user?.role === "Admin" || user?.role === "SuperAdmin") && (
         <li>
-          <Link to="/Admin">Admin</Link>
+          <Link to="/admin_tab/roles">Admin</Link>
         </li>
       )}
       <li>

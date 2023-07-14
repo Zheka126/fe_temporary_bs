@@ -36,13 +36,15 @@ const tabLinks = [
 export const AdminTabPage = () => {
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
-  const { roles, totalRoleRecords } = useAppSelector(({ role }) => ({
-    roles: role.roles,
-    totalRoleRecords: role.totalRecords
-  }));
+  const { roles, totalRoleRecords } = useAppSelector(
+    ({ role }) => ({
+      roles: role.roles,
+      totalRoleRecords: role.totalRecords,
+    })
+  );
 
-  const assignments = 25
-  const reviews = 46
+  const assignments = 25;
+  const reviews = 46;
 
   const currentlyViewedPage =
     location.pathname === "/admin_tab/roles"
@@ -56,8 +58,7 @@ export const AdminTabPage = () => {
       ? totalRoleRecords
       : currentlyViewedPage === "assignments"
       ? assignments
-      : reviews
-    ) / 12
+      : reviews) / 12
   );
 
   return (
@@ -78,7 +79,11 @@ export const AdminTabPage = () => {
         </Tabs>
 
         <Routes>
-          <Route index path="roles" element={<AdminRoles roles={roles} currentPage={currentPage}/>} />
+          <Route
+            index
+            path="roles"
+            element={<AdminRoles roles={roles} currentPage={currentPage} />}
+          />
           <Route path="assignments" element={<AdminAssignments />} />
           <Route path="reviews" element={<AdminReviews />} />
         </Routes>

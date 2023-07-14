@@ -52,6 +52,8 @@ export const NavBtn = styled.button`
 `;
 
 export const NavBtnWithDropdown = styled.div<{ isDropdownShowed: boolean }>`
+display: flex;
+align-items: center;
   svg {
     width: 20px;
     padding: 0 6px;
@@ -63,6 +65,7 @@ export const NavBtnWithDropdown = styled.div<{ isDropdownShowed: boolean }>`
 
 export const StyledDropdown = styled.ul`
   position: absolute;
+  top: 70px;
   width: 150px;
   margin: 0;
   padding: 10px 0;

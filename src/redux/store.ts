@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import authReducer from './slices/authSlice';
 import bookReducer from './slices/bookSlice';
+import genresReducer from './slices/genresSlice';
 import roleReducer from './slices/rolesSlice';
 
 export const store = configureStore({
@@ -9,6 +10,7 @@ export const store = configureStore({
     auth: authReducer,
     books: bookReducer,
     role: roleReducer,
+    genres: genresReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
