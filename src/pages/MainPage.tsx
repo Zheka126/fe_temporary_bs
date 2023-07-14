@@ -18,7 +18,7 @@ import {
 } from './styles/MainPage.styles';
 
 const initialState = {
-  search: '',
+  search: [],
   genre: [],
   status: [],
   selectedRating: null,
@@ -26,16 +26,16 @@ const initialState = {
 };
 
 type Action =
-  | { type: 'search'; value: string }
-  | { type: 'genre'; genre: string }
-  | { type: 'status'; status: string }
-  | { type: 'rating'; rating: number | null }
-  | { type: 'pagination'; page: number };
+  | { type: "search"; search: string[] }
+  | { type: "genre"; genre: string }
+  | { type: "status"; status: string }
+  | { type: "rating"; rating: number | null }
+  | { type: "pagination"; page: number };
 
 const reducer = (state: FilterValues, action: Action) => {
   switch (action.type) {
-    case 'search':
-      return { ...state, search: action.value };
+    case "search":
+      return { ...state, search: action.search };
 
     case 'genre': {
       const selectedGenre = action.genre;
@@ -75,8 +75,7 @@ export const MainPage = () => {
   const dispatch = useAppDispatch();
 
   const [filters, dispatchReducer] = useReducer(reducer, initialState);
-  const [searchVal, setSearchVal] = useState('');
-  console.log(filters.genre);
+  const [searchVal, setSearchVal] = useState("");
 
   const {
     booksArr: books,
@@ -113,15 +112,17 @@ export const MainPage = () => {
   }, []);
 
   const debouncedSearch = useCallback(
-    debounce((value: string) => {
-      dispatchReducer({ type: 'search', value });
+    debounce((booksArr: string[]) => {
+      dispatchReducer({ type: "search", search: booksArr });
     }, 700),
     []
   );
 
   const onHandleSearchValue = (value: string) => {
     setSearchVal(value);
-    debouncedSearch(value);
+const foundBookIdsArr = value ? genres
+  .filter((genre) => genre.name.toLowerCase().includes(value.toLowerCase())).map(genre => genre.id): []
+  debouncedSearch( foundBookIdsArr);
   };
 
   const setCheckboxValue = (type: 'genre' | 'status', key: string) => {
