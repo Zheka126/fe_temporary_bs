@@ -37,12 +37,13 @@ export const SignupForm = () => {
   ) => {
     try {
       setSubmitting(true);
-      const { status } = await register(values);
-      if (status === StatusCodes.CREATED) {
-        toast.success('New account has been successfully created!');
-        resetForm();
-        navigate('/login');
-      }
+      const { status } = await register(values).then(() => {
+        if (status === StatusCodes.CREATED) {
+          toast.success('New account has been successfully created!');
+          resetForm();
+          navigate('/login');
+        })
+      })
     } catch (error: any) {
       switch (error.response.status) {
         case StatusCodes.BAD_REQUEST:
