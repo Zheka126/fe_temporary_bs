@@ -4,6 +4,7 @@ import { Loader } from "src/components";
 import { BookFilter } from "src/components/BookFilter/BookFilter";
 import { useAppDispatch, useAppSelector } from "src/redux/hooks";
 import { getBooksThunk } from "src/redux/slices/bookSlice";
+import { getGenresThunk } from "src/redux/slices/genresSlice";
 import { FilterValues } from "src/types/book";
 
 import { BookList } from "../components/BookList/BookList";
@@ -19,27 +20,16 @@ import {
 
 const initialState = {
   search: "",
-  genre: {
-    fiction: false,
-    adventure: false,
-    horror: false,
-    historical: false,
-    romance: false,
-    western: false,
-    mystery: false,
-    science_fiction: false,
-    fantasy: false,
-    dystopian: false
-  },
-  status: { free: false, busy: false },
+  genre: [],
+  status: [],
   selectedRating: null,
   currentPage: 1
 };
 
 type Action =
   | { type: "search"; value: string }
-  | { type: "genre"; genre: string; isChecked: boolean }
-  | { type: "status"; status: "free" | "busy"; isChecked: boolean }
+  | { type: "genre"; genre: string }
+  | { type: "status"; status: string }
   | { type: "rating"; rating: number | null }
   | { type: "pagination"; page: number };
 
@@ -49,16 +39,21 @@ const reducer = (state: FilterValues, action: Action) => {
       return { ...state, search: action.value };
 
     case "genre": {
+      const selectedGenre = action.genre
+      const updatedGenres = state.genre.includes(selectedGenre) ? state.genre.filter(genre => genre !== selectedGenre) : [...state.genre, selectedGenre]
+      
       return {
         ...state,
-        genre: { ...state.genre, [action.genre]: action.isChecked }
+        genre: updatedGenres
       };
     }
-
+    
     case "status": {
+      const selectedStatus = action.status
+      const updatedStatus = state.status.includes(selectedStatus) ? state.status.filter(status => status !== selectedStatus) : [...state.status, selectedStatus]
       return {
         ...state,
-        status: { ...state.status, [action.status]: action.isChecked }
+        status: updatedStatus
       };
     }
 
@@ -78,10 +73,12 @@ export const MainPage = () => {
 
   const [filters, dispatchReducer] = useReducer(reducer, initialState);
   const [searchVal, setSearchVal] = useState("");
+console.log(filters.genre);
 
-  const { booksArr: books, booksTotalRecords } = useAppSelector((state) => ({
+  const { booksArr: books, booksTotalRecords, genres } = useAppSelector((state) => ({
     booksArr: state.books.books,
-    booksTotalRecords: state.books.totalRecords
+    booksTotalRecords: state.books.totalRecords,
+    genres: state.genres.genres
   }));
   const [booksLoading, setBooksLoading] = useState(true);
 
@@ -98,6 +95,16 @@ export const MainPage = () => {
     })();
   }, [dispatch, filters]);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        await dispatch(getGenresThunk());
+      } catch (err: any) {
+        console.log(err.message);
+      }
+    })();
+  }, []);
+
   const debouncedSearch = useCallback(
     debounce((value: string) => {
       dispatchReducer({ type: "search", value });
@@ -113,19 +120,17 @@ export const MainPage = () => {
   const setCheckboxValue = (
     type: "genre" | "status",
     key: string,
-    isChecked: boolean
   ) => {
     if (type === "genre") {
+      const genreId = genres.find(genre => genre.name === key)?.id
       dispatchReducer({
         type: "genre",
-        genre: key,
-        isChecked
+        genre: genreId!,
       });
     } else if (type === "status") {
       dispatchReducer({
         type: "status",
-        status: key as "free" | "busy",
-        isChecked
+        status: key,
       });
     }
   };
@@ -154,6 +159,7 @@ export const MainPage = () => {
             <NoBooksText>No books yet 🙁</NoBooksText>
           )}
           <BookFilter
+            genresList={genres}
             filters={filters}
             searchTerm={searchVal}
             setSearchValue={onHandleSearchValue}

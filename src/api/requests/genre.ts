@@ -4,7 +4,7 @@ import { instance } from '../instance';
 
 const endpoint = '/genre';
 
-export const getBooks = () => instance.get<GenreType[]>(endpoint);
+export const getGenres = () => instance.get<GenreType[]>(endpoint);
 
 export const addNewGenre = (genre: GenreType) =>
   instance.post<GenreType>(endpoint, genre);

@@ -11,12 +11,8 @@ export interface BookType {
 
 export interface FilterValues {
   search: string;
-  genre: {
-    [key: string]: boolean;
-  };
-  status: {
-    [key: string]: boolean;
-  };
+  genre: string[];
+  status: string[]
   selectedRating: number | null;
   currentPage: number;
 }
