@@ -132,7 +132,6 @@ export const MainPage = () => {
 
   return (
     <MainPageContainer>
-      <Header />
       <Container>
         <MainPageContentContainer>
           {

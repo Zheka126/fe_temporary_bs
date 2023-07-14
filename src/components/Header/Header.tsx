@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { useAppSelector } from 'src/redux/hooks';
 
 import { ReactComponent as ArrowDownIcon } from '/assets/arrow-down.svg';
@@ -48,6 +48,7 @@ export const Header = () => {
   }, []);
 
   return (
+   <>
     <StyledHeader>
       <Link to="/Catalog">
         <img src={logo} alt="Endava Logo" />
@@ -70,5 +71,7 @@ export const Header = () => {
         </NavBtnWithDropdown>
       </BtnsContainer>
     </StyledHeader>
+    <Outlet />
+   </>
   );
 };
