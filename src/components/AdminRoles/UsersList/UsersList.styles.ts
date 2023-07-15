@@ -5,6 +5,8 @@ export const StyledUsersList = styled.div`
   padding: 0 20px;
   background-color: ${({ theme }) => theme.colors.lightGray};
   border-radius: 10px;
+  height: 400px;
+  overflow: auto;
 `;
 export const UserItem = styled.div`
   display: grid;
@@ -12,9 +14,8 @@ export const UserItem = styled.div`
   padding: 5px 0;
   align-items: center;
   font-weight: 500;
-  &:not(:last-child) {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
-  }
+  height: fit-content;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
   span {
     padding: 10px 0;
   }

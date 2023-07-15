@@ -4,8 +4,9 @@ import styled from 'styled-components';
 export const AdminTabPageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: calc(100vh - 88px);
   width: 100%;
+  padding-top: 20px;
 `;
 
 export const Tabs = styled.div`
