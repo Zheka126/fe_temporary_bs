@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const MainPageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 88px);
+  height: calc(100vh - 90px);
 `;
 
 export const MainPageContentContainer = styled.div`
