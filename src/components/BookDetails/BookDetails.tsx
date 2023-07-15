@@ -8,8 +8,8 @@ import { BookDetailsType } from 'src/types/book';
 
 import { Button } from '../common/Button/Button';
 import { InputContainer } from '../common/Input.styles';
+import { Modal } from '../common/Modal/Modal';
 import { StyledParagraph } from '../LoginForm/LoginForm.styles';
-import { Modal } from '../Modal/Modal';
 import { ButtonsContainer } from '../SignupForm/SignupForm.styles';
 import { BookDetail } from './BookDetail';
 import {
@@ -169,7 +169,7 @@ export const BookDetails = () => {
 
   const handleConfirm = async () => {
     if (modal.actionType === 'delete') {
-       await fethcDeletingBook();
+      await fethcDeletingBook();
     } else {
       fetchUpdatingBook();
     }
@@ -202,15 +202,15 @@ export const BookDetails = () => {
           </div>
         </Details>
         {/* {mockUser.books.includes(bookDetails.title) && ( */}
-          <ButtonsContainer>
-            <Button title="Edit" onClick={openEditModal} />
-            <Button title="Delete" onClick={openDeleteModal} />
-            <Button
-              title="Assign to Me"
-              onClick={openAssignToMeModal}
-              disabled={assignments.length > 2}
-            />
-          </ButtonsContainer>
+        <ButtonsContainer>
+          <Button title="Edit" onClick={openEditModal} />
+          <Button title="Delete" onClick={openDeleteModal} />
+          <Button
+            title="Assign to Me"
+            onClick={openAssignToMeModal}
+            disabled={assignments.length > 2}
+          />
+        </ButtonsContainer>
         {/* )} */}
       </BookDetailsSection>
       <Modal

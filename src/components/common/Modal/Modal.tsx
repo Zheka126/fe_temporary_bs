@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
 import { createPortal } from "react-dom";
 
 import {
@@ -24,9 +24,17 @@ export const Modal = ({
   onClose,
   onConfirm
 }: ModalProps) => {
+  // const ref = useRef();
+
+  // const clickListener = (e) => {
+  //     if (e.target === ref.current) {
+  //         onClose();
+  //     }
+  // };
+
   return createPortal(
     <ModalContainer isOpen={isOpen} onClick={onClose}>
-      <ModalCard isOpen={isOpen} onClick={(e) => e.stopPropagation()}>
+      <ModalCard isOpen={isOpen}>
         <h3>{title}</h3>
         {children}
         <ButtonsContainer>

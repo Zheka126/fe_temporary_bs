@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { Button } from '../common/Button/Button';
+import { Button } from '../Button/Button';
 
 export const ModalContainer = styled.div<{ isOpen: boolean }>`
   ${({ theme }) => theme.flexStyles()};
