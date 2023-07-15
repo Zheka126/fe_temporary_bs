@@ -11,3 +11,13 @@ export const AssignmentsPanel = styled.ul`
   border-bottom: 2px solid black;
   padding-left: 20px;
 `;
+
+export const AssignmentsErr = styled.div`
+  text-align: center;
+  font-size: 32px;
+  font-weight: 600;
+`;
+
+export const AssignmentsLoaderContainer = styled.div`
+  margin-top: 100px;
+`;

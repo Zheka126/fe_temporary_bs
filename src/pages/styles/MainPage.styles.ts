@@ -12,8 +12,8 @@ export const MainPageContentContainer = styled.div`
 `;
 
 export const BooksLoaderContainer = styled.div`
-margin-top: 50px;
-`
+  margin-top: 50px;
+`;
 export const NoBooksOrServerErrorText = styled.div`
   display: flex;
   justify-content: center;

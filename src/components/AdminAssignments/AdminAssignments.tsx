@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "src/redux/hooks";
+import { getAssignmentsThunk } from "src/redux/slices/assignmentsSlice";
+import { AssignmentType } from "src/types/assignments";
 
-import { AssignmentsPanel } from "./AdminAssignments.styles";
-import { AssignmentsList } from "./AssignmentsList/AssignmentsList";
-import { useAppDispatch } from "src/redux/hooks";
 import { Loader } from "..";
+import {
+  AssignmentsErr,
+  AssignmentsLoaderContainer,
+  AssignmentsPanel
+} from "./AdminAssignments.styles";
+import { AssignmentsList } from "./AssignmentsList/AssignmentsList";
 
-export const AdminAssignments = () => {
+interface AdminAssignmentsProps {
+  assignments: AssignmentType[];
+}
+
+export const AdminAssignments = ({ assignments }: AdminAssignmentsProps) => {
   const dispatch = useAppDispatch();
 
   const [isAssignmentLoading, setAssignmentLoading] = useState(true);
@@ -15,20 +25,23 @@ export const AdminAssignments = () => {
     (async () => {
       try {
         setAssignmentLoading(true);
-        // await dispatch(getAssignmentsThunk()).unwrap()
-      } catch (err) {
+        // await dispatch(getAssignmentsThunk()).unwrap();
+      } catch (err: any) {
         setAssignmentsErr(err.message);
       } finally {
         setAssignmentLoading(false);
       }
     })();
   }, []);
+
   return (
     <div>
       {isAssignmentLoading ? (
-        <Loader size="big" />
+        <AssignmentsLoaderContainer>
+          <Loader size="big" />
+        </AssignmentsLoaderContainer>
       ) : assignmentsErr ? (
-        <div>{assignmentsErr}</div>
+        <AssignmentsErr>{assignmentsErr} 😢</AssignmentsErr>
       ) : (
         <>
           <AssignmentsPanel>
@@ -39,11 +52,17 @@ export const AdminAssignments = () => {
             <li>Assignment End Date</li>
             <li>Actions</li>
           </AssignmentsPanel>
-          <AssignmentsList
-          // roles={roles}
-          // switchRoleLoadingId={switchRoleLoadingId}
-          // openModal={openModal}
-          />
+          {
+            assignments.length
+            ?
+            <AssignmentsList
+            assignments={assignments}
+            // switchRoleLoadingId={switchRoleLoadingId}
+            // openModal={openModal}
+            />
+            :
+            <div>no assignments yet</div>
+          }
         </>
       )}
     </div>

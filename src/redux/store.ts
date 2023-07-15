@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import assignmentsReducer from './slices/assignmentsSlice';
 import authReducer from './slices/authSlice';
 import bookReducer from './slices/bookSlice';
 import genresReducer from './slices/genresSlice';
@@ -10,7 +11,8 @@ export const store = configureStore({
     auth: authReducer,
     books: bookReducer,
     role: roleReducer,
-    genres: genresReducer
+    genres: genresReducer,
+    assignments: assignmentsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
