@@ -8,7 +8,6 @@ export const getUserTokenData = (token: string) => {
     role,
     nameid: userId,
   }: UserTokenData = jwt_decode(token);
-  
   return { userName, role, userId };
 };
 

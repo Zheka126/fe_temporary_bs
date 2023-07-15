@@ -1,5 +1,5 @@
 import { Loader } from "src/components/common/Loader/Loader";
-import { Role } from "src/types/roles";
+import { AvailableRoles, Role } from "src/types/roles";
 
 import {
   AssignButton,
@@ -12,7 +12,7 @@ import {
 interface UsersListProps {
   roles: Role[];
   switchRoleLoadingId: string;
-  openModal: (id: string, role: 'Admin' | 'User') => void
+  openModal: (id: string, role: AvailableRoles) => void
   // updateRole: (id: string, type: 'toAdmin' | 'toUser') => void;
 }
 

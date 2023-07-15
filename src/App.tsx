@@ -14,6 +14,11 @@ interface RouteType {
   path: string;
 }
 
+interface RouteProps {
+  path: string;
+  component: () => JSX.Element;
+}
+
 export const App = () => {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(isAuthSelector);

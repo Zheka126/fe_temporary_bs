@@ -1,28 +1,28 @@
-import debounce from "lodash.debounce";
-import { useCallback, useEffect, useReducer, useState } from "react";
-import { Loader } from "src/components";
-import { BookFilter } from "src/components/BookFilter/BookFilter";
-import { useAppDispatch, useAppSelector } from "src/redux/hooks";
-import { getBooksThunk, setBooks } from "src/redux/slices/bookSlice";
-import { getGenresThunk } from "src/redux/slices/genresSlice";
-import { FilterValues } from "src/types/book";
+import debounce from 'lodash.debounce';
+import { useCallback, useEffect, useReducer, useState } from 'react';
+import { Loader } from 'src/components';
+import { BookFilter } from 'src/components/BookFilter/BookFilter';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { getBooksThunk, setBooks } from 'src/redux/slices/bookSlice';
+import { getGenresThunk } from 'src/redux/slices/genresSlice';
+import { FilterValues } from 'src/types/book';
 
-import { BookList } from "../components/BookList/BookList";
-import { Container } from "../components/common/Container.styles";
-import { Pagination } from "../components/Pagination/Pagination";
+import { BookList } from '../components/BookList/BookList';
+import { Container } from '../components/common/Container.styles';
+import { Pagination } from '../components/Pagination/Pagination';
 import {
   BooksLoaderContainer,
   MainPageContainer,
   MainPageContentContainer,
-  NoBooksOrServerErrorText
-} from "./styles/MainPage.styles";
+  NoBooksOrServerErrorText,
+} from './styles/MainPage.styles';
 
 const initialState = {
   search: [],
   genre: [],
   status: [],
   selectedRating: null,
-  currentPage: 1
+  currentPage: 1,
 };
 
 type Action =
@@ -37,7 +37,7 @@ const reducer = (state: FilterValues, action: Action) => {
     case "search":
       return { ...state, search: action.search };
 
-    case "genre": {
+    case 'genre': {
       const selectedGenre = action.genre;
       const updatedGenres = state.genre.includes(selectedGenre)
         ? state.genre.filter((genre) => genre !== selectedGenre)
@@ -60,10 +60,21 @@ const reducer = (state: FilterValues, action: Action) => {
       };
     }
 
-    case "rating":
+    case 'status': {
+      const selectedStatus = action.status;
+      const updatedStatus = state.status.includes(selectedStatus)
+        ? state.status.filter((status) => status !== selectedStatus)
+        : [...state.status, selectedStatus];
+      return {
+        ...state,
+        status: updatedStatus,
+      };
+    }
+
+    case 'rating':
       return { ...state, selectedRating: action.rating };
 
-    case "pagination":
+    case 'pagination':
       return { ...state, currentPage: action.page };
 
     default:
@@ -84,7 +95,7 @@ export const MainPage = () => {
   } = useAppSelector((state) => ({
     booksArr: state.books.books,
     booksTotalRecords: state.books.totalRecords,
-    genres: state.genres.genres
+    genres: state.genres.genres,
   }));
   const [booksLoading, setBooksLoading] = useState(true);
   const [genresLoading, setGenresLoading] = useState(true);
@@ -145,7 +156,7 @@ const onHandleSearchValue = (value: string) => {
         type: "genre",
         genre: genreId!
       });
-    } else if (type === "status") {
+    } else if (type === 'status') {
       dispatchReducer({
         type: "status",
         status: key
@@ -155,11 +166,11 @@ const onHandleSearchValue = (value: string) => {
 
   const setRating = (rate: number) => {
     const rating = rate === 1 && filters.selectedRating === 1 ? null : rate;
-    dispatchReducer({ type: "rating", rating });
+    dispatchReducer({ type: 'rating', rating });
   };
 
   const setCurrentPage = (page: number) => {
-    dispatchReducer({ type: "pagination", page });
+    dispatchReducer({ type: 'pagination', page });
   };
 
   return (
