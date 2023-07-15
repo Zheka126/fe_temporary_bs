@@ -24,7 +24,7 @@ export const InputContainer = styled.div`
   }
 `;
 
-export const StyledInput = styled.input<{ isError: boolean }>`
+export const StyledInput = styled.input<{ isError?: boolean }>`
   width: 100%;
   padding: 12px 22px;
   ${({ isError: iserror, theme }) =>

@@ -2,13 +2,13 @@ import { ProfileType } from 'src/types/profile';
 
 import { instance } from '../instance';
 
-const endpoint = '/profile';
-type Items = 'books' | 'assignments';
+const endPoint = '/profile';
+type Items = 'books' | 'assignments' | 'wantedBooks';
 
-export const getCurrentProfile = () => instance.get<ProfileType>(endpoint);
+export const getCurrentProfile = () => instance.get<ProfileType>(endPoint);
 
 export const updateProfile = (profile: ProfileType) =>
-  instance.put<ProfileType>(endpoint, profile);
+  instance.put<ProfileType>(endPoint, profile);
 
 export const getProfileItems = (data: Items) =>
-  instance.get<string[]>(`/${endpoint}/${data}`);
+  instance.get<string[]>(`/${endPoint}/${data}`);
