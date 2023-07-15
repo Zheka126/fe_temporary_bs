@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { AdminAssignments } from "src/components/AdminAssignments/AdminAssignments";
 import { AdminRoles } from "src/components/AdminRoles/AdminRoles";
 import { Container } from "src/components/common/Container.styles";
 import { Pagination } from "src/components/Pagination/Pagination";
@@ -11,9 +12,6 @@ import {
   Tabs
 } from "./styles/AdminTabPage.styles";
 
-const AdminAssignments = () => {
-  return <div>Assignments</div>;
-};
 const AdminReviews = () => {
   return <div>Reviews</div>;
 };
@@ -36,12 +34,10 @@ const tabLinks = [
 export const AdminTabPage = () => {
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
-  const { roles, totalRoleRecords } = useAppSelector(
-    ({ role }) => ({
-      roles: role.roles,
-      totalRoleRecords: role.totalRecords,
-    })
-  );
+  const { roles, totalRoleRecords } = useAppSelector(({ role }) => ({
+    roles: role.roles,
+    totalRoleRecords: role.totalRecords
+  }));
 
   const assignments = 25;
   const reviews = 46;
