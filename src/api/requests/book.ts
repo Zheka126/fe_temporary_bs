@@ -6,8 +6,6 @@ const endpoint = '/books';
 
 export const getBooks = (filters: FilterValues) => {
   const { genre, search, status, selectedRating, currentPage } = filters;
-  // const selectedGenres = Object.keys(genre).filter((key) => genre[key]);
-  // const Availability = Object.keys(status).filter((key) => status[key]);
 
   return instance.get<GetBooksResponse>(endpoint, {
     params: {

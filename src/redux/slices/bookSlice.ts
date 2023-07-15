@@ -29,7 +29,9 @@ export const bookSlice = createSlice({
   name: 'books',
   initialState,
   reducers: {
-    setBooks: () => {},
+    setBooks: (state, action: PayloadAction<BookType[]>) => {
+      state.books = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
