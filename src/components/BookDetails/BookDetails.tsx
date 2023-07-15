@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { baseURL } from 'src/api/constants';
+import { baseURL, StatusCodes } from 'src/api/constants';
 import { deleteBook, getBookById, updateBook } from 'src/api/requests/book';
 import { getProfileItems } from 'src/api/requests/profile';
 import { useAppSelector } from 'src/redux/hooks';
@@ -33,55 +33,44 @@ export const BookDetails = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modal, setModal] = useState({ modalTitle: '', actionType: '' });
 
-  // const initialValues = {
-  //   id,
-  //   imageSrc: '',
-  //   title: '',
-  //   authors: [],
-  //   canBorrow: true,
-  //   genres: [],
-  //   uploadedBy: '',
-  //   publicationDate: '',
-  //   language: '',
-  //   description: '',
-  //   availability: '',
-  // };
-
   const initialValues = {
     id,
     imageSrc: '',
     title: 'Title',
-    authors: ['Author1', 'Author2'].join(' '),
+    authors: ['Author1', 'Author2'],
     canBorrow: true,
-    genres: ['genre1', 'genre2', 'genre3'].join(' '),
+    genres: ['genre1', 'genre2', 'genre3'],
     uploadedBy: 'User',
     publicationDate: '2023-12-12',
     language: 'English',
-    description:
-      'lorem Ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.',
+    // description:
+    //   'lorem Ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.',
     availability: 'Free',
   };
 
-  const [bookDetails, setBookDetails] =
-    useState<BookDetailsType>(initialValues);
-
+  const [bookDetails, setBookDetails] = useState(initialValues);
 
   const createEditInput = (inputId: keyof BookDetailsType, label: string) => {
-
-    // handle all cases of user actions 
-    // like trim()
-    // 
-
     return (
       <InputContainer>
         <label htmlFor={inputId}>{label}</label>
         <EditInput
           type="text"
+          required
           id={inputId}
           name={inputId}
-          value={bookDetails[inputId] as string}
+          value={
+            Array.isArray(bookDetails[inputId])
+              ? (bookDetails[inputId] as string[]).join(', ')
+              : (bookDetails[inputId] as string)
+          }
           onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            setBookDetails({ ...bookDetails, [inputId]: event.target.value })
+            setBookDetails({
+              ...bookDetails,
+              [inputId]: Array.isArray(bookDetails[inputId])
+                ? event.target.value.split(', ')
+                : event.target.value,
+            })
           }
         />
       </InputContainer>
@@ -98,7 +87,8 @@ export const BookDetails = () => {
               {createEditInput('title', 'Edit title')}
               {createEditInput('authors', 'Edit author')}
               {createEditInput('genres', 'Edit genres')}
-              {createEditInput('description', 'Edit description')}
+              {/* <input type="file" onChange={handleFileChange} /> */}
+              {/* {createEditInput('description', 'Edit description')} */}
             </div>
             <div>
               {createEditInput('uploadedBy', 'Edit uploaded by')}
@@ -122,29 +112,22 @@ export const BookDetails = () => {
     }
   };
 
-  const genreElements = bookDetails.genres.split(' ').map((genre) => (
+  const genreElements = bookDetails.genres.map((genre) => (
     <BookGenre key={genre}>{genre}</BookGenre>
   ));
 
+  const openModal = (actionType: string, modalTitle: string) => {
+    setIsModalOpen(true);
+    setModal({ actionType, modalTitle });
+  };
   const openDeleteModal = () => {
-    setIsModalOpen(true);
-    setModal({ actionType: 'delete', modalTitle: 'Confirm deletion' });
+    openModal('delete', 'Confirm deletion');
   };
-
   const openEditModal = () => {
-    setIsModalOpen(true);
-    setModal({
-      actionType: 'edit',
-      modalTitle: `Edit book "${bookDetails.title}"`,
-    });
+    openModal('edit', `Edit book "${bookDetails.title}"`);
   };
-
   const openAssignToMeModal = () => {
-    setIsModalOpen(true);
-    setModal({
-      actionType: 'assignToMe',
-      modalTitle: `Assign book "${bookDetails.title}" to me`,
-    });
+    openModal('assignToMe', `Assign book "${bookDetails.title}" to me`);
   };
 
   const fethcDeletingBook = async () => {
@@ -154,19 +137,28 @@ export const BookDetails = () => {
       setIsModalOpen(false);
       navigate('/main');
     } catch (error: any) {
-      toast.error('Something went wrong. Please try again later.');
+      toast.error('Some errors with the delete');
       console.log('Error:', error.message);
     }
   };
 
   const fetchUpdatingBook = async () => {
     try {
-      let updatedBook;
-      await updateBook(id, updatedBook);
+      const updatedBook = {
+        ...bookDetails,
+        authors: bookDetails.authors.join(', ').split(', '),
+        genres: bookDetails.genres.join(', ').split(', '),
+      };
+      // if (bookDetails !== updateBook) 
+      // make this check in future to avoid sending the same book to server
+        await updateBook(id, updatedBook);
+      
       toast.success('The book has been successfully updated!');
       setIsModalOpen(false);
     } catch (error: any) {
-      toast.error('Something went wrong. Please try again later.');
+      if (error.response.status === StatusCodes.NOT_ALLOWED) {
+        toast.error('You are not allowed to edit this book');
+      }
       console.log('Error:', error.message);
     }
   };
@@ -191,7 +183,9 @@ export const BookDetails = () => {
         console.log('assignmentsData: ', assignmentsData);
         setAssignments(assignmentsData);
       } catch (error: any) {
-        toast.error('Something went wrong. Please try again later.');
+        toast.error(
+          'Something went wrong with getting book details. Please try again later.'
+        );
         console.log('Error:', error.message);
       }
     })();
@@ -206,9 +200,9 @@ export const BookDetails = () => {
         <h1>{bookDetails.title}</h1>
         <Details>
           <div>
-            <BookDetail title="Author" value={bookDetails.authors} />
+            <BookDetail title="Author" value={bookDetails.authors.join(', ')} />
             <BookDetail title="Genres" value={genreElements} />
-            <BookDetail title="Description" value={bookDetails.description} />
+            {/* <BookDetail title="Description" value={bookDetails.description} /> */}
           </div>
 
           <div>

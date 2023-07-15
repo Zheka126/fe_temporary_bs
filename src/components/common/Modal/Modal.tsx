@@ -25,19 +25,17 @@ export const Modal = ({
   onConfirm,
 }: ModalProps) => {
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
-  console.log('confirmButtonRef: ', confirmButtonRef);
   const handleKeyPress = (event: KeyboardEvent) => {
-    if (isOpen && event.key === 'Escape') {
+    if (event.key === 'Escape') {
       onClose();
     }
-    if (
-      event.key === 'Enter' &&
-      document.activeElement !== confirmButtonRef.current
-    ) {
-
-      onConfirm();
-      onClose();
-    }
+    // if (
+    //   event.key === 'Enter' &&
+    //   document.activeElement !== confirmButtonRef.current
+    // ) {
+    //   onConfirm();
+    //   onClose();
+    // }
   };
 
   if (isOpen) {

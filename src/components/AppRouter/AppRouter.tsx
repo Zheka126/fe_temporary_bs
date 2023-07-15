@@ -18,8 +18,6 @@ const renderRoutes = (routes: RouteType[]) => {
 
 export const AppRouter = () => {
   const isAuth = useAppSelector(isAuthSelector);
-  console.log('isAuth: ', isAuth);
-
   return (
     <Routes>
       {renderRoutes(openRoutes)}
