@@ -2,13 +2,13 @@ export interface BookDetailsType {
   id: string | undefined;
   imageSrc: string;
   title: string;
-  authors: string[];
+  authors: string;
   canBorrow: boolean;
-  genres: string[];
+  genres: string;
   uploadedBy: string;
   publicationDate: string;
   language: string;
-  // description: string;
+  description: string;
   availability: string;
 }
 

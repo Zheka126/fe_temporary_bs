@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { baseURL, StatusCodes } from 'src/api/constants';
+import { baseURL } from 'src/api/constants';
 import { deleteBook, getBookById, updateBook } from 'src/api/requests/book';
 import { getProfileItems } from 'src/api/requests/profile';
+import { useAppSelector } from 'src/redux/hooks';
 import { BookDetailsType } from 'src/types/book';
 
 import { Button } from '../common/Button/Button';
@@ -18,6 +19,7 @@ import {
   BookDetailsSection,
   BookGenre,
   Details,
+  EditInput,
   StyledModalContent,
 } from './BookDetails.styles';
 
@@ -25,41 +27,76 @@ export const BookDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const [assignments, setAssignments] = useState<string[]>([]);
+  const user = useAppSelector((state) => state.auth.user);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modal, setModal] = useState({ modalTitle: '', actionType: '' });
+
+  // const initialValues = {
+  //   id,
+  //   imageSrc: '',
+  //   title: '',
+  //   authors: [],
+  //   canBorrow: true,
+  //   genres: [],
+  //   uploadedBy: '',
+  //   publicationDate: '',
+  //   language: '',
+  //   description: '',
+  //   availability: '',
+  // };
+
   const initialValues = {
     id,
     imageSrc: '',
-    title: '',
-    authors: [],
+    title: 'Title',
+    authors: ['Author1', 'Author2'].join(' '),
     canBorrow: true,
-    genres: [],
-    uploadedBy: '',
-    publicationDate: '',
-    language: '',
-    // description: '',
-    availability: '',
+    genres: ['genre1', 'genre2', 'genre3'].join(' '),
+    uploadedBy: 'User',
+    publicationDate: '2023-12-12',
+    language: 'English',
+    description:
+      'lorem Ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.',
+    availability: 'Free',
   };
 
   const [bookDetails, setBookDetails] =
     useState<BookDetailsType>(initialValues);
-  const [assignments, setAssignments] = useState<string[]>([]);
 
-  const createEditInput = (inputId: string, label: string) => (
-    <InputContainer>
-      <label htmlFor={inputId}>{label}</label>
-      {/* <EditInput id={inputId} value={bookDetails[inputId]} */}
-      {/* onChange={(event: KeyboardEvent) => setBookDetails({...bookDetails, bookDetails[inputId]: event.target.value})} /> */}
-    </InputContainer>
-  );
 
+  const createEditInput = (inputId: keyof BookDetailsType, label: string) => {
+
+    // handle all cases of user actions 
+    // like trim()
+    // 
+
+    return (
+      <InputContainer>
+        <label htmlFor={inputId}>{label}</label>
+        <EditInput
+          type="text"
+          id={inputId}
+          name={inputId}
+          value={bookDetails[inputId] as string}
+          onChange={(event: ChangeEvent<HTMLInputElement>) =>
+            setBookDetails({ ...bookDetails, [inputId]: event.target.value })
+          }
+        />
+      </InputContainer>
+    );
+  };
   // where to store modal content?
   // should it be here or inside JSX or in separate file?
   const modalContent = (actionType: string) => {
     switch (actionType) {
-      case 'assignToMe':
+      case 'edit':
         return (
           <StyledModalContent>
             <div>
-              {createEditInput('author', 'Edit author')}
+              {createEditInput('title', 'Edit title')}
+              {createEditInput('authors', 'Edit author')}
               {createEditInput('genres', 'Edit genres')}
               {createEditInput('description', 'Edit description')}
             </div>
@@ -71,7 +108,7 @@ export const BookDetails = () => {
             </div>
           </StyledModalContent>
         );
-      case 'edit':
+      case 'assignToMe':
         break;
       case 'delete':
         return (
@@ -85,38 +122,9 @@ export const BookDetails = () => {
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { status, data } = await getBookById(id);
-        console.log('data: ', data);
-
-        // do we even need to check status?
-        // because the async function fires error and the next code won't work
-        if (status === StatusCodes.SUCCESS) {
-          setBookDetails(data);
-
-          const { status: assignmentsStatus, data: assignmentsData } =
-            await getProfileItems('assignments');
-
-          if (assignmentsStatus === StatusCodes.SUCCESS) {
-            setAssignments(assignmentsData);
-          }
-        }
-      } catch (error: any) {
-        console.log('Error:', error.message);
-      }
-    })();
-  }, []);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modal, setModal] = useState({ modalTitle: '', actionType: '' });
-
-  const genreElements = bookDetails.genres.map((genre) => (
+  const genreElements = bookDetails.genres.split(' ').map((genre) => (
     <BookGenre key={genre}>{genre}</BookGenre>
   ));
-
-  const closeModal = () => setIsModalOpen(false);
 
   const openDeleteModal = () => {
     setIsModalOpen(true);
@@ -141,12 +149,10 @@ export const BookDetails = () => {
 
   const fethcDeletingBook = async () => {
     try {
-      const { status } = await deleteBook(id);
-      if (status === StatusCodes.SUCCESS) {
-        toast.success('The book has been successfully deleted!');
-        closeModal();
-        navigate('/main');
-      }
+      await deleteBook(id);
+      toast.success('The book has been successfully deleted!');
+      setIsModalOpen(false);
+      navigate('/main');
     } catch (error: any) {
       toast.error('Something went wrong. Please try again later.');
       console.log('Error:', error.message);
@@ -156,11 +162,9 @@ export const BookDetails = () => {
   const fetchUpdatingBook = async () => {
     try {
       let updatedBook;
-      const { status } = await updateBook(id, updatedBook);
-      if (status === StatusCodes.SUCCESS) {
-        toast.success('The book has been successfully updated!');
-        closeModal();
-      }
+      await updateBook(id, updatedBook);
+      toast.success('The book has been successfully updated!');
+      setIsModalOpen(false);
     } catch (error: any) {
       toast.error('Something went wrong. Please try again later.');
       console.log('Error:', error.message);
@@ -176,19 +180,35 @@ export const BookDetails = () => {
     setIsModalOpen(false);
   };
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data: bookDetailsData } = await getBookById(id);
+        console.log('bookDetailsData: ', bookDetailsData);
+        setBookDetails(bookDetailsData);
+
+        const { data: assignmentsData } = await getProfileItems('assignments');
+        console.log('assignmentsData: ', assignmentsData);
+        setAssignments(assignmentsData);
+      } catch (error: any) {
+        toast.error('Something went wrong. Please try again later.');
+        console.log('Error:', error.message);
+      }
+    })();
+  }, []);
+
   return (
     <BookDetailsContainer>
       <BookCoverSection>
-        {/* <img src={bookDetails.img} alt="book cover" /> */}
         <img src={`${baseURL}/${bookDetails.imageSrc}`} alt="book cover" />
       </BookCoverSection>
       <BookDetailsSection>
         <h1>{bookDetails.title}</h1>
         <Details>
           <div>
-            <BookDetail title="Author" value={bookDetails.authors.join(' ')} />
+            <BookDetail title="Author" value={bookDetails.authors} />
             <BookDetail title="Genres" value={genreElements} />
-            {/* <BookDetail title="Description" value={bookDetails.description} /> */}
+            <BookDetail title="Description" value={bookDetails.description} />
           </div>
 
           <div>
@@ -201,21 +221,23 @@ export const BookDetails = () => {
             <BookDetail title="Availability" value={bookDetails.availability} />
           </div>
         </Details>
-        {/* {mockUser.books.includes(bookDetails.title) && ( */}
         <ButtonsContainer>
-          <Button title="Edit" onClick={openEditModal} />
-          <Button title="Delete" onClick={openDeleteModal} />
+          {user?.userName === bookDetails.uploadedBy && (
+            <>
+              <Button title="Edit" onClick={openEditModal} />
+              <Button title="Delete" onClick={openDeleteModal} />
+            </>
+          )}
           <Button
             title="Assign to Me"
             onClick={openAssignToMeModal}
-            disabled={assignments.length > 2}
+            disabled={assignments.length > 2 && bookDetails.canBorrow}
           />
         </ButtonsContainer>
-        {/* )} */}
       </BookDetailsSection>
       <Modal
         isOpen={isModalOpen}
-        onClose={closeModal}
+        onClose={() => setIsModalOpen(false)}
         title={modal.modalTitle}
         onConfirm={handleConfirm}
       >
