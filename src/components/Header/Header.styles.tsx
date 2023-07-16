@@ -27,8 +27,7 @@ export const NavBtn = styled.button`
   display: flex;
   position: relative;
   margin: 0px 15px;
-  padding: 15px;
-  padding-right: 20px;
+  margin-right: 20px;
   font-size: 14px;
   font-weight: 500;
   color: white;
@@ -41,6 +40,7 @@ export const NavBtn = styled.button`
   cursor: pointer;
 
   a {
+    padding: 15px;
     color: white;
     text-decoration: none;
   }
@@ -52,6 +52,8 @@ export const NavBtn = styled.button`
 `;
 
 export const NavBtnWithDropdown = styled.div<{ isDropdownShowed: boolean }>`
+  display: flex;
+  align-items: center;
   svg {
     width: 20px;
     padding: 0 6px;
@@ -63,6 +65,7 @@ export const NavBtnWithDropdown = styled.div<{ isDropdownShowed: boolean }>`
 
 export const StyledDropdown = styled.ul`
   position: absolute;
+  top: 70px;
   width: 150px;
   margin: 0;
   padding: 10px 0;
@@ -77,6 +80,19 @@ export const StyledDropdown = styled.ul`
       margin-top: 8px;
       padding-top: 10px;
       border-top: 1px solid #c2c2c2;
+    }
+
+    button {
+      font-size: 12px;
+      padding: 5px 30px 5px 20px;
+      background-color: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+
+      &:hover {
+        font-weight: bold;
+      }
     }
   }
 

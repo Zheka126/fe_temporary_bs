@@ -22,6 +22,11 @@ export const SearchInput = styled.input`
   &::placeholder {
     color: white;
   }
+  &::-webkit-search-cancel-button {
+    padding-left: 10px;
+    cursor: pointer;
+    font-size: 18px;
+  }
 `;
 
 export const GenresContainer = styled.div`
@@ -41,4 +46,12 @@ export const GenresContainer = styled.div`
   &::-webkit-scrollbar-thumb:hover {
     background-color: #555;
   }
-` 
+`;
+export const GenresErr = styled.div`
+  font-size: 20px;
+  font-weight: 500;
+`;
+
+export const GenresLoaderContainer = styled.div`
+  ${({ theme }) => theme.flexStyles('start', 'center')}
+`;

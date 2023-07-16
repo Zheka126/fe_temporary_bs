@@ -1,3 +1,5 @@
+import { AvailableRoles } from './roles';
+
 export interface LoginRequest {
   username: string;
   password: string;
@@ -14,12 +16,12 @@ export interface UserRegistrationData {
 
 export interface UserTokenData {
   unique_name: string;
-  role: string;
-  nameId: string;
+  role: AvailableRoles;
+  nameid: string;
 }
 
 export interface UserData {
   userName: string;
-  role: string;
+  role: AvailableRoles;
   userId: string;
 }

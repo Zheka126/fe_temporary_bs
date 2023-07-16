@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react";
-import { useAppDispatch } from "src/redux/hooks";
-import { getRolesThunk, updateRoleThunk } from "src/redux/slices/rolesSlice";
-import { Role, UpdateRoleRequest } from "src/types/roles";
+import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { getRolesThunk, updateRoleThunk } from 'src/redux/slices/rolesSlice';
+import { AvailableRoles, Role, UpdateRoleRequest } from 'src/types/roles';
 
-import { Loader } from "../common/Loader/Loader";
-import { Modal } from "../Modal/Modal";
-import { RequestError, RolesPanel } from "./AdminRoles.styles";
-import { UsersList } from "./UsersList/UsersList";
+import { Loader } from '../common/Loader/Loader';
+import { Modal } from '../common/Modal/Modal';
+import {
+  RequestError,
+  RolesLoaderContainer,
+  RolesPanel,
+} from './AdminRoles.styles';
+import { UsersList } from './UsersList/UsersList';
 
 interface AdminRolesProps {
   roles: Role[];
@@ -16,21 +20,26 @@ interface AdminRolesProps {
 export const AdminRoles = ({ roles, currentPage }: AdminRolesProps) => {
   const dispatch = useAppDispatch();
 
-  const [isAllRolesLoading, setAllRolesLoading] = useState(false);
-  const [switchRoleLoadingId, setSwitchRoleLoadingId] = useState("");
+  const [isAllRolesLoading, setAllRolesLoading] = useState(true);
+  const [switchRoleLoadingId, setSwitchRoleLoadingId] = useState('');
 
   const [isModalOpen, setModalOpen] = useState(false);
-  const [updateRoleData, setUpdateRoleData] = useState<null | UpdateRoleRequest>(
-    null
-  );
+  const [updateRoleData, setUpdateRoleData] =
+    useState<null | UpdateRoleRequest>(null);
 
-  const [error, setError] = useState("");
+  const userRole = useAppSelector(({ auth }) => auth.user?.role);
+
+  const [error, setError] = useState('');
 
   useEffect(() => {
     (async () => {
       try {
         setAllRolesLoading(true);
-        await dispatch(getRolesThunk(currentPage)).unwrap();
+        if (userRole === 'SuperAdmin') {
+          await dispatch(getRolesThunk(currentPage)).unwrap();
+        } else {
+          throw Error('The page is available for super admin only');
+        }
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -39,7 +48,7 @@ export const AdminRoles = ({ roles, currentPage }: AdminRolesProps) => {
     })();
   }, [currentPage]);
 
-  const openModal = (userId: string, role: "Admin" | "User") => {
+  const openModal = (userId: string, role: AvailableRoles) => {
     setModalOpen(true);
     setUpdateRoleData({ userId, role });
   };
@@ -58,7 +67,7 @@ export const AdminRoles = ({ roles, currentPage }: AdminRolesProps) => {
     } catch (err: any) {
       setError(err.message);
     } finally {
-      setSwitchRoleLoadingId("");
+      setSwitchRoleLoadingId('');
     }
   };
 
@@ -68,19 +77,23 @@ export const AdminRoles = ({ roles, currentPage }: AdminRolesProps) => {
 
   return (
     <div>
-      <RolesPanel>
-        <li>Username</li>
-        <li>Roles</li>
-        <li>Actions</li>
-      </RolesPanel>
-      {!isAllRolesLoading ? (
-        <UsersList
-          roles={roles}
-          switchRoleLoadingId={switchRoleLoadingId}
-          openModal={openModal}
-        />
+      {!isAllRolesLoading && roles.length ? (
+        <>
+          <RolesPanel>
+            <li>Username</li>
+            <li>Roles</li>
+            <li>Actions</li>
+          </RolesPanel>
+          <UsersList
+            roles={roles}
+            switchRoleLoadingId={switchRoleLoadingId}
+            openModal={openModal}
+          />
+        </>
       ) : (
-        <Loader size="big" />
+        <RolesLoaderContainer>
+          <Loader size="big" />
+        </RolesLoaderContainer>
       )}
       <Modal
         title="Are you sure you want to reassign the role for this user?"

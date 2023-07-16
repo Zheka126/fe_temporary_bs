@@ -1,20 +1,30 @@
-
+import { baseURL } from 'src/api/constants';
 import { BookType } from 'src/types/book';
 
-import { BookListContainer,StyledBookItem } from "./BookList.styles";
+import { BookListContainer, StyledBookItem } from './BookList.styles';
 
 interface BookListProps {
   books: BookType[];
 }
 
 export const BookList = ({ books }: BookListProps) => {
+  // console.log(`${baseURL}/${books[0].imageSrc}`);
+
   return (
     <BookListContainer data-testid="book-list-container">
-      {books.map((book) => {
+      {books.map(({ id, imageSrc, title }) => {
         return (
-          <StyledBookItem to="/#" key={book.id} data-testid={`book-item-${book.id}`}>
-            <img src={book.imageSrc} alt="book title" data-testid={`book-image-${book.id}`} />
-            <span data-testid={`book-title-${book.id}`}>{book.title}</span>
+          <StyledBookItem
+            to={`/books/${id}`}
+            key={id}
+            data-testid={`book-item-${id}`}
+          >
+            <img
+              src={`${baseURL}/${imageSrc}`}
+              alt="book title"
+              data-testid={`book-image-${id}`}
+            />
+            <span data-testid={`book-title-${title}`}>{title}</span>
           </StyledBookItem>
         );
       })}

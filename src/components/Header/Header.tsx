@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useAppSelector } from 'src/redux/hooks';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { setUser } from 'src/redux/slices/authSlice';
 
 import { ReactComponent as ArrowDownIcon } from '/assets/arrow-down.svg';
 import logo from '/assets/darkLogo.png';
 
+import { Modal } from '..';
 import { Dropdown } from './Dropdown';
 import {
   BtnsContainer,
@@ -14,9 +16,13 @@ import {
 } from './Header.styles';
 
 export const Header = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const dropdownRef = useRef<HTMLUListElement | null>(null);
   const navBtnRef = useRef<HTMLButtonElement | null>(null);
 
@@ -38,6 +44,13 @@ export const Header = () => {
     setIsDropdownOpen((prevIsDropdownOpen) => !prevIsDropdownOpen);
   };
 
+  const signOut = () => {
+    localStorage.removeItem('token');
+    dispatch(setUser(null));
+    navigate('/login');
+    setIsModalOpen(false);
+  };
+
   useEffect(() => {
     document.addEventListener('mousedown', handleOutsideClick);
     document.addEventListener('keydown', handleEscapeKeyDown);
@@ -48,27 +61,47 @@ export const Header = () => {
   }, []);
 
   return (
-    <StyledHeader>
-      <Link to="/main">
-        <img src={logo} alt="Endava Logo" />
-      </Link>
-      <BtnsContainer data-testid="buttons-container">
-        <NavBtn>
-          <Link to="/Catalog" data-testid="catalog-link">
-            Catalog
-          </Link>
-        </NavBtn>
-        <NavBtnWithDropdown
-          className="active"
-          isDropdownShowed={isDropdownOpen}
-        >
-          <NavBtn ref={navBtnRef} onClick={toggleDropdown}>
-            {user?.userName}
-            <ArrowDownIcon />
+    <>
+      <StyledHeader data-testid="header">
+        <Link to="/Catalog" data-testid="logo-link">
+          <img src={logo} alt="Endava Logo" />
+        </Link>
+        <BtnsContainer data-testid="buttons-container">
+          <NavBtn>
+            <Link to="/main" data-testid="catalog-link">
+              Catalog
+            </Link>
           </NavBtn>
-          {isDropdownOpen && <Dropdown dropdownRef={dropdownRef} />}
-        </NavBtnWithDropdown>
-      </BtnsContainer>
-    </StyledHeader>
+          <NavBtnWithDropdown
+            className="active"
+            isDropdownShowed={isDropdownOpen}
+            data-testid="dropdown-button"
+          >
+            <NavBtn
+              ref={navBtnRef}
+              onClick={toggleDropdown}
+              data-testid="nav-button-toggle"
+            >
+              {user?.userName}
+              <ArrowDownIcon />
+            </NavBtn>
+            {isDropdownOpen && (
+              <Dropdown
+                dropdownRef={dropdownRef}
+                onOpenModal={() => setIsModalOpen(true)}
+                data-testid="dropdown"
+              />
+            )}
+            <Modal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              title="Are you sure you want to sign out?"
+              onConfirm={signOut}
+            />
+          </NavBtnWithDropdown>
+        </BtnsContainer>
+      </StyledHeader>
+      <Outlet />
+    </>
   );
 };

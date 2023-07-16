@@ -17,26 +17,28 @@ export const getBooksThunk = createAsyncThunk(
 
 export interface BookState {
   books: BookType[];
-  totalRecords: number
+  totalRecords: number;
 }
 
 const initialState: BookState = {
   books: [],
-  totalRecords: 0
+  totalRecords: 0,
 };
 
 export const bookSlice = createSlice({
   name: 'books',
   initialState,
   reducers: {
-    setBooks: () => {},
+    setBooks: (state, action: PayloadAction<BookType[]>) => {
+      state.books = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
       getBooksThunk.fulfilled,
       (state, action: PayloadAction<GetBooksResponse>) => {
         state.books = action.payload.data;
-        state.totalRecords = action.payload.totalRecords
+        state.totalRecords = action.payload.totalRecords;
       }
     );
   },

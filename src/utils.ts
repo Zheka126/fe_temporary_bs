@@ -6,7 +6,7 @@ export const getUserTokenData = (token: string) => {
   const {
     unique_name: userName,
     role,
-    nameId: userId,
+    nameid: userId,
   }: UserTokenData = jwt_decode(token);
   return { userName, role, userId };
 };

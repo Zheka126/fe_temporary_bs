@@ -6,4 +6,4 @@ export const login = (values: LoginRequest) =>
   instance.post<string>('/login', values);
 
 export const register = (values: UserRegistrationData) =>
-  instance.post<string>('/register', values);
+  instance.post<string>('/register', values)

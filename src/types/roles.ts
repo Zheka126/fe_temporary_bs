@@ -1,7 +1,9 @@
+export type AvailableRoles = 'User' | 'Admin' | 'SuperAdmin';
+
 export interface Role {
   id: string;
   username: string;
-  role: string;
+  role: AvailableRoles;
 }
 
 export interface GetRolesResponse {
@@ -11,5 +13,5 @@ export interface GetRolesResponse {
 
 export interface UpdateRoleRequest {
   userId: string;
-  role: "Admin" | "User";
+  role: AvailableRoles;
 }
