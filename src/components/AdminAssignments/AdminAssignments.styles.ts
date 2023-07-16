@@ -12,7 +12,7 @@ export const AssignmentsPanel = styled.ul`
   padding-left: 20px;
 `;
 
-export const AssignmentsErr = styled.div`
+export const EmptyAssignmentsOrErr = styled.div`
   text-align: center;
   font-size: 32px;
   font-weight: 600;

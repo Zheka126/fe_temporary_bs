@@ -1,15 +1,29 @@
-import { AssignmentType } from "src/types/assignments";
+import { Loader } from "src/components";
+import {
+  ApproveRejectAssignmentRequest,
+  AssignmentType
+} from "src/types/assignments";
 
 import {
+  ApproveRejectBtn,
   AssignmentItem,
+  AssignmentsButtonsContainer,
   StyledAssignmentsList
 } from "./AssignmentsList.styles";
 
 interface AssignmentsListProps {
   assignments: AssignmentType[];
+  isHandleAssIdLoading: string;
+  onApproveRejectAssignment: (
+    handleAssPayload: ApproveRejectAssignmentRequest
+  ) => void;
 }
 
-export const AssignmentsList = ({ assignments }: AssignmentsListProps) => {
+export const AssignmentsList = ({
+  assignments,
+  isHandleAssIdLoading,
+  onApproveRejectAssignment
+}: AssignmentsListProps) => {
   return (
     <StyledAssignmentsList>
       {assignments.map((assignment) => {
@@ -20,10 +34,57 @@ export const AssignmentsList = ({ assignments }: AssignmentsListProps) => {
             <span>{assignment.requestDate}</span>
             <span>{assignment.startDate}</span>
             <span>{assignment.endDate}</span>
-            <span>
-              <button type='button'>reject</button>
-              <button type='button'>approve</button>
-            </span>
+            <AssignmentsButtonsContainer>
+              {isHandleAssIdLoading &&
+              isHandleAssIdLoading === assignment.id ? (
+                <Loader size="mini" />
+              ) : (
+                ["Reject", "Approve"].map((btn) => {
+                  return (
+                    <ApproveRejectBtn
+                      key={btn}
+                      type="button"
+                      disabled={!!isHandleAssIdLoading}
+                      btnType={btn as 'Reject' | 'Approve'}
+                      onClick={() =>
+                        onApproveRejectAssignment({
+                          assId: assignment.id,
+                          type: "reject"
+                        })
+                      }
+                    >
+                      {btn}
+                    </ApproveRejectBtn>
+                  );
+                })
+                // <>
+                //   <RejectButton
+                //     type="button"
+                //     disabled={!!isHandleAssIdLoading}
+                //     onClick={() =>
+                //       onApproveRejectAssignment({
+                //         assId: assignment.id,
+                //         type: "reject"
+                //       })
+                //     }
+                //   >
+                //     Reject
+                //   </RejectButton>
+                //   <ApproveButton
+                //     type="button"
+                //     disabled={!!isHandleAssIdLoading}
+                //     onClick={() =>
+                //       onApproveRejectAssignment({
+                //         assId: assignment.id,
+                //         type: "approve"
+                //       })
+                //     }
+                //   >
+                //     Approve
+                //   </ApproveButton>
+                // </>
+              )}
+            </AssignmentsButtonsContainer>
           </AssignmentItem>
         );
       })}
