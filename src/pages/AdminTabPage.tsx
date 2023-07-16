@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { AdminAssignments } from "src/components/AdminAssignments/AdminAssignments";
 import { AdminRoles } from "src/components/AdminRoles/AdminRoles";
 import { Container } from "src/components/common/Container.styles";
 import { Pagination } from "src/components/Pagination/Pagination";
@@ -11,24 +12,21 @@ import {
   Tabs
 } from "./styles/AdminTabPage.styles";
 
-const AdminAssignments = () => {
-  return <div>Assignments</div>;
-};
 const AdminReviews = () => {
   return <div>Reviews</div>;
 };
 
 const tabLinks = [
   {
-    path: "/admin_tab/roles",
+    path: "/admin/roles",
     text: "Manage Roles"
   },
   {
-    path: "/admin_tab/assignments",
+    path: "/admin/assignments",
     text: "Approve assignments"
   },
   {
-    path: "/admin_tab/reviews",
+    path: "/admin/reviews",
     text: "Delete reviews"
   }
 ];
@@ -36,20 +34,190 @@ const tabLinks = [
 export const AdminTabPage = () => {
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
-  const { roles, totalRoleRecords } = useAppSelector(
-    ({ role }) => ({
+
+  const { booksArr, roles, totalRoleRecords, assignmentsArr } = useAppSelector(
+    ({ role, assignments, books }) => ({
+      booksArr: books.books, 
       roles: role.roles,
       totalRoleRecords: role.totalRecords,
+      assignmentsArr: assignments.assignments
     })
   );
 
-  const assignments = 25;
+  // const books = [
+  //   {
+  //     id: "1",
+  //     title: 'book1'
+  //   },
+  //   {
+  //     id: "2",
+  //     title: 'book2'
+  //   },
+  //   {
+  //     id: "3",
+  //     title: 'book3'
+  //   },
+  //   {
+  //     id: "4",
+  //     title: 'book4'
+  //   },
+  //   {
+  //     id: "5",
+  //     title: 'book5'
+  //   }
+  // ]
+
+  // const users = [
+  //   {
+  //     id: "1",
+  //     username: 'username1'
+  //   },
+  //   {
+  //     id: "2",
+  //     username: 'username2'
+  //   },
+  //   {
+  //     id: "3",
+  //     username: 'username3'
+  //   },
+  //   {
+  //     id: "4",
+  //     username: 'username4'
+  //   },
+  //   {
+  //     id: "5",
+  //     username: 'username5'
+  //   }
+  // ]
+
+  // const assignmentsArray: AssignmentType[] = [
+  //   {
+  //     id: "1",
+  //     bookId: "1",
+  //     userId: "1",
+  //     requestDate: "1999-11-26",
+  //     startDate: "1999-11-26",
+  //     endDate: "1999-11-26",
+  //     status: "PENDING"
+  //   },
+  //   {
+  //     id: "2",
+  //     bookId: "2",
+  //     userId: "2",
+  //     requestDate: "1999-11-26",
+  //     startDate: "1999-11-26",
+  //     endDate: "1999-11-26",
+  //     status: "PENDING"
+  //   },
+  //   {
+  //     id: "3",
+  //     bookId: "3",
+  //     userId: "3",
+  //     requestDate: "1999-11-26",
+  //     startDate: "1999-11-26",
+  //     endDate: "1999-11-26",
+  //     status: "PENDING"
+  //   },
+  //   {
+  //     id: "4",
+  //     bookId: "4",
+  //     userId: "4",
+  //     requestDate: "1999-11-26",
+  //     startDate: "1999-11-26",
+  //     endDate: "1999-11-26",
+  //     status: "PENDING"
+  //   },
+  //   {
+  //     id: "5",
+  //     bookId: "5",
+  //     userId: "5",
+  //     requestDate: "1999-11-26",
+  //     startDate: "1999-11-26",
+  //     endDate: "1999-11-26",
+  //     status: "PENDING"
+  //   },
+  //   {
+  //     id: "6",
+  //     bookId: "6",
+  //     userId: "6",
+  //     requestDate: "1999-11-26",
+  //     startDate: "1999-11-26",
+  //     endDate: "1999-11-26",
+  //     status: "PENDING"
+  //   },
+  //   {
+  //     id: "7",
+  //     bookId: "7",
+  //     userId: "7",
+  //     requestDate: "1999-11-26",
+  //     startDate: "1999-11-26",
+  //     endDate: "1999-11-26",
+  //     status: "PENDING"
+  //   },
+  //   {
+  //     id: "8",
+  //     bookId: "8",
+  //     userId: "8",
+  //     requestDate: "1999-11-26",
+  //     startDate: "1999-11-26",
+  //     endDate: "1999-11-26",
+  //     status: "PENDING"
+  //   },
+  //   {
+  //     id: "9",
+  //     bookId: "9",
+  //     userId: "9",
+  //     requestDate: "1999-11-26",
+  //     startDate: "1999-11-26",
+  //     endDate: "1999-11-26",
+  //     status: "PENDING"
+  //   },
+  //   {
+  //     id: "10",
+  //     bookId: "10",
+  //     userId: "10",
+  //     requestDate: "1999-11-26",
+  //     startDate: "1999-11-26",
+  //     endDate: "1999-11-26",
+  //     status: "PENDING"
+  //   },
+  //   {
+  //     id: "11",
+  //     bookId: "11",
+  //     userId: "11",
+  //     requestDate: "1999-11-26",
+  //     startDate: "1999-11-26",
+  //     endDate: "1999-11-26",
+  //     status: "PENDING"
+  //   },
+  //   {
+  //     id: "12",
+  //     bookId: "12",
+  //     userId: "12",
+  //     requestDate: "1999-11-26",
+  //     startDate: "1999-11-26",
+  //     endDate: "1999-11-26",
+  //     status: "PENDING"
+  //   },
+  // ];
+// const assignments = assignmentsArray.map((assign) => ({
+//   ...assign,
+//   bookId: books.find((book) => book.id === assign.bookId)?.title,
+//   userId: users.find((role) => role.id === assign.userId)?.username
+// }));
+
+
+const assignments = assignmentsArr.map((assign) => ({
+  ...assign,
+  bookId: booksArr.find((book) => book.id === assign.bookId)?.title,
+  userId: roles.find((role) => role.id === assign.userId)?.username
+}));
   const reviews = 46;
 
   const currentlyViewedPage =
-    location.pathname === "/admin_tab/roles"
+    location.pathname === "/admin/roles"
       ? "roles"
-      : location.pathname === "/admin_tab/assignments"
+      : location.pathname === "/admin/assignments"
       ? "assignments"
       : "reviews";
 
@@ -57,10 +225,10 @@ export const AdminTabPage = () => {
     (currentlyViewedPage === "roles"
       ? totalRoleRecords
       : currentlyViewedPage === "assignments"
-      ? assignments
+      ? assignmentsArr.length
       : reviews) / 12
   );
-// test
+  // test
   return (
     <AdminTabPageContainer>
       <Container>
@@ -84,7 +252,10 @@ export const AdminTabPage = () => {
             path="roles"
             element={<AdminRoles roles={roles} currentPage={currentPage} />}
           />
-          <Route path="assignments" element={<AdminAssignments />} />
+          <Route
+            path="assignments"
+            element={<AdminAssignments assignments={assignments} currentPage={currentPage}/>}
+          />
           <Route path="reviews" element={<AdminReviews />} />
         </Routes>
       </Container>
