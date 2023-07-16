@@ -27,7 +27,11 @@ export const BookDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [assignments, setAssignments] = useState<string[]>([]);
+  const [assignments, setAssignments] = useState<string[]>([
+    'one',
+    'two',
+    'three',
+  ]);
   const user = useAppSelector((state) => state.auth.user);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -98,15 +102,18 @@ export const BookDetails = () => {
             </div>
           </StyledModalContent>
         );
-      case 'assignToMe':
-        break;
       case 'delete':
         return (
           <StyledParagraph>
             Are you sure you want to delete this book?
           </StyledParagraph>
         );
-
+      case 'assignToMe':
+        return (
+          <StyledParagraph>
+            Are you sure you want to assign this book to yourself?
+          </StyledParagraph>
+        );
       default:
         return <h2>Empty window... How did you get here?</h2>;
     }
@@ -134,7 +141,6 @@ export const BookDetails = () => {
     try {
       await deleteBook(id);
       toast.success('The book has been successfully deleted!');
-      setIsModalOpen(false);
       navigate('/main');
     } catch (error: any) {
       toast.error('Some errors with the delete');
@@ -149,12 +155,11 @@ export const BookDetails = () => {
         authors: bookDetails.authors.join(', ').split(', '),
         genres: bookDetails.genres.join(', ').split(', '),
       };
-      // if (bookDetails !== updateBook) 
+      // if (bookDetails !== updateBook)
       // make this check in future to avoid sending the same book to server
-        await updateBook(id, updatedBook);
-      
+      await updateBook(id, updatedBook);
+
       toast.success('The book has been successfully updated!');
-      setIsModalOpen(false);
     } catch (error: any) {
       if (error.response.status === StatusCodes.NOT_ALLOWED) {
         toast.error('You are not allowed to edit this book');
@@ -163,11 +168,31 @@ export const BookDetails = () => {
     }
   };
 
+  const fetchAssigningBook = async () => {
+    if (!bookDetails.canBorrow) {
+      toast.warning(
+        'The book is already assigned to another user for the current period of time, please join the queue by clicking on Add to queue'
+      );
+      return;
+    }
+    try {
+      // await assignBookToCurrentUser(id);
+      toast.success(
+        `Book was successfully assigned to ${user?.userName}. Your assignment ends at: <End_date> /n Please wait for the Administrator approval`
+      );
+    } catch (error: any) {
+      toast.error('Some errors with the assign');
+      console.log('Error:', error.message);
+    }
+  };
+
   const handleConfirm = async () => {
-    if (modal.actionType === 'delete') {
+    if (modal.actionType === 'edit') {
+      await fetchUpdatingBook();
+    } else if (modal.actionType === 'delete') {
       await fethcDeletingBook();
     } else {
-      fetchUpdatingBook();
+      await fetchAssigningBook();
     }
     setIsModalOpen(false);
   };
@@ -222,11 +247,17 @@ export const BookDetails = () => {
               <Button title="Delete" onClick={openDeleteModal} />
             </>
           )}
-          <Button
-            title="Assign to Me"
-            onClick={openAssignToMeModal}
-            disabled={assignments.length > 2 && bookDetails.canBorrow}
-          />
+          <span
+            data-tooltip-id={assignments.length > 2 ? 'tooltip' : ''}
+            data-tooltip-content="You should have less than 2 assignments to Assign a book"
+            data-tooltip-variant="warning"
+          >
+            <Button
+              title="Assign to Me"
+              onClick={openAssignToMeModal}
+              disabled={assignments.length > 2}
+            />
+          </span>
         </ButtonsContainer>
       </BookDetailsSection>
       <Modal

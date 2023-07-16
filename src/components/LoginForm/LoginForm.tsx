@@ -1,5 +1,3 @@
-import 'react-toastify/dist/ReactToastify.css';
-
 import { FormikHelpers, useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -120,7 +118,12 @@ export const LoginForm = () => {
       {isSubmitting ? (
         <Loader size="mini" />
       ) : (
-        <Button type="submit" title="Log in" data-testid="login-button" />
+        <Button
+          type="submit"
+          title="Log in"
+
+          data-testid="login-button"
+        />
       )}
     </StyledForm>
   );
