@@ -16,8 +16,10 @@ export const StyledBookItem = styled(Link)`
   text-decoration: none;
   padding: 10px;
   width: fit-content;
+  height: fit-content;
   img {
     width: 70px;
+    border-radius: 10px;
   }
   &:hover {
     background-color: ${({ theme }) => theme.colors.lightGray};

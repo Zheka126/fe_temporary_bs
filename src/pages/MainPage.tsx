@@ -3,7 +3,7 @@ import { useCallback, useEffect, useReducer, useState } from 'react';
 import { Loader } from 'src/components';
 import { BookFilter } from 'src/components/BookFilter/BookFilter';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import { getBooksThunk } from 'src/redux/slices/bookSlice';
+import { getBooksThunk, setBooks } from 'src/redux/slices/bookSlice';
 import { getGenresThunk } from 'src/redux/slices/genresSlice';
 import { FilterValues } from 'src/types/book';
 
@@ -14,7 +14,7 @@ import {
   BooksLoaderContainer,
   MainPageContainer,
   MainPageContentContainer,
-  NoBooksText,
+  NoBooksOrServerErrorText,
 } from './styles/MainPage.styles';
 
 const initialState = {
@@ -45,7 +45,18 @@ const reducer = (state: FilterValues, action: Action) => {
 
       return {
         ...state,
-        genre: updatedGenres,
+        genre: updatedGenres
+      };
+    }
+
+    case "status": {
+      const selectedStatus = action.status;
+      const updatedStatus = state.status.includes(selectedStatus)
+        ? state.status.filter((status) => status !== selectedStatus)
+        : [...state.status, selectedStatus];
+      return {
+        ...state,
+        status: updatedStatus
       };
     }
 
@@ -80,13 +91,17 @@ export const MainPage = () => {
   const {
     booksArr: books,
     booksTotalRecords,
-    genres,
+    genres
   } = useAppSelector((state) => ({
     booksArr: state.books.books,
     booksTotalRecords: state.books.totalRecords,
     genres: state.genres.genres,
   }));
   const [booksLoading, setBooksLoading] = useState(true);
+  const [genresLoading, setGenresLoading] = useState(true);
+
+  const [booksErr, setBooksErr] = useState("");
+  const [genresErr, setGenresErr] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -94,7 +109,7 @@ export const MainPage = () => {
         setBooksLoading(true);
         await dispatch(getBooksThunk(filters)).unwrap();
       } catch (err: any) {
-        console.log(err.message);
+        setBooksErr(err.message);
       } finally {
         setBooksLoading(false);
       }
@@ -104,9 +119,11 @@ export const MainPage = () => {
   useEffect(() => {
     (async () => {
       try {
-        await dispatch(getGenresThunk());
+        await dispatch(getGenresThunk()).unwrap();
       } catch (err: any) {
-        console.log(err.message);
+        setGenresErr(err.message);
+      } finally {
+        setGenresLoading(false);
       }
     })();
   }, []);
@@ -118,24 +135,31 @@ export const MainPage = () => {
     []
   );
 
-  const onHandleSearchValue = (value: string) => {
-    setSearchVal(value);
-const foundBookIdsArr = value ? genres
-  .filter((genre) => genre.name.toLowerCase().includes(value.toLowerCase())).map(genre => genre.id): []
-  debouncedSearch( foundBookIdsArr);
-  };
+const onHandleSearchValue = (value: string) => {
+  setSearchVal(value);
+  const foundBookIdsArr = genres
+    .filter((genre) => genre.name.toLowerCase().includes(value.toLowerCase()))
+    .map((genre) => genre.id);
 
-  const setCheckboxValue = (type: 'genre' | 'status', key: string) => {
-    if (type === 'genre') {
+    // const idsArray = (!foundBookIdsArr.length && value) ? ['00c2cc22-cc22-22c2-2c2c-c2ccccc222cc'] : foundBookIdsArr
+    if(!foundBookIdsArr.length && value) {
+      dispatch(setBooks([]))
+    } else {
+      debouncedSearch(foundBookIdsArr);
+    }
+};
+
+  const setCheckboxValue = (type: "genre" | "status", key: string) => {
+    if (type === "genre") {
       const genreId = genres.find((genre) => genre.name === key)?.id;
       dispatchReducer({
-        type: 'genre',
-        genre: genreId!,
+        type: "genre",
+        genre: genreId!
       });
     } else if (type === 'status') {
       dispatchReducer({
-        type: 'status',
-        status: key,
+        type: "status",
+        status: key
       });
     }
   };
@@ -157,15 +181,19 @@ const foundBookIdsArr = value ? genres
             <BooksLoaderContainer>
               <Loader size="big" />
             </BooksLoaderContainer>
+          ) : booksErr ? (
+            <NoBooksOrServerErrorText>{booksErr} 🙁</NoBooksOrServerErrorText>
           ) : books.length ? (
             <BookList books={books} />
           ) : (
-            <NoBooksText>No books yet 🙁</NoBooksText>
+            <NoBooksOrServerErrorText>No books yet 🙁</NoBooksOrServerErrorText>
           )}
           <BookFilter
             genresList={genres}
             filters={filters}
             searchTerm={searchVal}
+            genresErr={genresErr}
+            genresLoading={genresLoading}
             setSearchValue={onHandleSearchValue}
             setCheckboxValue={setCheckboxValue}
             setRating={setRating}
