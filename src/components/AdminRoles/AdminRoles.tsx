@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "src/redux/hooks";
-import { getRolesThunk, updateRoleThunk } from "src/redux/slices/rolesSlice";
-import { AvailableRoles, Role, UpdateRoleRequest } from "src/types/roles";
+import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { getRolesThunk, updateRoleThunk } from 'src/redux/slices/rolesSlice';
+import { AvailableRoles, Role, UpdateRoleRequest } from 'src/types/roles';
 
-import { Loader } from "../common/Loader/Loader";
-import { Modal } from "../Modal/Modal";
+import { Loader } from '../common/Loader/Loader';
+import { Modal } from '../common/Modal/Modal';
 import {
   RequestError,
   RolesLoaderContainer,
-  RolesPanel
-} from "./AdminRoles.styles";
-import { UsersList } from "./UsersList/UsersList";
+  RolesPanel,
+} from './AdminRoles.styles';
+import { UsersList } from './UsersList/UsersList';
 
 interface AdminRolesProps {
   roles: Role[];
@@ -21,7 +21,7 @@ export const AdminRoles = ({ roles, currentPage }: AdminRolesProps) => {
   const dispatch = useAppDispatch();
 
   const [isAllRolesLoading, setAllRolesLoading] = useState(true);
-  const [switchRoleLoadingId, setSwitchRoleLoadingId] = useState("");
+  const [switchRoleLoadingId, setSwitchRoleLoadingId] = useState('');
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [updateRoleData, setUpdateRoleData] =
@@ -29,16 +29,16 @@ export const AdminRoles = ({ roles, currentPage }: AdminRolesProps) => {
 
   const userRole = useAppSelector(({ auth }) => auth.user?.role);
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   useEffect(() => {
     (async () => {
       try {
         setAllRolesLoading(true);
-        if (userRole === "SuperAdmin") {
+        if (userRole === 'SuperAdmin') {
           await dispatch(getRolesThunk(currentPage)).unwrap();
         } else {
-          throw Error("The page is available for super admin only");
+          throw Error('The page is available for super admin only');
         }
       } catch (err: any) {
         setError(err.message);
@@ -67,7 +67,7 @@ export const AdminRoles = ({ roles, currentPage }: AdminRolesProps) => {
     } catch (err: any) {
       setError(err.message);
     } finally {
-      setSwitchRoleLoadingId("");
+      setSwitchRoleLoadingId('');
     }
   };
 

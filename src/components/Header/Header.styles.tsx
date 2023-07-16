@@ -52,8 +52,8 @@ export const NavBtn = styled.button`
 `;
 
 export const NavBtnWithDropdown = styled.div<{ isDropdownShowed: boolean }>`
-display: flex;
-align-items: center;
+  display: flex;
+  align-items: center;
   svg {
     width: 20px;
     padding: 0 6px;
@@ -80,6 +80,19 @@ export const StyledDropdown = styled.ul`
       margin-top: 8px;
       padding-top: 10px;
       border-top: 1px solid #c2c2c2;
+    }
+
+    button {
+      font-size: 12px;
+      padding: 5px 30px 5px 20px;
+      background-color: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+
+      &:hover {
+        font-weight: bold;
+      }
     }
   }
 
