@@ -45,7 +45,7 @@ export const AssignmentsList = ({
                       key={btn}
                       type="button"
                       disabled={!!isHandleAssIdLoading}
-                      btnType={btn as 'Reject' | 'Approve'}
+                      btnType={btn as "Reject" | "Approve"}
                       onClick={() =>
                         onApproveRejectAssignment({
                           assId: assignment.id,
@@ -57,32 +57,6 @@ export const AssignmentsList = ({
                     </ApproveRejectBtn>
                   );
                 })
-                // <>
-                //   <RejectButton
-                //     type="button"
-                //     disabled={!!isHandleAssIdLoading}
-                //     onClick={() =>
-                //       onApproveRejectAssignment({
-                //         assId: assignment.id,
-                //         type: "reject"
-                //       })
-                //     }
-                //   >
-                //     Reject
-                //   </RejectButton>
-                //   <ApproveButton
-                //     type="button"
-                //     disabled={!!isHandleAssIdLoading}
-                //     onClick={() =>
-                //       onApproveRejectAssignment({
-                //         assId: assignment.id,
-                //         type: "approve"
-                //       })
-                //     }
-                //   >
-                //     Approve
-                //   </ApproveButton>
-                // </>
               )}
             </AssignmentsButtonsContainer>
           </AssignmentItem>
