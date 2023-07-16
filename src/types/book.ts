@@ -30,3 +30,12 @@ export interface FilterValues {
   selectedRating: number | null;
   currentPage: number;
 }
+
+export interface AddBookRequest {
+  title: string,
+  authorId: string[],
+  genreId: string[],
+  language: string,
+  publicationDate: string,
+  image: File | null
+}

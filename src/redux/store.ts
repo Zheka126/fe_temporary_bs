@@ -12,6 +12,7 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 import assignmentsReducer from './slices/assignmentsSlice';
+import authorsReducer from './slices/authorsSlice';
 import authReducer from './slices/authSlice';
 import bookReducer from './slices/bookSlice';
 import genresReducer from './slices/genresSlice';
@@ -26,13 +27,14 @@ const rootReducer = combineReducers({
   role: roleReducer,
   genres: genresReducer,
   assignments: assignmentsReducer,
+  authors: authorsReducer
 });
 
 // REDUX PERSIST
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['books', 'role'],
+  whitelist: ['books', 'role', 'genres'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
