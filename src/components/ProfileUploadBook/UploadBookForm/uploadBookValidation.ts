@@ -11,5 +11,4 @@ export const uploadBookValidation = Yup.object({
   genreId: Yup.array().min(1, 'Required').required('Required'),
   language: Yup.string().required('Required'),
   publicationDate: Yup.string().required('Required'),
-  availability: Yup.boolean().required('Required'),
 });

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { AddAuthorRequest } from "src/types/author";
 
 import { Button } from "../..";
-import { InputContainer, StyledInput } from "../../common/Input.styles";
+import { InputContainer, StyledErrorMessage, StyledInput } from "../../common/Input.styles";
 
 interface AddAuthorFormProps {
   addAuthor: (author: AddAuthorRequest) => void;
@@ -17,7 +17,8 @@ export const AddAuthorForm = ({ addAuthor }: AddAuthorFormProps) => {
     setFirstName("");
     setLastName("");
   };
-
+  const isValidFirstName = firstName ? !!(/^[A-Za-z]+$/.test(firstName)) : true;
+  const isValidLastName = lastName ? !!(/^[A-Za-z]+$/.test(lastName)): true;
   return (
     <div>
       <h3>Add Author</h3>
@@ -29,8 +30,12 @@ export const AddAuthorForm = ({ addAuthor }: AddAuthorFormProps) => {
           placeholder="First Name"
           bgcColor="gray"
           value={firstName}
+          isError={!isValidFirstName}
           onChange={(e) => setFirstName(e.target.value)}
         />
+        {!isValidFirstName && (
+          <StyledErrorMessage>Only latin letters allowed</StyledErrorMessage>
+        )}
       </InputContainer>
 
       <InputContainer>
@@ -41,12 +46,16 @@ export const AddAuthorForm = ({ addAuthor }: AddAuthorFormProps) => {
           placeholder="Last Name"
           bgcColor="gray"
           value={lastName}
+          isError={!isValidLastName}
           onChange={(e) => setLastName(e.target.value)}
         />
+         {!isValidLastName && (
+          <StyledErrorMessage>Only latin letters allowed</StyledErrorMessage>
+        )}
       </InputContainer>
       <Button
         title="Add"
-        disabled={!firstName || !lastName}
+        disabled={!firstName || !lastName || !isValidFirstName || !isValidLastName}
         onClick={onAddAuthor}
       />
     </div>

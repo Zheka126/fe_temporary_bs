@@ -1,5 +1,6 @@
 import { FormikHelpers, useFormik } from "formik";
 import { ChangeEvent, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import Select, { components, MultiValue, SingleValue } from "react-select";
 import { Loader } from "src/components";
 import { AuthorType } from "src/types/author";
@@ -19,6 +20,7 @@ import {
   EmptyImageBlock,
   FormContent,
   ImageBlock,
+  InputDate,
   PublicationDateText,
   selectStyles,
   StyledForm,
@@ -76,6 +78,7 @@ export const UploadBookForm = ({
   getAuthors,
   uploadBook
 }: UploadBookFormProps) => {
+  const navigate = useNavigate();
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   const onSubmit = async (
@@ -106,6 +109,7 @@ export const UploadBookForm = ({
     initialValues,
     validationSchema: uploadBookValidation,
     onSubmit
+    // validateOnMount: true
   });
 
   const onCoverUpload = (e: ChangeEvent<HTMLInputElement>) => {
@@ -147,10 +151,22 @@ export const UploadBookForm = ({
 
   const imgSrc = values.image ? URL.createObjectURL(values.image) : "";
 
+  const isSelectGenresErr = touched.genreId && errors.genreId;
+  const isSelectLangErr = touched.language && errors.language;
+
   return (
     <StyledForm onSubmit={handleSubmit}>
       <ImageBlock>
-        {imgSrc ? <img src={imgSrc} alt="book cover" /> : <EmptyImageBlock />}
+        {imgSrc ? (
+          <img src={imgSrc} alt="book cover" />
+        ) : (
+          <EmptyImageBlock isError={Boolean(touched.image && errors.image)}>
+                    {touched.image && errors.image && (
+          <StyledErrorMessage>{errors.image}</StyledErrorMessage>
+        )}
+
+          </EmptyImageBlock>
+        )}
         <input
           id="image"
           name="image"
@@ -159,9 +175,6 @@ export const UploadBookForm = ({
           accept=".png, .jpg, .bmp"
           onChange={onCoverUpload}
         />
-        {touched.image && errors.image && (
-          <StyledErrorMessage>{errors.image}</StyledErrorMessage>
-        )}
         <UploadImgBtn
           type="button"
           onClick={() => inputFileRef.current?.click()}
@@ -176,6 +189,7 @@ export const UploadBookForm = ({
             type="text"
             placeholder="Title"
             bgcColor="gray"
+            isError={Boolean(touched.title && errors.title)}
             {...getFieldProps("title")}
           />
           {touched.title && errors.title && (
@@ -189,6 +203,7 @@ export const UploadBookForm = ({
             type="text"
             placeholder="Description"
             bgcColor="gray"
+            isError={Boolean(touched.description && errors.description)}
             {...getFieldProps("description")}
           />
           {touched.description && errors.description && (
@@ -204,8 +219,7 @@ export const UploadBookForm = ({
             placeholder="Authors"
             onFocus={getAuthors}
             isMulti
-            styles={selectStyles}
-            // components={{ MenuList }}
+            styles={selectStyles()}
             components={{
               MenuList: (props) =>
                 (
@@ -222,7 +236,7 @@ export const UploadBookForm = ({
             options={genresOption}
             placeholder="Genres"
             isMulti
-            styles={selectStyles}
+            styles={selectStyles(isSelectGenresErr)}
             onBlur={() => setFieldTouched("genreId", true)}
             onChange={(o) => onMultiSelectChange(o, "genres")}
           />
@@ -236,7 +250,7 @@ export const UploadBookForm = ({
             id="language"
             options={languagesOptions}
             placeholder="Languages"
-            styles={selectStyles}
+            styles={selectStyles(isSelectLangErr)}
             onBlur={() => setFieldTouched("language", true)}
             onChange={(o) => onSingleSelectChange(o)}
           />
@@ -247,10 +261,11 @@ export const UploadBookForm = ({
 
         <InputContainer>
           <PublicationDateText>Publication date</PublicationDateText>
-          <input
+          <InputDate
             id="publicationDate"
             type="date"
             max={currentDate}
+            isError={Boolean(touched.publicationDate && errors.publicationDate)}
             {...getFieldProps("publicationDate")}
           />
           {touched.publicationDate && errors.publicationDate && (
@@ -265,8 +280,18 @@ export const UploadBookForm = ({
             </AddBookLoaderContainer>
           ) : (
             <>
-              <UploadBtn type="submit">Upload book</UploadBtn>
-              <CancelBtn type="button">Cancel</CancelBtn>
+              <UploadBtn
+                type="submit"
+                disabled={Boolean(Object.keys(errors).length)}
+              >
+                Upload book
+              </UploadBtn>
+              <CancelBtn
+                type="button"
+                onClick={() => navigate("/profile/books")}
+              >
+                Cancel
+              </CancelBtn>
             </>
           )}
         </ButtonsContainer>
