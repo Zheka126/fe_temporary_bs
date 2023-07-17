@@ -4,7 +4,7 @@ import { AuthorType } from "src/types/author";
 import { AddBookRequest } from "src/types/book";
 import { GenreType } from "src/types/genre";
 
-import { InputContainer, StyledInput } from "../common/Input.styles";
+import { InputContainer, StyledInput } from "../../common/Input.styles";
 import {
   ButtonsContainer,
   FormContent,
@@ -49,7 +49,7 @@ export const UploadBookForm = ({
     publicationDate: "",
     image: null
   });
-console.log(newBook.image);
+  console.log(newBook.image);
 
   const [selectedAuthors, setSelectedAuthors] = useState<
     MultiValue<MultiSelectValue>
@@ -118,7 +118,7 @@ console.log(newBook.image);
     value: genre.name
   }));
 
-  const imgSrc = newBook.image ? URL.createObjectURL(newBook.image) : ''
+  const imgSrc = newBook.image ? URL.createObjectURL(newBook.image) : "";
 
   return (
     <StyledForm>

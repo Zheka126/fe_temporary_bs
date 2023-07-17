@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const UploadBookContainer = styled.div`
-    display: flex;
+    ${({ theme }) => theme.flexStyles()};
+    margin-top: 50px;
     gap: 40px;
 `;

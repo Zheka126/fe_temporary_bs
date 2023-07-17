@@ -1,14 +1,14 @@
-import { AddAuthorForm } from "src/components/AddAuthorForm/AddAuthorForm";
-import { UploadBookForm } from "src/components/UploadBookForm/UploadBookForm";
+import { AddAuthorForm } from "src/components/ProfileUploadBook/AddAuthorForm/AddAuthorForm";
+import { UploadBookForm } from "src/components/ProfileUploadBook/UploadBookForm/UploadBookForm";
 import { useAppDispatch, useAppSelector } from "src/redux/hooks";
 import { addAuthorThunk, getAuthorsThunk } from "src/redux/slices/authorsSlice";
 import { addBookThunk } from "src/redux/slices/bookSlice";
 import { AddAuthorRequest } from "src/types/author";
 import { AddBookRequest } from "src/types/book";
 
-import { UploadBookContainer } from "./TempUploadPage.styles";
+import { UploadBookContainer } from "./ProfileUploadBook.styles";
 
-export const TempUploadPage = () => {
+export const ProfileUploadBook = () => {
   const dispatch = useAppDispatch();
 
   const { authorsArr, genresArr } = useAppSelector(({ authors, genres }) => ({
@@ -26,8 +26,6 @@ export const TempUploadPage = () => {
 
   const uploadBook = (book: AddBookRequest) => {
     dispatch(addBookThunk(book)).unwrap();
-    console.log(book);
-    
   };
 
   return (

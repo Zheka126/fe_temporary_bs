@@ -1,4 +1,4 @@
-import { AdminTabPage } from './AdminTabPage';
+import { AdminTabPage } from './AdminPage';
 import { BookDetailsPage } from './BookDetailsPage';
 import { LoginPage } from './LoginPage';
 import { MainPage } from './MainPage';

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { AddAuthorRequest } from "src/types/author";
 
-import { Button } from "..";
-import { InputContainer, StyledInput } from "../common/Input.styles";
+import { Button } from "../..";
+import { InputContainer, StyledInput } from "../../common/Input.styles";
 
 interface AddAuthorFormProps {
   addAuthor: (author: AddAuthorRequest) => void;
@@ -14,12 +14,13 @@ export const AddAuthorForm = ({ addAuthor }: AddAuthorFormProps) => {
 
   const onAddAuthor = () => {
     addAuthor({ firstName, lastName });
-    setFirstName('')
-    setLastName('')
+    setFirstName("");
+    setLastName("");
   };
 
   return (
     <div>
+      <h3>Add Author</h3>
       <InputContainer>
         <StyledInput
           id="name"
