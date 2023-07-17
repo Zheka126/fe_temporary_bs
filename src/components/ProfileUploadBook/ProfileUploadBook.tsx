@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { AddAuthorForm } from "src/components/ProfileUploadBook/AddAuthorForm/AddAuthorForm";
 import { UploadBookForm } from "src/components/ProfileUploadBook/UploadBookForm/UploadBookForm";
 import { useAppDispatch, useAppSelector } from "src/redux/hooks";
@@ -16,16 +17,25 @@ export const ProfileUploadBook = () => {
     genresArr: genres.genres
   }));
 
+  const [isAuthorsLoading, setAuthorsLoading] = useState(false);
+
   const getAuthors = async () => {
-    dispatch(getAuthorsThunk()).unwrap();
+    try {
+      setAuthorsLoading(true);
+      await dispatch(getAuthorsThunk()).unwrap();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setAuthorsLoading(false);
+    }
   };
 
   const addAuthor = (author: AddAuthorRequest) => {
     dispatch(addAuthorThunk(author)).unwrap();
   };
 
-  const uploadBook = (book: AddBookRequest) => {
-    dispatch(addBookThunk(book)).unwrap();
+  const uploadBook = async (book: AddBookRequest) => {
+    await dispatch(addBookThunk(book)).unwrap();
   };
 
   return (
@@ -33,6 +43,7 @@ export const ProfileUploadBook = () => {
       <UploadBookForm
         authors={authorsArr}
         genres={genresArr}
+        isAuthorsLoading={isAuthorsLoading}
         getAuthors={getAuthors}
         uploadBook={uploadBook}
       />

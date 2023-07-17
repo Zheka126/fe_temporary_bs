@@ -1,10 +1,11 @@
-import { useFormik } from "formik";
-import { ChangeEvent, useRef, useState } from "react";
-import Select, { ActionMeta, MultiValue, SingleValue } from "react-select";
-import { Button } from "src/components";
+import { FormikHelpers, useFormik } from "formik";
+import { ChangeEvent, useRef } from "react";
+import Select, { components, MultiValue, SingleValue } from "react-select";
+import { Loader } from "src/components";
 import { AuthorType } from "src/types/author";
 import { AddBookRequest } from "src/types/book";
 import { GenreType } from "src/types/genre";
+import { SelectValue } from "src/types/select";
 
 import {
   InputContainer,
@@ -12,14 +13,19 @@ import {
   StyledInput
 } from "../../common/Input.styles";
 import {
+  AddBookLoaderContainer,
   ButtonsContainer,
+  CancelBtn,
   EmptyImageBlock,
   FormContent,
   ImageBlock,
+  PublicationDateText,
+  selectStyles,
   StyledForm,
+  UploadBtn,
   UploadImgBtn
 } from "./UploadBookForm.styles";
-import { uploadBookValidation } from "./UploadBookValidation";
+import { uploadBookValidation } from "./uploadBookValidation";
 
 const languagesOptions = [
   { value: "English", label: "English" },
@@ -29,6 +35,7 @@ const languagesOptions = [
 
 const initialValues = {
   title: "",
+  description: "",
   authorId: [],
   genreId: [],
   language: "",
@@ -36,10 +43,8 @@ const initialValues = {
   image: null
 };
 
-interface SelectValue {
-  label: string;
-  value: string;
-}
+const currentDate = new Date().toISOString().split("T")[0];
+
 interface MultiSelectValue extends SelectValue {
   id: string;
 }
@@ -47,38 +52,45 @@ interface MultiSelectValue extends SelectValue {
 interface UploadBookFormProps {
   authors: AuthorType[];
   genres: GenreType[];
+  isAuthorsLoading: boolean;
   getAuthors: () => void;
   uploadBook: (book: AddBookRequest) => void;
 }
 
+const MenuList = ({ isAuthorsLoading, ...props }: any) => {
+  return isAuthorsLoading ? (
+    <components.MenuList {...props}>
+      <AddBookLoaderContainer>
+        <Loader size="mini" />
+      </AddBookLoaderContainer>
+    </components.MenuList>
+  ) : (
+    <components.MenuList {...props} />
+  );
+};
+
 export const UploadBookForm = ({
   authors,
   genres,
+  isAuthorsLoading,
   getAuthors,
   uploadBook
 }: UploadBookFormProps) => {
   const inputFileRef = useRef<HTMLInputElement>(null);
 
-  // const [newBook, setNewBook] = useState<AddBookRequest>({
-  //   title: "",
-  //   authorId: [],
-  //   genreId: [],
-  //   language: "",
-  //   publicationDate: "",
-  //   image: null
-  // });
-  // console.log(newBook.image);
-
-  // const [selectedAuthors, setSelectedAuthors] = useState<
-  //   MultiValue<MultiSelectValue>
-  // >([]);
-
-  // const [selectedGenres, setSelectedGenres] = useState<
-  //   MultiValue<MultiSelectValue>
-  // >([]);
-
-  // const [selectedLanguages, setSelectedLanguages] =
-  //   useState<SingleValue<SelectValue>>(null);
+  const onSubmit = async (
+    newBook: AddBookRequest,
+    { setSubmitting, resetForm }: FormikHelpers<AddBookRequest>
+  ) => {
+    try {
+      setSubmitting(true);
+      await uploadBook(newBook);
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const {
     errors,
@@ -87,60 +99,22 @@ export const UploadBookForm = ({
     handleSubmit,
     getFieldProps,
     setFieldValue,
+    setFieldError,
+    setFieldTouched,
     isSubmitting
   } = useFormik({
     initialValues,
     validationSchema: uploadBookValidation,
-    onSubmit: () => console.log()
+    onSubmit
   });
-
-  console.log('errors', errors);
-  console.log('values', values);
-  
-
-  // const onSubmit = async (
-  //   values: UserRegistrationData,
-  //   { setSubmitting, resetForm }: FormikHelpers<UserRegistrationData>
-  // ) => {
-  //   try {
-  //     setSubmitting(true);
-  //     const { status } = await register(values);
-  //     if (status === StatusCodes.CREATED) {
-  //       toast.success('New account has been successfully created!');
-  //       resetForm();
-  //       navigate('/login');
-  //     }
-  //   } catch (error: any) {
-  //     switch (error.response.status) {
-  //       case StatusCodes.BAD_REQUEST:
-  //         toast.error(
-  //           'Please check your data and try again.'
-  //         );
-  //         break;
-  //       case StatusCodes.INTERNAL_SERVER_ERROR:
-  //         toast.error(
-  //           'Your registration attempt has failed due to an internal server error. Please try again later.'
-  //         );
-  //         break;
-  //       default:
-  //         toast.error(error.message);
-  //         break;
-  //     }
-  //   } finally {
-  //     setSubmitting(false);
-  //   }
-  // };
 
   const onCoverUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    const acceptedFileType =
-      file?.type === "image/png" ||
-      file?.type === "image/jpeg" ||
-      file?.type === "image/bmp";
-    if (file && acceptedFileType) {
-      // setNewBook({ ...newBook, image: file });
+    const acceptedFileTypes = ["image/png", "image/jpeg", "image/bmp"];
+    if (file && acceptedFileTypes.includes(file.type)) {
       setFieldValue("image", file);
-    }
+    } else if (file && !acceptedFileTypes.includes(file.type))
+      setFieldError("image", "Files of type .png, .jpg, .bmp are allowed only");
   };
 
   const onMultiSelectChange = (
@@ -149,32 +123,15 @@ export const UploadBookForm = ({
   ) => {
     const idsArr = optionArr.map((o) => o.id);
     if (type === "authors") {
-      // setSelectedAuthors(optionArr);
       setFieldValue("authorId", idsArr);
     } else {
-      // setSelectedGenres(optionArr);
       setFieldValue("genreId", idsArr);
     }
   };
 
   const onSingleSelectChange = (o: SingleValue<SelectValue>) => {
     setFieldValue("language", o!.value);
-    // setSelectedLanguages(o);
   };
-
-  // const onUploadBook = () => {
-  //   uploadBook(newBook);
-  //   setNewBook({
-  //     title: "",
-  //     authorId: [],
-  //     genreId: [],
-  //     language: "",
-  //     publicationDate: "",
-  //     image: null
-  //   });
-  //   setSelectedAuthors([]);
-  //   setSelectedGenres([]);
-  // };
 
   const authorsOption = authors.map((author) => ({
     id: author.id,
@@ -196,7 +153,7 @@ export const UploadBookForm = ({
         {imgSrc ? <img src={imgSrc} alt="book cover" /> : <EmptyImageBlock />}
         <input
           id="image"
-          name='image'
+          name="image"
           type="file"
           ref={inputFileRef}
           accept=".png, .jpg, .bmp"
@@ -204,7 +161,6 @@ export const UploadBookForm = ({
         />
         {touched.image && errors.image && (
           <StyledErrorMessage>{errors.image}</StyledErrorMessage>
-          // <div>{errors.image}</div>
         )}
         <UploadImgBtn
           type="button"
@@ -212,7 +168,6 @@ export const UploadBookForm = ({
         >
           Upload book cover
         </UploadImgBtn>
-        <span>.png, .jpg, .bmp only*</span>
       </ImageBlock>
       <FormContent>
         <InputContainer>
@@ -221,7 +176,6 @@ export const UploadBookForm = ({
             type="text"
             placeholder="Title"
             bgcColor="gray"
-            // isError={Boolean(touched.title && errors.title)}
             {...getFieldProps("title")}
           />
           {touched.title && errors.title && (
@@ -230,20 +184,36 @@ export const UploadBookForm = ({
         </InputContainer>
 
         <InputContainer>
+          <StyledInput
+            id="description"
+            type="text"
+            placeholder="Description"
+            bgcColor="gray"
+            {...getFieldProps("description")}
+          />
+          {touched.description && errors.description && (
+            <StyledErrorMessage>{errors.description}</StyledErrorMessage>
+          )}
+        </InputContainer>
+
+        <InputContainer>
           <Select
             id="authorId"
-            name='authorId'
+            name="authorId"
             options={authorsOption}
             placeholder="Authors"
             onFocus={getAuthors}
             isMulti
-            // value={selectedAuthors}
+            styles={selectStyles}
+            // components={{ MenuList }}
+            components={{
+              MenuList: (props) =>
+                (
+                  <MenuList isAuthorsLoading={isAuthorsLoading} {...props} />
+                ) as any
+            }}
             onChange={(o) => onMultiSelectChange(o, "authors")}
-            // {...getFieldProps('authorId')}
           />
-          {touched.authorId && errors.authorId && (
-            <StyledErrorMessage>{errors.authorId}</StyledErrorMessage>
-          )}
         </InputContainer>
 
         <InputContainer>
@@ -252,7 +222,8 @@ export const UploadBookForm = ({
             options={genresOption}
             placeholder="Genres"
             isMulti
-            // value={selectedGenres}
+            styles={selectStyles}
+            onBlur={() => setFieldTouched("genreId", true)}
             onChange={(o) => onMultiSelectChange(o, "genres")}
           />
           {touched.genreId && errors.genreId && (
@@ -265,7 +236,8 @@ export const UploadBookForm = ({
             id="language"
             options={languagesOptions}
             placeholder="Languages"
-            // value={selectedLanguages}
+            styles={selectStyles}
+            onBlur={() => setFieldTouched("language", true)}
             onChange={(o) => onSingleSelectChange(o)}
           />
           {touched.language && errors.language && (
@@ -274,10 +246,11 @@ export const UploadBookForm = ({
         </InputContainer>
 
         <InputContainer>
+          <PublicationDateText>Publication date</PublicationDateText>
           <input
             id="publicationDate"
             type="date"
-            // isError={Boolean(touched.publicationDate && errors.publicationDate)}
+            max={currentDate}
             {...getFieldProps("publicationDate")}
           />
           {touched.publicationDate && errors.publicationDate && (
@@ -286,9 +259,16 @@ export const UploadBookForm = ({
         </InputContainer>
 
         <ButtonsContainer>
-          {/* <button type="button" onClick={onUploadBook}> */}
-          <button type="submit">Upload book</button>
-          <button type="button">Cancel</button>
+          {isSubmitting ? (
+            <AddBookLoaderContainer>
+              <Loader size="mini" />
+            </AddBookLoaderContainer>
+          ) : (
+            <>
+              <UploadBtn type="submit">Upload book</UploadBtn>
+              <CancelBtn type="button">Cancel</CancelBtn>
+            </>
+          )}
         </ButtonsContainer>
       </FormContent>
     </StyledForm>
