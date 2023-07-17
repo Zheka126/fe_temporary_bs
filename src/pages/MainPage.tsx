@@ -49,17 +49,6 @@ const reducer = (state: FilterValues, action: Action) => {
       };
     }
 
-    case "status": {
-      const selectedStatus = action.status;
-      const updatedStatus = state.status.includes(selectedStatus)
-        ? state.status.filter((status) => status !== selectedStatus)
-        : [...state.status, selectedStatus];
-      return {
-        ...state,
-        status: updatedStatus
-      };
-    }
-
     case 'status': {
       const selectedStatus = action.status;
       const updatedStatus = state.status.includes(selectedStatus)
