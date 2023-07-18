@@ -47,7 +47,7 @@ export const Header = () => {
   const signOut = () => {
     localStorage.removeItem('token');
     dispatch(setUser(null));
-    navigate('/login');
+    navigate('/');
     setIsModalOpen(false);
   };
 

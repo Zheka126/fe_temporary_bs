@@ -9,7 +9,7 @@ import { ProfilePage } from 'src/pages/ProfilePage';
 
 export const openRoutes = [
   { component: RegistrationPage, path: '/registration' },
-  { component: LoginPage, path: '/login' },
+  { component: LoginPage, path: '/' },
 ];
 
 export const privateRoutes = [

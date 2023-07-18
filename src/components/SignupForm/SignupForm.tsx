@@ -41,7 +41,7 @@ export const SignupForm = () => {
       if (status === StatusCodes.CREATED) {
         toast.success('New account has been successfully created!');
         resetForm();
-        navigate('/login');
+        navigate('/');
       }
     } catch (error: any) {
       switch (error.response.status) {
