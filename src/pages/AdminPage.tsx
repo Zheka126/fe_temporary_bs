@@ -49,7 +49,7 @@ export const AdminTabPage = () => {
     bookId: booksArr.find((book) => book.id === assign.bookId)?.title,
     userId: roles.find((role) => role.id === assign.userId)?.username
   }));
-  const reviews = 46;
+  const reviews = 0;
 
   const currentlyViewedPage =
     location.pathname === "/admin/roles"
@@ -65,7 +65,7 @@ export const AdminTabPage = () => {
       ? assignmentsArr.length
       : reviews) / 12
   );
-  // test
+  
   return (
     <SubPageContainer>
       <Container>
