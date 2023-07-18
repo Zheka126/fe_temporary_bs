@@ -31,7 +31,7 @@ export const App = () => {
         <PersistGate loading={null} persistor={persistor}>
           <AppRouter />
         </PersistGate>
-        <ToastContainer autoClose={3000} pauseOnFocusLoss={false} />
+        <ToastContainer autoClose={3000} pauseOnFocusLoss={false} data-testid="toast"/>
         <Tooltip id="tooltip" place="bottom" delayShow={500} />
       </BrowserRouter>
     </ThemeProvider>
