@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const AssignmentsPanel = styled.ul`
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   list-style: none;
   text-transform: uppercase;
   font-weight: 700;

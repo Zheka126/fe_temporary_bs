@@ -5,13 +5,13 @@ export const StyledAssignmentsList = styled.ul`
   padding-left: 20px;
   background-color: ${({ theme }) => theme.colors.lightGray};
   border-radius: 10px;
-  height: 400px;
+  max-height: 400px;
   overflow: auto;
 `;
 
 export const AssignmentItem = styled.li`
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   list-style: none;
   padding: 5px 0;
   align-items: center;

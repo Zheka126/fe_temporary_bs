@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "src/redux/hooks";
-import { getAssignmentsThunk, onHandleAssignmentThunk } from "src/redux/slices/assignmentsSlice";
-import { ApproveRejectAssignmentRequest, AssignmentType } from "src/types/assignments";
+import {
+  getAssignmentsThunk,
+  onHandleAssignmentThunk
+} from "src/redux/slices/assignmentsSlice";
+import {
+  ApproveRejectAssignmentRequest,
+  AssignmentType
+} from "src/types/assignments";
 
 import { Loader } from "..";
 import {
@@ -13,10 +19,13 @@ import { AssignmentsList } from "./AssignmentsList/AssignmentsList";
 
 interface AdminAssignmentsProps {
   assignments: AssignmentType[];
-  currentPage: number
+  currentPage: number;
 }
 
-export const AdminAssignments = ({ assignments, currentPage }: AdminAssignmentsProps) => {
+export const AdminAssignments = ({
+  assignments,
+  currentPage
+}: AdminAssignmentsProps) => {
   const dispatch = useAppDispatch();
 
   const userRole = useAppSelector(({ auth }) => auth.user?.role);
@@ -24,13 +33,13 @@ export const AdminAssignments = ({ assignments, currentPage }: AdminAssignmentsP
   const [isAssignmentLoading, setAssignmentLoading] = useState(true);
   const [assignmentsErr, setAssignmentsErr] = useState("");
 
-  const [isHandleAssIdLoading, setHandleAssIdLoading] = useState('');
+  const [isHandleAssIdLoading, setHandleAssIdLoading] = useState("");
 
   useEffect(() => {
     (async () => {
       try {
         setAssignmentLoading(true);
-        if(userRole === 'SuperAdmin' || userRole === 'Admin') {
+        if (userRole === "SuperAdmin" || userRole === "Admin") {
           await dispatch(getAssignmentsThunk(currentPage)).unwrap();
         } else {
           throw Error("The page is available for super admin and admin only");
@@ -42,17 +51,19 @@ export const AdminAssignments = ({ assignments, currentPage }: AdminAssignmentsP
       }
     })();
   }, []);
-  
-  const onApproveRejectAssignment = async (handleAssPayload: ApproveRejectAssignmentRequest) => {
+
+  const onApproveRejectAssignment = async (
+    handleAssPayload: ApproveRejectAssignmentRequest
+  ) => {
     try {
-      setHandleAssIdLoading(handleAssPayload.assId)
-      await dispatch(onHandleAssignmentThunk(handleAssPayload))
+      setHandleAssIdLoading(handleAssPayload.assId);
+      await dispatch(onHandleAssignmentThunk(handleAssPayload));
     } catch (err: any) {
       setAssignmentsErr(err.message);
     } finally {
-      setHandleAssIdLoading('')
+      setHandleAssIdLoading("");
     }
-  }
+  };
 
   return (
     <div>
@@ -68,21 +79,19 @@ export const AdminAssignments = ({ assignments, currentPage }: AdminAssignmentsP
             <li>Book</li>
             <li>Requested By</li>
             <li>Requested At</li>
-            <li>Start Date</li>
-            <li>End Date</li>
+            {/* <li>Start Date</li> */}
+            {/* <li>End Date</li> */}
             <li>Actions</li>
           </AssignmentsPanel>
-          {
-            assignments.length
-            ?
+          {assignments.length ? (
             <AssignmentsList
-            assignments={assignments}
-            onApproveRejectAssignment={onApproveRejectAssignment}
-            isHandleAssIdLoading={isHandleAssIdLoading}
+              assignments={assignments}
+              onApproveRejectAssignment={onApproveRejectAssignment}
+              isHandleAssIdLoading={isHandleAssIdLoading}
             />
-            :
+          ) : (
             <EmptyAssignmentsOrErr>No assignments yet 😢</EmptyAssignmentsOrErr>
-          }
+          )}
         </>
       )}
     </div>
