@@ -21,15 +21,6 @@ export const getBooks = (filters: FilterValues) => {
 };
 
 export const addBook = (book: AddBookRequest) => {
-  // const newBook = {
-  //   Title: title,
-  //   AuthorId: authorId,
-  //   GenreId: genreId,
-  //   Language: language,
-  //   PublicationDate: publicationDate,
-  //   Image: image
-  // }
-  
   return instance.post<string>(endpoint, book, {
     headers: {
       'Content-Type': 'multipart/form-data'

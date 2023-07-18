@@ -1,19 +1,23 @@
 import { FormikHelpers, useFormik } from "formik";
-import { ChangeEvent, useRef } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Select, { components, MultiValue, SingleValue } from "react-select";
 import { Loader } from "src/components";
+import {
+  InputContainer,
+  StyledErrorMessage,
+  StyledInput
+} from "src/components/common/Input.styles";
+import { useAppDispatch } from "src/redux/hooks";
+import { getAuthorsThunk } from "src/redux/slices/authorsSlice";
+import { addBookThunk } from "src/redux/slices/bookSlice";
 import { AuthorType } from "src/types/author";
 import { AddBookRequest } from "src/types/book";
 import { GenreType } from "src/types/genre";
 import { SelectValue } from "src/types/select";
 
 import {
-  InputContainer,
-  StyledErrorMessage,
-  StyledInput
-} from "../../common/Input.styles";
-import {
+  AddBookGetAuthorsErr,
   AddBookLoaderContainer,
   ButtonsContainer,
   CancelBtn,
@@ -43,7 +47,7 @@ const initialValues = {
   language: "",
   publicationDate: "",
   image: null
-};
+} as AddBookRequest;
 
 const currentDate = new Date().toISOString().split("T")[0];
 
@@ -54,42 +58,45 @@ interface MultiSelectValue extends SelectValue {
 interface UploadBookFormProps {
   authors: AuthorType[];
   genres: GenreType[];
-  isAuthorsLoading: boolean;
-  getAuthors: () => void;
-  uploadBook: (book: AddBookRequest) => void;
 }
 
-const MenuList = ({ isAuthorsLoading, ...props }: any) => {
-  return isAuthorsLoading ? (
+const MenuList = ({ isGetAuthorsLoading, getAuthorsErr, ...props }: any) => {
+  return isGetAuthorsLoading ? (
     <components.MenuList {...props}>
       <AddBookLoaderContainer>
         <Loader size="mini" />
       </AddBookLoaderContainer>
+    </components.MenuList>
+  ) : getAuthorsErr ? (
+    <components.MenuList {...props}>
+      <AddBookGetAuthorsErr>{getAuthorsErr} 😥</AddBookGetAuthorsErr>
     </components.MenuList>
   ) : (
     <components.MenuList {...props} />
   );
 };
 
-export const UploadBookForm = ({
-  authors,
-  genres,
-  isAuthorsLoading,
-  getAuthors,
-  uploadBook
-}: UploadBookFormProps) => {
+export const UploadBookForm = ({ authors, genres }: UploadBookFormProps) => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const inputFileRef = useRef<HTMLInputElement>(null);
 
-  const onSubmit = async (
+  const [isGetAuthorsLoading, setGetAuthorsLoading] = useState(false);
+  const [getAuthorsErr, setGetAuthorsErr] = useState("");
+
+  const [uploadBookErr, setUploadBookErr] = useState("");
+
+  const uploadBook = async (
     newBook: AddBookRequest,
     { setSubmitting, resetForm }: FormikHelpers<AddBookRequest>
   ) => {
     try {
       setSubmitting(true);
-      await uploadBook(newBook);
-    } catch (error: any) {
-      console.log(error);
+      await dispatch(addBookThunk(newBook)).unwrap();
+      resetForm();
+      navigate(-1)
+    } catch (err: any) {
+      setUploadBookErr(err.message);
     } finally {
       setSubmitting(false);
     }
@@ -108,9 +115,19 @@ export const UploadBookForm = ({
   } = useFormik({
     initialValues,
     validationSchema: uploadBookValidation,
-    onSubmit
-    // validateOnMount: true
+    onSubmit: uploadBook
   });
+
+  const getAuthors = async () => {
+    try {
+      setGetAuthorsLoading(true);
+      await dispatch(getAuthorsThunk()).unwrap();
+    } catch (err: any) {
+      setGetAuthorsErr(err.message);
+    } finally {
+      setGetAuthorsLoading(false);
+    }
+  };
 
   const onCoverUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -151,8 +168,8 @@ export const UploadBookForm = ({
 
   const imgSrc = values.image ? URL.createObjectURL(values.image) : "";
 
-  const isSelectGenresErr = touched.genreId && errors.genreId;
-  const isSelectLangErr = touched.language && errors.language;
+  const isSelectGenresErr = Boolean(touched.genreId && errors.genreId);
+  const isSelectLangErr = Boolean(touched.language && errors.language);
 
   return (
     <StyledForm onSubmit={handleSubmit}>
@@ -161,10 +178,9 @@ export const UploadBookForm = ({
           <img src={imgSrc} alt="book cover" />
         ) : (
           <EmptyImageBlock isError={Boolean(touched.image && errors.image)}>
-                    {touched.image && errors.image && (
-          <StyledErrorMessage>{errors.image}</StyledErrorMessage>
-        )}
-
+            {touched.image && errors.image && (
+              <StyledErrorMessage>{errors.image}</StyledErrorMessage>
+            )}
           </EmptyImageBlock>
         )}
         <input
@@ -223,7 +239,11 @@ export const UploadBookForm = ({
             components={{
               MenuList: (props) =>
                 (
-                  <MenuList isAuthorsLoading={isAuthorsLoading} {...props} />
+                  <MenuList
+                    isGetAuthorsLoading={isGetAuthorsLoading}
+                    getAuthorsErr={getAuthorsErr}
+                    {...props}
+                  />
                 ) as any
             }}
             onChange={(o) => onMultiSelectChange(o, "authors")}
@@ -278,6 +298,8 @@ export const UploadBookForm = ({
             <AddBookLoaderContainer>
               <Loader size="mini" />
             </AddBookLoaderContainer>
+          ) : uploadBookErr ? (
+            <AddBookGetAuthorsErr>{uploadBookErr} 😥</AddBookGetAuthorsErr>
           ) : (
             <>
               <UploadBtn

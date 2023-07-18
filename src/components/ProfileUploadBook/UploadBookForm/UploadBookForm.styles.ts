@@ -1,5 +1,3 @@
-import Select, { GroupBase, StylesConfig } from 'react-select';
-import { SelectValue } from 'src/types/select';
 import styled from 'styled-components';
 
 export const StyledForm = styled.form`
@@ -24,9 +22,9 @@ export const ImageBlock = styled.div`
     width: 150px;
     height: 150px;
   }
-  `;
-  
-  export const EmptyImageBlock = styled.div<{ isError: boolean }>`
+`;
+
+export const EmptyImageBlock = styled.div<{ isError: boolean }>`
   border: ${({ isError }) => (isError ? '1px solid red' : '')};
   border-radius: 10px;
   background-color: white;
@@ -56,6 +54,12 @@ export const FormContent = styled.div`
   flex-direction: column;
 `;
 
+export const AddBookGetAuthorsErr = styled.p`
+  display: flex;
+  justify-content: center;
+  font-weight: 500;
+`;
+
 export const PublicationDateText = styled.div`
   font-size: 20px;
   margin-bottom: 10px;
@@ -63,6 +67,7 @@ export const PublicationDateText = styled.div`
 
 export const InputDate = styled.input<{ isError: boolean }>`
   border: ${({ isError }) => (isError ? '1px solid red' : '')};
+  cursor: pointer;
 `;
 
 export const ButtonsContainer = styled.div`
@@ -106,8 +111,8 @@ export const AddBookLoaderContainer = styled.div`
   width: 100%;
 `;
 
-export const selectStyles = (border?: any) => ({
-  control: (baseStyles) => ({
+export const selectStyles = (border?: boolean) => ({
+  control: (baseStyles: any) => ({
     ...baseStyles,
     fontSize: '14px',
     // border: border ? 'red' : 'none',
@@ -129,7 +134,7 @@ export const selectStyles = (border?: any) => ({
     },
     cursor: 'pointer',
   }),
-  option: (baseStyles, state) => ({
+  option: (baseStyles: any, state: any) => ({
     ...baseStyles,
     cursor: 'pointer',
     backgroundColor: state.isSelected ? '#C60E2E' : 'white',
@@ -141,23 +146,23 @@ export const selectStyles = (border?: any) => ({
       color: 'white',
     },
   }),
-  dropdownIndicator: (baseStyles) => ({
+  dropdownIndicator: (baseStyles: any) => ({
     ...baseStyles,
     color: 'inherit',
   }),
-  loadingIndicator: (baseStyles) => ({
+  loadingIndicator: (baseStyles: any) => ({
     ...baseStyles,
     color: 'inherit',
   }),
-  clearIndicator: (baseStyles) => ({
+  clearIndicator: (baseStyles: any) => ({
     ...baseStyles,
     color: 'inherit',
   }),
-  valueContainer: (baseStyles, state) => ({
+  valueContainer: (baseStyles: any) => ({
     ...baseStyles,
     flexWrap: 'nowrap',
   }),
-  multiValue: (baseStyles) => ({
+  multiValue: (baseStyles: any) => ({
     ...baseStyles,
     backgroundColor: '#E4163A',
     borderRadius: '4px',
@@ -166,14 +171,14 @@ export const selectStyles = (border?: any) => ({
     display: 'flex',
     justifyContent: 'space-between',
   }),
-  multiValueLabel: (baseStyles) => ({
+  multiValueLabel: (baseStyles: any) => ({
     ...baseStyles,
     color: 'white',
     fontSize: '15px',
     lineHeight: '19px',
     fontFamily: 'Avenir, sans-serif',
   }),
-  multiValueRemove: (baseStyles) => ({
+  multiValueRemove: (baseStyles: any) => ({
     ...baseStyles,
   }),
 });

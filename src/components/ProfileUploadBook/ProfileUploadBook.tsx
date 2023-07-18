@@ -2,10 +2,8 @@ import { useState } from "react";
 import { AddAuthorForm } from "src/components/ProfileUploadBook/AddAuthorForm/AddAuthorForm";
 import { UploadBookForm } from "src/components/ProfileUploadBook/UploadBookForm/UploadBookForm";
 import { useAppDispatch, useAppSelector } from "src/redux/hooks";
-import { addAuthorThunk, getAuthorsThunk } from "src/redux/slices/authorsSlice";
-import { addBookThunk } from "src/redux/slices/bookSlice";
+import { addAuthorThunk } from "src/redux/slices/authorsSlice";
 import { AddAuthorRequest } from "src/types/author";
-import { AddBookRequest } from "src/types/book";
 
 import { UploadBookContainer } from "./ProfileUploadBook.styles";
 
@@ -17,37 +15,28 @@ export const ProfileUploadBook = () => {
     genresArr: genres.genres
   }));
 
-  const [isAuthorsLoading, setAuthorsLoading] = useState(false);
+  const [isAddAuthorsLoading, setAddAuthorsLoading] = useState(false);
+  const [addAuthorsErr, setAddAuthorsErr] = useState("");
 
-  const getAuthors = async () => {
+  const addAuthor = async (author: AddAuthorRequest) => {
     try {
-      setAuthorsLoading(true);
-      await dispatch(getAuthorsThunk()).unwrap();
-    } catch (error) {
-      console.log(error);
+      setAddAuthorsLoading(true);
+      await dispatch(addAuthorThunk(author)).unwrap();
+    } catch (err: any) {
+      setAddAuthorsErr(err.message);
     } finally {
-      setAuthorsLoading(false);
+      setAddAuthorsLoading(false);
     }
-  };
-
-  const addAuthor = (author: AddAuthorRequest) => {
-    dispatch(addAuthorThunk(author)).unwrap();
-  };
-
-  const uploadBook = async (book: AddBookRequest) => {
-    await dispatch(addBookThunk(book)).unwrap();
   };
 
   return (
     <UploadBookContainer>
-      <UploadBookForm
-        authors={authorsArr}
-        genres={genresArr}
-        isAuthorsLoading={isAuthorsLoading}
-        getAuthors={getAuthors}
-        uploadBook={uploadBook}
+      <UploadBookForm authors={authorsArr} genres={genresArr} />
+      <AddAuthorForm
+        addAuthor={addAuthor}
+        isAddAuthorsLoading={isAddAuthorsLoading}
+        addAuthorsErr={addAuthorsErr}
       />
-      <AddAuthorForm addAuthor={addAuthor} />
     </UploadBookContainer>
   );
 };
