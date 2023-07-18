@@ -5,7 +5,7 @@ export const StyledUsersList = styled.div`
   padding: 0 20px;
   background-color: ${({ theme }) => theme.colors.lightGray};
   border-radius: 10px;
-  height: 400px;
+  max-height: 400px;
   overflow: auto;
 `;
 export const UserItem = styled.div`

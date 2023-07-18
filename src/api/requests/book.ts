@@ -1,4 +1,4 @@
-import { BookDetailsType, BookType, FilterValues, GetBooksResponse } from 'src/types/book';
+import { AddBookRequest, BookDetailsType, FilterValues, GetBooksResponse } from 'src/types/book';
 
 import { instance } from '../instance';
 
@@ -20,8 +20,13 @@ export const getBooks = (filters: FilterValues) => {
   });
 };
 
-export const addNewBook = (book: BookType) =>
-  instance.post<BookType>(endpoint, book);
+export const addBook = (book: AddBookRequest) => {
+  return instance.post<string>(endpoint, book, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }); 
+}
 
 export const getBookById = (id: string | undefined) =>
   instance.get<BookDetailsType>(`${endpoint}/${id}`);

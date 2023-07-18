@@ -1,16 +1,16 @@
-import { AuthorType } from 'src/types/author';
+import { AddAuthorRequest, AuthorType } from 'src/types/author';
 
 import { instance } from '../instance';
 
-const endpoint = '/authors';
+const endpoint = '/author';
 
 export const getAuthors = () => instance.get<AuthorType[]>(endpoint);
 
+export const addAuthor = (author: AddAuthorRequest) =>
+  instance.post<string>(endpoint, author);
+
 export const getAuthorById = (id: string) =>
   instance.get<AuthorType>(`/${endpoint}/${id}`);
-
-export const addNewAuthor = (author: AuthorType) =>
-  instance.post<AuthorType>(endpoint, author);
 
 export const updateAuthor = (author: AuthorType) =>
   instance.put<AuthorType>(`/${endpoint}/${author}`, author);
