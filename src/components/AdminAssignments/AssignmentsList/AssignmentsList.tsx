@@ -32,8 +32,8 @@ export const AssignmentsList = ({
             <span>{assignment.bookId}</span>
             <span>{assignment.userId}</span>
             <span>{assignment.requestDate}</span>
-            <span>{assignment.startDate}</span>
-            <span>{assignment.endDate}</span>
+            {/* <span>{assignment.startDate}</span> */}
+            {/* <span>{assignment.endDate}</span> */}
             <AssignmentsButtonsContainer>
               {isHandleAssIdLoading &&
               isHandleAssIdLoading === assignment.id ? (

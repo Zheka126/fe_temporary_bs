@@ -10,6 +10,7 @@ export interface AssignmentType {
 
 export interface GetAssignmentsResponse {
     data: AssignmentType[]
+    totalRecords: number
 }
 
 export interface ApproveRejectAssignmentRequest {
