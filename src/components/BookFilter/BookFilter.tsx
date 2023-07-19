@@ -15,10 +15,8 @@ import {
 interface BookFilterProps {
   genres: GenreType[];
   filters: FilterValues;
-  // searchTerm: string;
   genresErr: string;
   genresLoading: boolean;
-  // setSearchValue: (val: string) => void;
   setCheckboxValue: (type: "genre" | "status", key: string) => void;
   setRating: (val: number) => void;
 }
@@ -26,10 +24,8 @@ interface BookFilterProps {
 export const BookFilter = ({
   genres,
   filters,
-  // searchTerm,
   genresErr,
   genresLoading,
-  // setSearchValue,
   setCheckboxValue,
   setRating
 }: BookFilterProps) => {
@@ -68,7 +64,6 @@ export const BookFilter = ({
                       name={genre.name}
                       value={genre.name}
                       checked={filters.genre.some((g) => g === genre.id)}
-                      // disabled={Boolean(searchTerm)}
                       onChange={() => setCheckboxValue("genre", genre.name)}
                     />
                     <label htmlFor={genre.name}>{genre.name}</label>
