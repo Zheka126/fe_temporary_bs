@@ -21,3 +21,4 @@ export const NoBooksOrServerErrorText = styled.div`
   font-size: 32px;
   font-weight: 500;
 `;
+

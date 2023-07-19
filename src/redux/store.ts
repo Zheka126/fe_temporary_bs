@@ -11,8 +11,12 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
+<<<<<<< HEAD
 import assignmentsReducer from './slices/assignmentsSlice';
 import authorsReducer from './slices/authorsSlice';
+=======
+import authorReducer from './slices/authorSlice';
+>>>>>>> feat/INTPO002PD-3721_Books_&_Assignments_Tab
 import authReducer from './slices/authSlice';
 import bookReducer from './slices/bookSlice';
 import genresReducer from './slices/genresSlice';
@@ -26,8 +30,12 @@ const rootReducer = combineReducers({
   books: bookReducer,
   role: roleReducer,
   genres: genresReducer,
+<<<<<<< HEAD
   assignments: assignmentsReducer,
   authors: authorsReducer
+=======
+  authors: authorReducer,
+>>>>>>> feat/INTPO002PD-3721_Books_&_Assignments_Tab
 });
 
 // REDUX PERSIST

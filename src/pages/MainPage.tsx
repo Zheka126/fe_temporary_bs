@@ -1,8 +1,9 @@
-import { useEffect, useReducer, useRef, useState } from 'react';
+import debounce from 'lodash.debounce';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { Loader } from 'src/components';
 import { BookFilter } from 'src/components/BookFilter/BookFilter';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import { getBooksThunk } from 'src/redux/slices/bookSlice';
+import { getBooksThunk, setBooks } from 'src/redux/slices/bookSlice';
 import { getGenresThunk } from 'src/redux/slices/genresSlice';
 import { FilterValues } from 'src/types/book';
 
@@ -24,13 +25,16 @@ const initialState = {
 };
 
 type Action =
-  | { type: "genre"; genre: string }
-  | { type: "status"; status: string }
-  | { type: "rating"; rating: number | null }
-  | { type: "pagination"; page: number };
+  | { type: 'search'; search: string[] }
+  | { type: 'genre'; genre: string }
+  | { type: 'status'; status: string }
+  | { type: 'rating'; rating: number | null }
+  | { type: 'pagination'; page: number };
 
 const reducer = (state: FilterValues, action: Action) => {
   switch (action.type) {
+    case 'search':
+      return { ...state, search: action.search };
 
     case 'genre': {
       const selectedGenre = action.genre;
@@ -40,7 +44,7 @@ const reducer = (state: FilterValues, action: Action) => {
 
       return {
         ...state,
-        genre: updatedGenres
+        genre: updatedGenres,
       };
     }
 
@@ -70,11 +74,12 @@ export const MainPage = () => {
   const dispatch = useAppDispatch();
 
   const [filters, dispatchReducer] = useReducer(reducer, initialState);
+  const [searchVal, setSearchVal] = useState('');
 
   const {
     booksArr: books,
     booksTotalRecords,
-    genres
+    genres,
   } = useAppSelector((state) => ({
     booksArr: state.books.books,
     booksTotalRecords: state.books.totalRecords,
@@ -83,40 +88,77 @@ export const MainPage = () => {
   const [booksLoading, setBooksLoading] = useState(true);
   const [genresLoading, setGenresLoading] = useState(true);
 
-  const [booksErr, setBooksErr] = useState("");
-  const [genresErr, setGenresErr] = useState("");
+  const [booksErr, setBooksErr] = useState('');
+  const [genresErr, setGenresErr] = useState('');
 
-  const isGenresFetched = useRef(false)
+  const isGenresFetched = useRef(false);
 
   useEffect(() => {
     (async () => {
       setBooksLoading(true);
-      await dispatch(getBooksThunk(filters)).unwrap().catch(err => {
-        setBooksErr(err.message);
-      });
-      setBooksLoading(false);
-      
-      if(!isGenresFetched.current) {
-        await dispatch(getGenresThunk()).unwrap().catch(err => {
-          setGenresErr(err.message);
+      await dispatch(getBooksThunk(filters))
+        .unwrap()
+        .catch((err) => {
+          setBooksErr(err.message);
         });
+      setBooksLoading(false);
+
+      if (!isGenresFetched.current) {
+        await dispatch(getGenresThunk())
+          .unwrap()
+          .catch((err) => {
+            setGenresErr(err.message);
+          });
         setGenresLoading(false);
-        isGenresFetched.current = true
+        isGenresFetched.current = true;
       }
     })();
   }, [dispatch, filters]);
 
-  const setCheckboxValue = (type: "genre" | "status", key: string) => {
-    if (type === "genre") {
+  useEffect(() => {
+    (async () => {
+      try {
+        await dispatch(getGenresThunk()).unwrap();
+      } catch (err: any) {
+        setGenresErr(err.message);
+      } finally {
+        setGenresLoading(false);
+      }
+    })();
+  }, []);
+
+  const debouncedSearch = useCallback(
+    debounce((booksArr: string[]) => {
+      dispatchReducer({ type: 'search', search: booksArr });
+    }, 700),
+    []
+  );
+
+  const onHandleSearchValue = (value: string) => {
+    setSearchVal(value);
+    const foundBookIdsArr = genres
+      .filter((genre) => genre.name.toLowerCase().includes(value.toLowerCase()))
+      .map((genre) => genre.id);
+
+    // const idsArray = (!foundBookIdsArr.length && value) ? ['00c2cc22-cc22-22c2-2c2c-c2ccccc222cc'] : foundBookIdsArr
+    if (!foundBookIdsArr.length && value) {
+      dispatch(setBooks([]));
+    } else {
+      debouncedSearch(foundBookIdsArr);
+    }
+  };
+
+  const setCheckboxValue = (type: 'genre' | 'status', key: string) => {
+    if (type === 'genre') {
       const genreId = genres.find((genre) => genre.name === key)?.id;
       dispatchReducer({
-        type: "genre",
-        genre: genreId!
+        type: 'genre',
+        genre: genreId!,
       });
     } else if (type === 'status') {
       dispatchReducer({
-        type: "status",
-        status: key
+        type: 'status',
+        status: key,
       });
     }
   };

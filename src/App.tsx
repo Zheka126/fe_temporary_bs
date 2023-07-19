@@ -1,3 +1,5 @@
+import 'react-toastify/dist/ReactToastify.css';
+
 import { HashRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { Tooltip } from "react-tooltip";
@@ -16,7 +18,7 @@ export const App = () => {
           <AppRouter />
         </PersistGate>
         <ToastContainer
-          autoClose={3000}
+          autoClose={2500}
           pauseOnFocusLoss={false}
           data-testid="toast"
         />
