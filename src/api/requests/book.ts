@@ -1,4 +1,10 @@
-import { BookDetailsType, BookType, FilterValues, GetBooksResponse } from 'src/types/book';
+import {
+  BookDetailsType,
+  BookDetailsUpdateRequest,
+  BookType,
+  FilterValues,
+  GetBooksResponse,
+} from 'src/types/book';
 
 import { instance } from '../instance';
 
@@ -26,8 +32,15 @@ export const addNewBook = (book: BookType) =>
 export const getBookById = (id: string | undefined) =>
   instance.get<BookDetailsType>(`${endpoint}/${id}`);
 
-export const updateBook = (id: string | undefined, book: BookDetailsType | undefined) =>
-  instance.put<BookDetailsType>(`${endpoint}/${id})`, book);
+export const updateBook = (book: BookDetailsUpdateRequest) =>
+  instance.put<BookDetailsUpdateRequest>(endpoint, book, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+export const assignBookToCurrentUser = (id: string | undefined) =>
+  instance.get(`${endpoint}/${id})/assign`);
 
 export const deleteBook = (id: string | undefined) =>
   instance.delete(`${endpoint}/${id}`);

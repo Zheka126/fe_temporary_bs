@@ -26,15 +26,15 @@ const initialState = {
 };
 
 type Action =
-  | { type: "search"; search: string[] }
-  | { type: "genre"; genre: string }
-  | { type: "status"; status: string }
-  | { type: "rating"; rating: number | null }
-  | { type: "pagination"; page: number };
+  | { type: 'search'; search: string[] }
+  | { type: 'genre'; genre: string }
+  | { type: 'status'; status: string }
+  | { type: 'rating'; rating: number | null }
+  | { type: 'pagination'; page: number };
 
 const reducer = (state: FilterValues, action: Action) => {
   switch (action.type) {
-    case "search":
+    case 'search':
       return { ...state, search: action.search };
 
     case 'genre': {
@@ -45,18 +45,7 @@ const reducer = (state: FilterValues, action: Action) => {
 
       return {
         ...state,
-        genre: updatedGenres
-      };
-    }
-
-    case "status": {
-      const selectedStatus = action.status;
-      const updatedStatus = state.status.includes(selectedStatus)
-        ? state.status.filter((status) => status !== selectedStatus)
-        : [...state.status, selectedStatus];
-      return {
-        ...state,
-        status: updatedStatus
+        genre: updatedGenres,
       };
     }
 
@@ -86,12 +75,12 @@ export const MainPage = () => {
   const dispatch = useAppDispatch();
 
   const [filters, dispatchReducer] = useReducer(reducer, initialState);
-  const [searchVal, setSearchVal] = useState("");
+  const [searchVal, setSearchVal] = useState('');
 
   const {
     booksArr: books,
     booksTotalRecords,
-    genres
+    genres,
   } = useAppSelector((state) => ({
     booksArr: state.books.books,
     booksTotalRecords: state.books.totalRecords,
@@ -100,8 +89,8 @@ export const MainPage = () => {
   const [booksLoading, setBooksLoading] = useState(true);
   const [genresLoading, setGenresLoading] = useState(true);
 
-  const [booksErr, setBooksErr] = useState("");
-  const [genresErr, setGenresErr] = useState("");
+  const [booksErr, setBooksErr] = useState('');
+  const [genresErr, setGenresErr] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -130,36 +119,36 @@ export const MainPage = () => {
 
   const debouncedSearch = useCallback(
     debounce((booksArr: string[]) => {
-      dispatchReducer({ type: "search", search: booksArr });
+      dispatchReducer({ type: 'search', search: booksArr });
     }, 700),
     []
   );
 
-const onHandleSearchValue = (value: string) => {
-  setSearchVal(value);
-  const foundBookIdsArr = genres
-    .filter((genre) => genre.name.toLowerCase().includes(value.toLowerCase()))
-    .map((genre) => genre.id);
+  const onHandleSearchValue = (value: string) => {
+    setSearchVal(value);
+    const foundBookIdsArr = genres
+      .filter((genre) => genre.name.toLowerCase().includes(value.toLowerCase()))
+      .map((genre) => genre.id);
 
     // const idsArray = (!foundBookIdsArr.length && value) ? ['00c2cc22-cc22-22c2-2c2c-c2ccccc222cc'] : foundBookIdsArr
-    if(!foundBookIdsArr.length && value) {
-      dispatch(setBooks([]))
+    if (!foundBookIdsArr.length && value) {
+      dispatch(setBooks([]));
     } else {
       debouncedSearch(foundBookIdsArr);
     }
-};
+  };
 
-  const setCheckboxValue = (type: "genre" | "status", key: string) => {
-    if (type === "genre") {
+  const setCheckboxValue = (type: 'genre' | 'status', key: string) => {
+    if (type === 'genre') {
       const genreId = genres.find((genre) => genre.name === key)?.id;
       dispatchReducer({
-        type: "genre",
-        genre: genreId!
+        type: 'genre',
+        genre: genreId!,
       });
     } else if (type === 'status') {
       dispatchReducer({
-        type: "status",
-        status: key
+        type: 'status',
+        status: key,
       });
     }
   };

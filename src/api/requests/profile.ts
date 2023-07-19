@@ -11,4 +11,4 @@ export const updateProfile = (profile: ProfileType) =>
   instance.put<ProfileType>(endpoint, profile);
 
 export const getProfileItems = (data: Items) =>
-  instance.get<string[]>(`/${endpoint}/${data}`);
+  instance.get(`${endpoint}/${data}`);

@@ -1,3 +1,5 @@
+import 'react-toastify/dist/ReactToastify.css';
+
 import { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -27,7 +29,7 @@ export const App = () => {
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <AppRouter />
-        <ToastContainer autoClose={3000} pauseOnFocusLoss={false} />
+        <ToastContainer autoClose={2500} pauseOnFocusLoss={false} />
         <Tooltip id="tooltip" place="bottom" delayShow={500} />
       </BrowserRouter>
     </ThemeProvider>

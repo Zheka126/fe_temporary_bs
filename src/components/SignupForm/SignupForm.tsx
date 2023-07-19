@@ -1,14 +1,13 @@
-import 'react-toastify/dist/ReactToastify.css';
-
 import { FormikHelpers, useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { StatusCodes } from 'src/api/constants';
 import { register } from 'src/api/requests/auth';
 import { UserRegistrationData } from 'src/types/user';
 
 import { Loader } from '..';
 import { Button } from '../common/Button/Button';
+import { ButtonsContainer } from '../common/Container.styles';
 import {
   InputContainer,
   StyledErrorMessage,
@@ -16,7 +15,6 @@ import {
   StyledInput,
   Title,
 } from '../common/Input.styles';
-import { ButtonsContainer } from './SignupForm.styles';
 import { signupValidation } from './signupValidation';
 
 const initialValues: UserRegistrationData = {
@@ -46,9 +44,7 @@ export const SignupForm = () => {
     } catch (error: any) {
       switch (error.response.status) {
         case StatusCodes.BAD_REQUEST:
-          toast.error(
-            'Please check your data and try again.'
-          );
+          toast.error('Please check your data and try again.');
           break;
         case StatusCodes.INTERNAL_SERVER_ERROR:
           toast.error(
@@ -174,11 +170,7 @@ export const SignupForm = () => {
         <Loader size="mini" />
       ) : (
         <ButtonsContainer data-testid="buttons-container">
-          <Button
-            type="submit"
-            title="Sign up"
-            data-testid="signup-button"
-          />
+          <Button type="submit" title="Sign up" data-testid="signup-button" />
           <Button
             type="button"
             title="Log in"
@@ -190,7 +182,6 @@ export const SignupForm = () => {
         </ButtonsContainer>
       )}
       <StyledErrorMessage />
-      <ToastContainer autoClose={3000} />
     </StyledForm>
   );
 };

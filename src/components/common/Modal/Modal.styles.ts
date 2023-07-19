@@ -16,12 +16,12 @@ export const ModalContainer = styled.div<{ isOpen: boolean }>`
 `;
 
 export const ModalCard = styled.div<{ isOpen: boolean }>`
-  transform: ${({ isOpen }) => (!isOpen ? 'scale(.5)' : 'scale(1)')};
+  max-width: 60vw;
+  padding: 10px 20px;
   color: ${({ theme }) => theme.colors.black};
-  max-width: 50vw;
   background-color: white;
-  padding: 10px;
   border-radius: 20px;
+  transform: ${({ isOpen }) => (!isOpen ? 'scale(.5)' : 'scale(1)')};
   transition: 0.4s all;
 `;
 

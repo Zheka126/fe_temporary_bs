@@ -10,10 +10,10 @@ export const addNewGenre = (genre: GenreType) =>
   instance.post<GenreType>(endpoint, genre);
 
 export const getGenreById = (id: string) =>
-  instance.get<GenreType>(`/${endpoint}/${id}`);
+  instance.get<GenreType>(`${endpoint}/${id}`);
 
 export const updateGenre = (id: string, genre: GenreType) =>
-  instance.put<GenreType>(`/${endpoint}/${id})`, genre);
+  instance.put<GenreType>(`${endpoint}/${id})`, genre);
 
 export const deleteGenre = (id: string) =>
-  instance.delete(`/${endpoint}/${id}`);
+  instance.delete(`${endpoint}/${id}`);

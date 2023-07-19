@@ -4,7 +4,7 @@ import { getRolesThunk, updateRoleThunk } from 'src/redux/slices/rolesSlice';
 import { AvailableRoles, Role, UpdateRoleRequest } from 'src/types/roles';
 
 import { Loader } from '../common/Loader/Loader';
-import { Modal } from '../common/Modal/Modal';
+import { ConfirmModal } from '../common/Modal/ConfirmModal';
 import {
   RequestError,
   RolesLoaderContainer,
@@ -95,7 +95,7 @@ export const AdminRoles = ({ roles, currentPage }: AdminRolesProps) => {
           <Loader size="big" />
         </RolesLoaderContainer>
       )}
-      <Modal
+      <ConfirmModal
         title="Are you sure you want to reassign the role for this user?"
         isOpen={isModalOpen}
         onClose={closeModal}
