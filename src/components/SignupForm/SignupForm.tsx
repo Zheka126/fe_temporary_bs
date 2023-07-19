@@ -41,7 +41,7 @@ export const SignupForm = () => {
       if (status === StatusCodes.CREATED) {
         toast.success('New account has been successfully created!');
         resetForm();
-        navigate('/');
+        navigate('/login');
       }
     } catch (error: any) {
       switch (error.response.status) {
@@ -185,7 +185,7 @@ export const SignupForm = () => {
             data-testid="login-button"
             data-tooltip-id="tooltip"
             data-tooltip-content="Go to the login page"
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/login')}
           />
         </ButtonsContainer>
       )}

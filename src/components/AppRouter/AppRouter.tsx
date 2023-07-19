@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { openRoutes, privateRoutes } from "src/components/AppRouter/routes";
 import { LoginPage } from "src/pages";
 import { useAppDispatch, useAppSelector } from "src/redux/hooks";
@@ -21,8 +21,14 @@ const renderRoutes = (routes: RouteType[]) => {
 
 export const AppRouter = () => {
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (location.pathname === "/") {
+      navigate("/login");
+    }
+
     const token = localStorage.getItem("token");
     if (token) {
       const user = getUserTokenData(token);

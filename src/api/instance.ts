@@ -1,6 +1,4 @@
 import axios from 'axios';
-import { setUser } from 'src/redux/slices/authSlice';
-import { store } from 'src/redux/store';
 
 import { baseURL } from './constants';
 
@@ -31,21 +29,3 @@ instance.interceptors.request.use((config) => {
 //     return Promise.reject(error);
 //   }
 // );
-
-const simulate401Error = () => {
-  const errorData = {
-    status: 401,
-    data: { message: 'Unauthorized' },
-    config: {},
-    request: {}
-  };
-
-  return Promise.reject(errorData);
-};
-
-// Example usage to simulate a 401 error
-simulate401Error()
-  .catch((error) => {
-    // The interceptor will trigger here, and you can handle the 401 error
-    console.error('Error:', error);
-  });
