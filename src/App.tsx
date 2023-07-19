@@ -1,4 +1,4 @@
-import { HashRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { Tooltip } from "react-tooltip";
 import { PersistGate } from "redux-persist/integration/react";
@@ -11,7 +11,7 @@ import { theme } from "./theme";
 export const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <HashRouter>
+      <BrowserRouter basename='/'>
         <PersistGate loading={null} persistor={persistor}>
           <AppRouter />
         </PersistGate>
@@ -21,7 +21,7 @@ export const App = () => {
           data-testid="toast"
         />
         <Tooltip id="tooltip" place="bottom" delayShow={500} />
-      </HashRouter>
+      </BrowserRouter>
     </ThemeProvider>
   );
 };
