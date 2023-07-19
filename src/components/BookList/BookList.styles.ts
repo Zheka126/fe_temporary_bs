@@ -9,12 +9,13 @@ export const BookListContainer = styled.div`
 `;
 
 export const StyledBookItem = styled(Link)`
-  ${({ theme }) => theme.flexStyles('center', 'center')};
+  ${({ theme }) => theme.flexStyles('start', 'center')};
   flex-direction: column;
   gap: 10px;
   color: black;
   text-decoration: none;
   padding: 10px;
+  height: fit-content;
   img {
     width: 70px;
     height: 70px;
