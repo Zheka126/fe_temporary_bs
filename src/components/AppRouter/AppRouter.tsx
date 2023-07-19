@@ -25,20 +25,20 @@ export const AppRouter = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (location.pathname === "/") {
-      navigate("/login");
-    }
-
     const token = localStorage.getItem("token");
     if (token) {
       const user = getUserTokenData(token);
       dispatch(setUser(user));
     }
-    // why do we need dispatch here?
-    // maybe it should be token?
   }, [dispatch]);
 
   const isAuth = useAppSelector(isAuthSelector);
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      navigate(isAuth ? "/main": "/login");
+    }
+  }, [isAuth])
 
   return (
     <Routes>
