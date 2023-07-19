@@ -18,7 +18,7 @@ import {
 } from './styles/MainPage.styles';
 
 const initialState = {
-  search: [],
+  // search: [],
   genre: [],
   status: [],
   selectedRating: null,
@@ -26,7 +26,7 @@ const initialState = {
 };
 
 type Action =
-  | { type: "search"; search: string[] }
+  // | { type: "search"; search: string[] }
   | { type: "genre"; genre: string }
   | { type: "status"; status: string }
   | { type: "rating"; rating: number | null }
@@ -34,8 +34,8 @@ type Action =
 
 const reducer = (state: FilterValues, action: Action) => {
   switch (action.type) {
-    case "search":
-      return { ...state, search: action.search };
+    // case "search":
+    //   return { ...state, search: action.search };
 
     case 'genre': {
       const selectedGenre = action.genre;
@@ -75,7 +75,7 @@ export const MainPage = () => {
   const dispatch = useAppDispatch();
 
   const [filters, dispatchReducer] = useReducer(reducer, initialState);
-  const [searchVal, setSearchVal] = useState("");
+  // const [searchVal, setSearchVal] = useState("");
 
   const {
     booksArr: books,
@@ -92,52 +92,71 @@ export const MainPage = () => {
   const [booksErr, setBooksErr] = useState("");
   const [genresErr, setGenresErr] = useState("");
 
+  const [isGenresFetched, setGenresFetched] = useState(false)
+
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       setBooksLoading(true);
+  //       await dispatch(getBooksThunk(filters)).unwrap();
+  //     } catch (err: any) {
+  //       setBooksErr(err.message);
+  //     } finally {
+  //       setBooksLoading(false);
+  //     }
+  //   })();
+  // }, [dispatch, filters]);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       await dispatch(getGenresThunk()).unwrap();
+  //     } catch (err: any) {
+  //       setGenresErr(err.message);
+  //     } finally {
+  //       setGenresLoading(false);
+  //     }
+  //   })();
+  // }, []);
+  
   useEffect(() => {
     (async () => {
-      try {
-        setBooksLoading(true);
-        await dispatch(getBooksThunk(filters)).unwrap();
-      } catch (err: any) {
+      setBooksLoading(true);
+      await dispatch(getBooksThunk(filters)).unwrap().catch(err => {
         setBooksErr(err.message);
-      } finally {
-        setBooksLoading(false);
+      });
+      setBooksLoading(false);
+      
+      if(!isGenresFetched) {
+        await dispatch(getGenresThunk()).unwrap().catch(err => {
+          setGenresErr(err.message);
+        });
+        setGenresLoading(false);
+        setGenresFetched(true)
       }
     })();
   }, [dispatch, filters]);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        await dispatch(getGenresThunk()).unwrap();
-      } catch (err: any) {
-        setGenresErr(err.message);
-      } finally {
-        setGenresLoading(false);
-      }
-    })();
-  }, []);
+  // const debouncedSearch = useCallback(
+  //   debounce((booksArr: string[]) => {
+  //     dispatchReducer({ type: "search", search: booksArr });
+  //   }, 700),
+  //   []
+  // );
 
-  const debouncedSearch = useCallback(
-    debounce((booksArr: string[]) => {
-      dispatchReducer({ type: "search", search: booksArr });
-    }, 700),
-    []
-  );
+// const onHandleSearchValue = (value: string) => {
+//   setSearchVal(value);
+//   const foundBookIdsArr = genres
+//     .filter((genre) => genre.name.toLowerCase().includes(value.toLowerCase()))
+//     .map((genre) => genre.id);
 
-const onHandleSearchValue = (value: string) => {
-  setSearchVal(value);
-  const foundBookIdsArr = genres
-    .filter((genre) => genre.name.toLowerCase().includes(value.toLowerCase()))
-    .map((genre) => genre.id);
-
-    // const idsArray = (!foundBookIdsArr.length && value) ? ['00c2cc22-cc22-22c2-2c2c-c2ccccc222cc'] : foundBookIdsArr
-    if(!foundBookIdsArr.length && value) {
-      dispatch(setBooks([]))
-    } else {
-      debouncedSearch(foundBookIdsArr);
-    }
-};
-
+//     // const idsArray = (!foundBookIdsArr.length && value) ? ['00c2cc22-cc22-22c2-2c2c-c2ccccc222cc'] : foundBookIdsArr
+//     if(!foundBookIdsArr.length && value) {
+//       dispatch(setBooks([]))
+//     } else {
+//       debouncedSearch(foundBookIdsArr);
+//     }
+// };
   const setCheckboxValue = (type: "genre" | "status", key: string) => {
     if (type === "genre") {
       const genreId = genres.find((genre) => genre.name === key)?.id;
@@ -178,12 +197,12 @@ const onHandleSearchValue = (value: string) => {
             <NoBooksOrServerErrorText>No books yet 🙁</NoBooksOrServerErrorText>
           )}
           <BookFilter
-            genresList={genres}
+            genres={genres}
             filters={filters}
-            searchTerm={searchVal}
+            // searchTerm={searchVal}
             genresErr={genresErr}
             genresLoading={genresLoading}
-            setSearchValue={onHandleSearchValue}
+            // setSearchValue={onHandleSearchValue}
             setCheckboxValue={setCheckboxValue}
             setRating={setRating}
           />

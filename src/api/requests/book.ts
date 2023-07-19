@@ -5,12 +5,11 @@ import { instance } from '../instance';
 const endpoint = '/books';
 
 export const getBooks = (filters: FilterValues) => {
-  const { genre, search, status, selectedRating, currentPage } = filters;
+  const { genre, status, selectedRating, currentPage } = filters;
 
   return instance.get<GetBooksResponse>(endpoint, {
     params: {
       // Pagination.PageSize=
-      ...(search.length ? { Genre: search } : {}),
       ...(genre.length ? { Genre: genre } : {}),
       ...(status.length ? { Availability: status } : {}),
       ...(selectedRating ? { Rating: selectedRating } : {}),
