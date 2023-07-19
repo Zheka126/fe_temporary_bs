@@ -1,16 +1,18 @@
 import styled from 'styled-components';
 
-export const StyledUsersList = styled.div`
+export const StyledAssignmentsList = styled.ul`
   display: grid;
-  padding: 0 20px;
+  padding-left: 20px;
   background-color: ${({ theme }) => theme.colors.lightGray};
   border-radius: 10px;
   max-height: 400px;
   overflow: auto;
 `;
-export const UserItem = styled.div`
+
+export const AssignmentItem = styled.li`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  list-style: none;
   padding: 5px 0;
   align-items: center;
   font-weight: 500;
@@ -19,17 +21,18 @@ export const UserItem = styled.div`
   span {
     padding: 10px 0;
   }
-  p {
-    margin: 0;
-  }
 `;
 
+export const AssignmentsButtonsContainer = styled.div`
+  display: flex;
+  gap: 5px;
+`;
 const BaseButton = styled.button<{ disabled: boolean }>`
   width: fit-content;
-  padding: 10px;
+  padding: 5px;
   border-radius: 5px;
   border: 0;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition-duration: 0.3s;
   &:hover {
@@ -46,14 +49,12 @@ const BaseButton = styled.button<{ disabled: boolean }>`
   }
 `;
 
-export const AssignButton = styled(BaseButton)`
-  background-color: lightgreen;
+export const ApproveRejectBtn = styled(BaseButton)<{ btnType: 'Reject' | 'Approve' }>`
+  background-color: ${({ btnType, theme }) => btnType === 'Reject' ? theme.colors.red : 'lightgreen'};
 `;
-export const RemoveButton = styled(BaseButton)`
-  background-color: ${({ theme }) => theme.colors.red};
-`;
-
-export const ButtonLoaderWrapper = styled.div`
-  display: flex;
-  justify-content: start;
-`
+// export const ApproveButton = styled(BaseButton)`
+//   background-color: lightgreen;
+// `;
+// export const RejectButton = styled(BaseButton)`
+//   background-color: ${({ theme }) => theme.colors.red};
+// `;

@@ -1,5 +1,7 @@
 export interface AuthorType {
-  id: number | string;
+  id: string;
   firstName: string;
   lastName: string;
 }
+
+export type AddAuthorRequest = Omit<AuthorType, 'id'>

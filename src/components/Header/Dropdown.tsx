@@ -26,7 +26,7 @@ export const Dropdown = ({
         </li>
       )}
       <li>
-        <button type="button" onClick={openModal}>
+        <button className="signOutBtn" type="button" onClick={openModal}>
           Sign out
         </button>
       </li>

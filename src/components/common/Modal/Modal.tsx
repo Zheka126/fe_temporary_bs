@@ -1,13 +1,13 @@
-import { ReactNode, useRef } from "react";
-import { createPortal } from "react-dom";
+import { ReactNode, useRef } from 'react';
+import { createPortal } from 'react-dom';
 
 import {
   ButtonsContainer,
   CancelButton,
   ConfirmButton,
   ModalCard,
-  ModalContainer
-} from "./Modal.styles";
+  ModalContainer,
+} from './Modal.styles';
 
 interface ModalProps {
   title: string;
@@ -22,23 +22,39 @@ export const Modal = ({
   title,
   children,
   onClose,
-  onConfirm
+  onConfirm,
 }: ModalProps) => {
-  // const ref = useRef();
+  const confirmButtonRef = useRef<HTMLButtonElement>(null);
+  const handleKeyPress = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      onClose();
+    }
+    // if (
+    //   event.key === 'Enter' &&
+    //   document.activeElement !== confirmButtonRef.current
+    // ) {
+    //   onConfirm();
+    //   onClose();
+    // }
+  };
 
-  // const clickListener = (e) => {
-  //     if (e.target === ref.current) {
-  //         onClose();
-  //     }
-  // };
+  if (isOpen) {
+    document.addEventListener('keydown', handleKeyPress);
+  } else {
+    document.removeEventListener('keydown', handleKeyPress);
+  }
 
   return createPortal(
     <ModalContainer isOpen={isOpen} onClick={onClose}>
-      <ModalCard isOpen={isOpen}>
+      <ModalCard isOpen={isOpen} onClick={(event) => event.stopPropagation()}>
         <h3>{title}</h3>
         {children}
         <ButtonsContainer>
-          <ConfirmButton title="Confirm" onClick={onConfirm} />
+          <ConfirmButton
+            ref={confirmButtonRef}
+            title="Confirm"
+            onClick={onConfirm}
+          />
           <CancelButton title="Cancel" onClick={onClose} />
         </ButtonsContainer>
       </ModalCard>

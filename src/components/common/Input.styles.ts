@@ -24,9 +24,10 @@ export const InputContainer = styled.div`
   }
 `;
 
-export const StyledInput = styled.input<{ isError?: boolean }>`
+export const StyledInput = styled.input<{ isError?: boolean, bgcColor?: string }>`
   width: 100%;
   padding: 12px 22px;
+  background-color: ${({ bgcColor,theme }) => bgcColor ? theme.colors.lightGray : ''};
   ${({ isError: iserror, theme }) =>
     iserror &&
     css`

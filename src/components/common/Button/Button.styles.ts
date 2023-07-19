@@ -6,7 +6,7 @@ export const StyledButton = styled.button`
   font-size: 14px;
   font-weight: bold;
   color: #fff;
-  background-color: ${({theme}) => theme.colors.black};
+  background-color: ${({ theme }) => theme.colors.black};
   border: none;
   outline: none;
   text-transform: uppercase;
@@ -18,6 +18,14 @@ export const StyledButton = styled.button`
   }
 
   &:focus {
-    outline: 3px solid ${({theme}) => theme.colors.gray};
+    outline: 3px solid ${({ theme }) => theme.colors.gray};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    &:hover {
+    box-shadow: none;
+  }
   }
 `;

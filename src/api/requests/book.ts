@@ -1,18 +1,15 @@
-import { BookDetailsType, BookType, FilterValues, GetBooksResponse } from 'src/types/book';
+import { AddBookRequest, BookDetailsType, FilterValues, GetBooksResponse } from 'src/types/book';
 
 import { instance } from '../instance';
 
 const endpoint = '/books';
 
 export const getBooks = (filters: FilterValues) => {
-  const { genre, search, status, selectedRating, currentPage } = filters;
-  // const selectedGenres = Object.keys(genre).filter((key) => genre[key]);
-  // const Availability = Object.keys(status).filter((key) => status[key]);
+  const { genre, status, selectedRating, currentPage } = filters;
 
   return instance.get<GetBooksResponse>(endpoint, {
     params: {
       // Pagination.PageSize=
-      ...(search.length ? { Genre: search } : {}),
       ...(genre.length ? { Genre: genre } : {}),
       ...(status.length ? { Availability: status } : {}),
       ...(selectedRating ? { Rating: selectedRating } : {}),
@@ -22,8 +19,13 @@ export const getBooks = (filters: FilterValues) => {
   });
 };
 
-export const addNewBook = (book: BookType) =>
-  instance.post<BookType>(endpoint, book);
+export const addBook = (book: AddBookRequest) => {
+  return instance.post<string>(endpoint, book, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }); 
+}
 
 export const getBookById = (id: string | undefined) =>
   instance.get<BookDetailsType>(`${endpoint}/${id}`);
