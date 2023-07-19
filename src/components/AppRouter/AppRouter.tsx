@@ -23,11 +23,12 @@ export const AppRouter = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  if (location.pathname === "/") {
-    navigate("login");
-  }
 
   useEffect(() => {
+    if (location.pathname === "/") {
+      navigate("/login");
+    }
+
     const token = localStorage.getItem("token");
     if (token) {
       const user = getUserTokenData(token);
