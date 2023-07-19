@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FilterValues } from "src/types/book";
 import { GenreType } from "src/types/genre";
 
@@ -6,32 +7,38 @@ import { Rating } from "../Rating/Rating";
 import {
   CheckboxContainer,
   GenresContainer,
-  GenresErr,
   GenresLoaderContainer,
+  NoGenresOrErr,
   SearchInput
 } from "./BookFilter.styles";
 
 interface BookFilterProps {
-  genresList: GenreType[];
+  genres: GenreType[];
   filters: FilterValues;
-  searchTerm: string;
+  // searchTerm: string;
   genresErr: string;
   genresLoading: boolean;
-  setSearchValue: (val: string) => void;
+  // setSearchValue: (val: string) => void;
   setCheckboxValue: (type: "genre" | "status", key: string) => void;
   setRating: (val: number) => void;
 }
 
 export const BookFilter = ({
-  genresList,
+  genres,
   filters,
-  searchTerm,
+  // searchTerm,
   genresErr,
   genresLoading,
-  setSearchValue,
+  // setSearchValue,
   setCheckboxValue,
   setRating
 }: BookFilterProps) => {
+  const [searchVal, setSearchVal] = useState("");
+
+  const filteredGenres = genres.filter((genre) =>
+    genre.name.toLowerCase().includes(searchVal.toLowerCase())
+  );
+
   return (
     <div>
       <h4>Genres</h4>
@@ -40,33 +47,37 @@ export const BookFilter = ({
           <Loader size="medium" />
         </GenresLoaderContainer>
       ) : genresErr ? (
-        <GenresErr>{genresErr} 🙁</GenresErr>
+        <NoGenresOrErr>{genresErr} 🙁</NoGenresOrErr>
       ) : (
         <>
           <SearchInput
             type="search"
             placeholder="Search"
-            value={searchTerm}
+            value={searchVal}
             disabled={Boolean(filters.genre.length)}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={({ target }) => setSearchVal(target.value)}
           />
           <GenresContainer>
-            {genresList.map((genre) => {
-              return (
-                <CheckboxContainer key={genre.id}>
-                  <input
-                    type="checkbox"
-                    id={genre.name}
-                    name={genre.name}
-                    value={genre.name}
-                    checked={filters.genre.some((g) => g === genre.id)}
-                    disabled={Boolean(searchTerm)}
-                    onChange={() => setCheckboxValue("genre", genre.name)}
-                  />
-                  <label htmlFor={genre.name}>{genre.name}</label>
-                </CheckboxContainer>
-              );
-            })}
+            {filteredGenres.length ? (
+              filteredGenres.map((genre) => {
+                return (
+                  <CheckboxContainer key={genre.id}>
+                    <input
+                      type="checkbox"
+                      id={genre.name}
+                      name={genre.name}
+                      value={genre.name}
+                      checked={filters.genre.some((g) => g === genre.id)}
+                      // disabled={Boolean(searchTerm)}
+                      onChange={() => setCheckboxValue("genre", genre.name)}
+                    />
+                    <label htmlFor={genre.name}>{genre.name}</label>
+                  </CheckboxContainer>
+                );
+              })
+            ) : (
+              <NoGenresOrErr>No found genres...</NoGenresOrErr>
+            )}
           </GenresContainer>
         </>
       )}
