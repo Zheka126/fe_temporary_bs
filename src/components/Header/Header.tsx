@@ -6,7 +6,7 @@ import { setUser } from 'src/redux/slices/authSlice';
 import { ReactComponent as ArrowDownIcon } from '/assets/arrow-down.svg';
 import logo from '/assets/darkLogo.png';
 
-import { Modal } from '..';
+import { ConfirmModal } from '..';
 import { Dropdown } from './Dropdown';
 import {
   BtnsContainer,
@@ -89,10 +89,11 @@ export const Header = () => {
               <Dropdown
                 dropdownRef={dropdownRef}
                 onOpenModal={() => setIsModalOpen(true)}
+                closeDropdown={() => setIsDropdownOpen(false)}
                 data-testid="dropdown"
               />
             )}
-            <Modal
+            <ConfirmModal
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
               title="Are you sure you want to sign out?"

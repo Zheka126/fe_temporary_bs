@@ -1,5 +1,5 @@
 import {
-  AdminTabPage,
+  AdminPage,
   BookDetailsPage,
   LoginPage,
   MainPage,
@@ -15,6 +15,6 @@ export const openRoutes = [
 export const privateRoutes = [
   { component: MainPage, path: '/main' },
   { component: BookDetailsPage, path: '/books/:id' },
-  { component: AdminTabPage, path: '/admin/*' },
+  { component: AdminPage, path: '/admin/*' },
   { component: ProfilePage, path: '/profile/*' },
 ];

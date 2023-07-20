@@ -74,7 +74,7 @@ export const MainPage = () => {
   const {
     booksArr: books,
     booksTotalRecords,
-    genres
+    genres,
   } = useAppSelector((state) => ({
     booksArr: state.books.books,
     booksTotalRecords: state.books.totalRecords,
@@ -83,8 +83,8 @@ export const MainPage = () => {
   const [booksLoading, setBooksLoading] = useState(true);
   const [genresLoading, setGenresLoading] = useState(true);
 
-  const [booksErr, setBooksErr] = useState("");
-  const [genresErr, setGenresErr] = useState("");
+  const [booksErr, setBooksErr] = useState('');
+  const [genresErr, setGenresErr] = useState('');
 
   const isGenresFetched = useRef(false)
 
@@ -110,13 +110,13 @@ export const MainPage = () => {
     if (type === "genre") {
       const genreId = genres.find((genre) => genre.name === key)?.id;
       dispatchReducer({
-        type: "genre",
-        genre: genreId!
+        type: 'genre',
+        genre: genreId!,
       });
     } else if (type === 'status') {
       dispatchReducer({
-        type: "status",
-        status: key
+        type: 'status',
+        status: key,
       });
     }
   };
