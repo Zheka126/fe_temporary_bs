@@ -2,7 +2,6 @@ import {
   AddBookRequest,
   BookDetailsType,
   BookDetailsUpdateRequest,
-  BookType,
   FilterValues,
   GetBooksResponse,
 } from 'src/types/book';
@@ -46,7 +45,7 @@ export const updateBook = (book: BookDetailsUpdateRequest) =>
 
 export const assignBookToCurrentUser = (id: string | undefined) => {
   console.log('id in assignBookToCurrentUser: ', id);
-  
+
   return instance.get(`${endpoint}/${id})/assign`);
 };
 
