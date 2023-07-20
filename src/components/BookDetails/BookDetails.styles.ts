@@ -64,11 +64,6 @@ export const StyledModalContent = styled.div`
   gap: 50px;
 `;
 
-export const SubmitButton = styled(StyledButton)`
-color: black;
-  background-color: #228b22; /* Темно-зеленый цвет */
-`;
-
 export const CancelButton = styled(StyledButton)`
   background-color: #ccc; /* Сероватый цвет */
 `;

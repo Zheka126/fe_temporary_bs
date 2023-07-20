@@ -39,8 +39,8 @@ export const BookDetails = () => {
   // const dispatch = useAppDispatch();
   const { id: bookId } = useParams();
   const user = useAppSelector((state) => state.auth.user);
-
-  const [userAssignments, setUserAssignments] = useState<string[]>([]);
+  const allAuthors = useAppSelector((state) => state.authors.authors);
+  const allGenres = useAppSelector((state) => state.genres.genres);
 
   const [confrimModal, setConfirmModal] = useState({
     actionType: '',
@@ -48,7 +48,6 @@ export const BookDetails = () => {
     title: '',
     content: <div />,
   });
-
   const [isBaseModalOpen, setIsBaseModalOpen] = useState(false);
 
   const initialValues = {
@@ -63,9 +62,9 @@ export const BookDetails = () => {
     language: '' as Language,
     description: '',
     availability: '' as AvailabilityStatus,
-    some: '',
   };
 
+  const [userAssignments, setUserAssignments] = useState<string[]>([]);
   const [bookDetails, setBookDetails] =
     useState<BookDetailsType>(initialValues);
 
@@ -76,59 +75,63 @@ export const BookDetails = () => {
     getAuthorFullName(author)
   );
 
-  // const authors = useAppSelector((state) => state.authors.authors);
+  console.log('bookDetails: ', bookDetails);
 
-  // where to store this function - inside or outside of form component?
-  const onUpdateBook = async (updatedBook: BookDetailsUpdateRequest) => {
-    // console.log('updatedBook: ', updatedBook);
-    try {
-      await updateBook(updatedBook);
-      toast.success('The book has been successfully updated!');
-      setIsBaseModalOpen(false);
-
-      // setBookDetails({ ...updatedBook,
-      //   id: bookId,
-      //   authors: allAuthors.filter((author) => author.id === updatedBook.authorId)
-      // });
-    } catch (error: any) {
-      if (error.response.status === StatusCodes.NOT_ALLOWED) {
-        toast.error('You are not allowed to edit this book');
-      }
-      // console.log('Error:', error.message);
-    }
-  };
-
-  type ActionType = 'delete' | 'assignToMe';
-
-  const openConfirmModal = (actionType: ActionType) => {
-    const actionData = {
+  const openConfirmModal = (actionType: 'delete' | 'assignToMe') => {
+    const confirmationData = {
       delete: {
         title: `Delete book "${bookDetails.title}"`,
-        content: (
-          <StyledParagraph>
-            Are you sure you want to delete this book?
-          </StyledParagraph>
-        ),
+        message: 'Are you sure you want to delete this book?',
       },
       assignToMe: {
         title: `Assign book "${bookDetails.title}"`,
-        content: (
-          <StyledParagraph>
-            Are you sure you want to assign this book to yourself?
-          </StyledParagraph>
-        ),
+        message: 'Are you sure you want to assign this book to yourself?',
       },
     };
 
-    const { title, content } = actionData[actionType];
+    const { title, message } = confirmationData[actionType];
 
     setConfirmModal((prev) => ({
       ...prev,
       isOpen: true,
       actionType,
       title,
-      content,
+      content: <StyledParagraph>{message}</StyledParagraph>,
     }));
+  };
+
+  const onUpdateBook = async (updatedBook: BookDetailsUpdateRequest) => {
+    console.log('updatedBook: ', updatedBook);
+    try {
+      await updateBook(updatedBook);
+      toast.success('The book has been successfully updated!');
+      setIsBaseModalOpen(false);
+
+      const newBook = {
+        ...updatedBook,
+        authors: updatedBook.authorId.reduce((acc, authorId) => {
+          const author = allAuthors.find(
+            (currentAuthor) => currentAuthor.id === authorId
+          );
+          return author ? [...acc, author] : acc;
+        }, [] as AuthorType[]),
+        genres: updatedBook.genreId.reduce((acc, genreId) => {
+          const genre = allGenres.find(
+            (currentGenre) => currentGenre.id === genreId
+          );
+          return genre ? [...acc, genre] : acc;
+        }, [] as GenreType[]),
+      };
+
+      setBookDetails((prev) => ({ ...prev, ...newBook }));
+    } catch (error: any) {
+      if (error.response.status === StatusCodes.NOT_ALLOWED) {
+        toast.error('You are not allowed to edit this book');
+      } else {
+        toast.error('Some errors with the update');
+      }
+      console.log('Error:', error.message);
+    }
   };
 
   const onDeleteBook = async () => {
@@ -138,7 +141,7 @@ export const BookDetails = () => {
       navigate('/main');
     } catch (error: any) {
       toast.error('Some errors with the delete');
-      // console.log('Error:', error.message);
+      console.log('Error:', error.message);
     }
   };
 
@@ -156,7 +159,7 @@ export const BookDetails = () => {
       );
     } catch (error: any) {
       toast.error('Some errors with the assign');
-      // console.log('Error:', error.message);
+      console.log('Error:', error.message);
     }
   };
 

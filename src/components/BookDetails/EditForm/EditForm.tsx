@@ -1,11 +1,13 @@
 import { useFormik } from 'formik';
 import { ChangeEvent, useEffect } from 'react';
 import Select from 'react-select';
+import { Button } from 'src/components';
 import { ButtonsContainer } from 'src/components/common/Container.styles';
 import {
   InputContainer,
   StyledErrorMessage,
 } from 'src/components/common/Input.styles';
+import { selectStyles } from 'src/components/common/Select.styles';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { getAuthorsThunk } from 'src/redux/slices/authorsSlice';
 import { BookDetailsType, BookDetailsUpdateRequest } from 'src/types/book';
@@ -20,7 +22,6 @@ import {
   CancelButton,
   EditInput,
   StyledModalContent,
-  SubmitButton,
 } from '../BookDetails.styles';
 import { editFormValidation } from './editFormValidation';
 
@@ -50,7 +51,11 @@ interface EditFormProps {
   onModalClose: () => void;
 }
 
-export const EditForm = ({ bookDetails, onUpdateBook, onModalClose }: EditFormProps) => {
+export const EditForm = ({
+  bookDetails,
+  onUpdateBook,
+  onModalClose,
+}: EditFormProps) => {
   const dispatch = useAppDispatch();
   const { allAuthors, allGenres } = useAppSelector(({ authors, genres }) => ({
     allAuthors: authors.authors,
@@ -96,6 +101,12 @@ export const EditForm = ({ bookDetails, onUpdateBook, onModalClose }: EditFormPr
       setFieldError('image', 'Files of type .png, .jpg, .bmp are allowed only');
   };
 
+  const isSelectGenresErr = Boolean(touched.genreId && errors.genreId);
+  const isSelectLangErr = Boolean(touched.language && errors.language);
+  const isSelectAvailabilityErr = Boolean(
+    touched.availability && errors.availability
+  );
+
   useEffect(() => {
     (async () => {
       await dispatch(getAuthorsThunk());
@@ -138,7 +149,7 @@ export const EditForm = ({ bookDetails, onUpdateBook, onModalClose }: EditFormPr
                 touched.publicationDate && errors.publicationDate
               )}
             />
-            {touched.title && errors.publicationDate && (
+            {touched.publicationDate && errors.publicationDate && (
               <StyledErrorMessage>{errors.publicationDate}</StyledErrorMessage>
             )}
           </InputContainer>
@@ -168,7 +179,7 @@ export const EditForm = ({ bookDetails, onUpdateBook, onModalClose }: EditFormPr
                   options!.map((o) => o.value)
                 )
               }
-              className="basic-multi-select"
+              styles={selectStyles()}
             />
             {touched.authorId && errors.authorId && (
               <StyledErrorMessage>{errors.authorId}</StyledErrorMessage>
@@ -189,7 +200,7 @@ export const EditForm = ({ bookDetails, onUpdateBook, onModalClose }: EditFormPr
                   options!.map((o) => o.value)
                 )
               }
-              className="basic-multi-select"
+              styles={selectStyles(isSelectGenresErr)}
             />
             {touched.genreId && errors.genreId && (
               <StyledErrorMessage>{errors.genreId}</StyledErrorMessage>
@@ -205,7 +216,7 @@ export const EditForm = ({ bookDetails, onUpdateBook, onModalClose }: EditFormPr
               name="language"
               options={languageOptions}
               onChange={(o) => setFieldValue('language', o!.value)}
-              className="basic-multi-select"
+              styles={selectStyles(isSelectLangErr)}
             />
           </InputContainer>
           <InputContainer>
@@ -218,13 +229,13 @@ export const EditForm = ({ bookDetails, onUpdateBook, onModalClose }: EditFormPr
               name="availability"
               options={availabilityOptions}
               onChange={(o) => setFieldValue('availability', o!.value)}
-              className="basic-multi-select"
+              styles={selectStyles(isSelectAvailabilityErr)}
             />
           </InputContainer>
         </div>
       </StyledModalContent>
       <ButtonsContainer>
-        <SubmitButton type="submit">Submit</SubmitButton>
+        <Button type="submit" title="Submit" />
         <CancelButton onClick={onModalClose}>Cancel</CancelButton>
       </ButtonsContainer>
     </form>
