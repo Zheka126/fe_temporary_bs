@@ -11,7 +11,8 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import authorReducer from './slices/authorSlice';
+import assignmentsReducer from './slices/assignmentsSlice';
+import authorsReducer from './slices/authorsSlice';
 import authReducer from './slices/authSlice';
 import bookReducer from './slices/bookSlice';
 import genresReducer from './slices/genresSlice';
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
   books: bookReducer,
   role: roleReducer,
   genres: genresReducer,
-  authors: authorReducer,
+  assignments: assignmentsReducer,
+  authors: authorsReducer
 });
 
 // REDUX PERSIST

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const AdminPageContainer = styled.div`
+export const SubPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: calc(100vh - 90px);

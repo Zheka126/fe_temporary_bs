@@ -56,11 +56,20 @@ export interface BookDetailsUpdateRequest {
   description: string;
 }
 
-
 export interface FilterValues {
-  search: string[];
+  // search: string[];
   genre: string[];
   status: string[];
   selectedRating: number | null;
   currentPage: number;
+}
+
+export interface AddBookRequest {
+  title: string;
+  description: string;
+  authorId: string[];
+  genreId: string[];
+  language: string;
+  publicationDate: string;
+  image: File | null;
 }

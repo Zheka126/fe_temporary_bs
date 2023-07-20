@@ -1,76 +1,22 @@
-import { useEffect, useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
-import { getProfileItems } from 'src/api/requests/profile';
-import { AdminRoles } from 'src/components/AdminRoles/AdminRoles';
-import { Container } from 'src/components/common/Container.styles';
-import { Pagination } from 'src/components/Pagination/Pagination';
-import { useAppSelector } from 'src/redux/hooks';
-import { getTotalPages } from 'src/utils';
+import { Route, Routes, useLocation } from "react-router-dom";
+import { Container } from "src/components/common/Container.styles";
+import { ProfileUploadBook } from "src/components/ProfileUploadBook/ProfileUploadBook";
 
-import {
-  AdminPageContainer,
-  StyledLink,
-  Tabs,
-} from './styles/AdminPage.styles';
-
-const AdminAssignments = () => {
-  return <div>Assignments</div>;
-};
-const AdminReviews = () => {
-  return <div>Reviews</div>;
-};
+import { StyledLink, SubPageContainer, Tabs } from './styles/common/common.styles';
 
 const tabLinks = [
-  { path: '/profile/profile', text: 'My Profile' },
-  { path: '/profile/books', text: 'My books' },
-  { path: '/profile/assignments', text: 'My assignments' },
-  { path: '/profile/wantedBooks', text: 'Wanted books' },
+  { path: "/profile", text: "My Profile" },
+  { path: "/profile/assignments", text: "My assignments" },
+  { path: "/profile/books", text: "My books" },
+  { path: "/profile/wantedBooks", text: "Wanted books" },
+  { path: "/profile/upload-book", text: "Upload book" }
 ];
 
 export const ProfilePage = () => {
-  const location = useLocation();
-  const [currentPage, setCurrentPage] = useState(1);
-  const { roles, totalRoleRecords } = useAppSelector(({ role }) => ({
-    roles: role.roles,
-    totalRoleRecords: role.totalRecords,
-  }));
-
-  const assignments = 25;
-  const reviews = 46;
-
-  const currentlyViewedPage =
-    location.pathname === '/admin/roles'
-      ? 'roles'
-      : location.pathname === '/admin/assignments'
-      ? 'assignments'
-      : 'reviews';
-
-  const pageCount = getTotalPages(
-    currentlyViewedPage === 'roles'
-      ? totalRoleRecords
-      : currentlyViewedPage === 'assignments'
-      ? assignments
-      : reviews,
-    12
-  );
-  useEffect(() => {
-    (async () => {
-      try {
-        const { status: booksStatus, data: booksData } = await getProfileItems('books');
-        console.log('booksStatus: ', booksStatus);
-        const { status: assignmentsStatus, data: assignmentsData } = await getProfileItems('assignments');
-        console.log('assignmentsStatus: ', assignmentsStatus);
-        const { status: wantedBooksStatus, data: wantedBooksData } = await getProfileItems('wantedbooks');
-        console.log('wantedBooksStatus: ', wantedBooksStatus);
-      } catch (error) {
-        console.log('error: ', error);
-      }
-    })();
-  }, []);
-  
+    const location = useLocation()
 
   return (
-    <AdminPageContainer>
+    <SubPageContainer>
       <Container>
         <Tabs>
           {tabLinks.map((link) => {
@@ -87,21 +33,9 @@ export const ProfilePage = () => {
         </Tabs>
 
         <Routes>
-          <Route
-            index
-            path="roles"
-            element={<AdminRoles roles={roles} currentPage={currentPage} />}
-          />
-          <Route path="assignments" element={<AdminAssignments />} />
-          <Route path="reviews" element={<AdminReviews />} />
+          <Route path="upload-book" element={<ProfileUploadBook />} />
         </Routes>
       </Container>
-
-      <Pagination
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        pageCount={pageCount}
-      />
-    </AdminPageContainer>
+    </SubPageContainer>
   );
 };

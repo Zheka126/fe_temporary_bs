@@ -6,6 +6,9 @@ const endpoint = '/author';
 
 export const getAuthors = () => instance.get<AuthorType[]>(endpoint);
 
+export const addAuthor = (author: AddAuthorRequest) =>
+  instance.post<string>(endpoint, author);
+
 export const getAuthorById = (id: string) =>
   instance.get<AuthorType>(`${endpoint}/${id}`);
 
