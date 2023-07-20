@@ -176,7 +176,6 @@ export const BookDetails = () => {
     (async () => {
       getBookById(bookId)
         .then(({ data }) => {
-          // console.log('data: ', data);
           setBookDetails(data);
         })
         .catch((error: any) => {
@@ -186,14 +185,16 @@ export const BookDetails = () => {
           console.log('Error:', error.message);
         });
 
-      try {
-        const { data: assignmentsData } = await getProfileItems('assignments');
-        // console.log('assignmentsData: ', assignmentsData);
-        setUserAssignments(assignmentsData);
-      } catch (error: any) {
-        toast.error('Something went wrong. Please try again later.');
-        // console.log('Error:', error.message);
-      }
+      getProfileItems('assignments')
+        .then(({ data }) => {
+          setUserAssignments(data.data);
+        })
+        .catch((error) => {
+          toast.error(
+            'Something went wrong while loading the assignments. Please try again later.'
+          );
+          console.log('Error:', error.message);
+        });
     })();
   }, []);
 
@@ -250,7 +251,11 @@ export const BookDetails = () => {
           onClose={() => setIsBaseModalOpen(false)}
           title={`Edit book "${bookDetails.title}"`}
         >
-          <EditForm bookDetails={bookDetails} onUpdateBook={onUpdateBook} />
+          <EditForm
+            bookDetails={bookDetails}
+            onUpdateBook={onUpdateBook}
+            onModalClose={() => setIsBaseModalOpen(false)}
+          />
         </BaseModal>
       )}
       <ConfirmModal

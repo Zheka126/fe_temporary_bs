@@ -1,4 +1,5 @@
 import {
+  AddBookRequest,
   BookDetailsType,
   BookDetailsUpdateRequest,
   BookType,
@@ -25,8 +26,13 @@ export const getBooks = (filters: FilterValues) => {
   });
 };
 
-export const addNewBook = (book: BookType) =>
-  instance.post<BookType>(endpoint, book);
+export const addBook = (book: AddBookRequest) => {
+  return instance.post<string>(endpoint, book, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
 
 export const getBookById = (id: string | undefined) =>
   instance.get<BookDetailsType>(`${endpoint}/${id}`);
@@ -38,8 +44,11 @@ export const updateBook = (book: BookDetailsUpdateRequest) =>
     },
   });
 
-export const assignBookToCurrentUser = (id: string | undefined) =>
-  instance.get(`${endpoint}/${id})/assign`);
+export const assignBookToCurrentUser = (id: string | undefined) => {
+  console.log('id in assignBookToCurrentUser: ', id);
+  
+  return instance.get(`${endpoint}/${id})/assign`);
+};
 
 export const deleteBook = (id: string | undefined) =>
   instance.delete(`${endpoint}/${id}`);

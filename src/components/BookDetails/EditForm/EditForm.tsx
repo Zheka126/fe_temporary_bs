@@ -47,9 +47,10 @@ import { editFormValidation } from './editFormValidation';
 interface EditFormProps {
   bookDetails: BookDetailsType;
   onUpdateBook: (values: BookDetailsUpdateRequest) => void;
+  onModalClose: () => void;
 }
 
-export const EditForm = ({ bookDetails, onUpdateBook }: EditFormProps) => {
+export const EditForm = ({ bookDetails, onUpdateBook, onModalClose }: EditFormProps) => {
   const dispatch = useAppDispatch();
   const { allAuthors, allGenres } = useAppSelector(({ authors, genres }) => ({
     allAuthors: authors.authors,
@@ -224,7 +225,7 @@ export const EditForm = ({ bookDetails, onUpdateBook }: EditFormProps) => {
       </StyledModalContent>
       <ButtonsContainer>
         <SubmitButton type="submit">Submit</SubmitButton>
-        <CancelButton>Cancel</CancelButton>
+        <CancelButton onClick={onModalClose}>Cancel</CancelButton>
       </ButtonsContainer>
     </form>
   );

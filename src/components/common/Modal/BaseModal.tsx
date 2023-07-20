@@ -27,7 +27,6 @@ export const BaseModal = ({
   } else {
     document.removeEventListener('keydown', handleKeyPress);
   }
-  console.log('isOpen: ', isOpen);
 
   return createPortal(
     <ModalContainer isOpen={isOpen} onClick={onClose}>
