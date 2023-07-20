@@ -49,7 +49,7 @@ export const AssignmentsList = ({
                       onClick={() =>
                         onApproveRejectAssignment({
                           assId: assignment.id,
-                          type: "reject"
+                          type: btn === "Reject" ? 'reject' : 'approve' 
                         })
                       }
                     >

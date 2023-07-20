@@ -52,7 +52,7 @@ export const AdminAssignments = () => {
         setAssignmentLoading(false);
       }
     })();
-  }, []);
+  }, [currentPage]);
 
   const onApproveRejectAssignment = async (
     handleAssPayload: ApproveRejectAssignmentRequest

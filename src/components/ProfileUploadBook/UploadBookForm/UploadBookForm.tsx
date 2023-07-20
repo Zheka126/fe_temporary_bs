@@ -310,7 +310,7 @@ export const UploadBookForm = ({ authors, genres }: UploadBookFormProps) => {
               </UploadBtn>
               <CancelBtn
                 type="button"
-                onClick={() => navigate("/profile/books")}
+                onClick={() => navigate("/profile/my-books")}
               >
                 Cancel
               </CancelBtn>

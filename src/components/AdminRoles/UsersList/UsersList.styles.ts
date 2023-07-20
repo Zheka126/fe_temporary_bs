@@ -9,6 +9,7 @@ export const StyledUsersList = styled.div`
   overflow: auto;
   ${({ theme }) => theme.styledScrollbar};
 `;
+
 export const UserItem = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
