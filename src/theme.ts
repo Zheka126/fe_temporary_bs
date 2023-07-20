@@ -24,6 +24,19 @@ export const theme: StyledTheme = {
     red: '#de6b67',
     blue: '#00aaff',
   },
+  styledScrollbar: `
+  &::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f7f7f7;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #9d9d9d;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }`,
 
   flexStyles: (justifyContent = 'center', alignItems = 'center') => css`
     display: flex;

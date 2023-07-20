@@ -7,6 +7,7 @@ export const StyledAssignmentsList = styled.ul`
   border-radius: 10px;
   max-height: 400px;
   overflow: auto;
+  ${({ theme }) => theme.styledScrollbar};
 `;
 
 export const AssignmentItem = styled.li`

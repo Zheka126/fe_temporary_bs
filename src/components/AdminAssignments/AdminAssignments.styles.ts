@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 
+export const AssignmentsRolesContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 34px);
+`;
+
 export const AssignmentsPanel = styled.ul`
   display: grid;
   grid-template-columns: repeat(4, 1fr);

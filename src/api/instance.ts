@@ -11,21 +11,13 @@ instance.interceptors.request.use((config) => {
   return config;
 });
 
-// instance.interceptors.response.use(
-//   (response) => {
-//     return response;
-//   },
-//   (error) => {
-//     if (error.response && error.response.status === 401) {
-//       localStorage.removeItem('token');
-//       // store.dispatch(setUser(null));
-
-//       // Redirect the user to the login page
-//       // Assuming you have a function to handle navigation or you are using a router
-//       // Replace 'login' with the path to your login page
-//       // e.g., navigateToLoginPage() or router.push('/login')
-//       // yourNavigationFunction('login');
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+instance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem('token');
+      window.location.href="#/login";  
+    }
+    return Promise.reject(error);
+  }
+);

@@ -13,7 +13,7 @@ import { theme } from './theme';
 export const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <HashRouter>
+      <HashRouter basename='/'>
         <PersistGate loading={null} persistor={persistor}>
           <AppRouter />
         </PersistGate>

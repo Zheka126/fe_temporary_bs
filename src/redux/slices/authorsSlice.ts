@@ -8,7 +8,7 @@ export const getAuthorsThunk = createAsyncThunk('getAuthorsThunk', async () => {
     const { data } = await getAuthors();
     return data;
   } catch (err) {
-    throw Error('Something went wrong');
+    throw Error('Can\'t get authors');
   }
 });
 

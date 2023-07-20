@@ -4,11 +4,13 @@ export const MainPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: calc(100vh - 90px);
+  padding-top: 20px;
 `;
 
 export const MainPageContentContainer = styled.div`
   display: grid;
   grid-template-columns: 2fr 1fr;
+  column-gap: 50px;
 `;
 
 export const BooksLoaderContainer = styled.div`

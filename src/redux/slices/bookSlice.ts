@@ -10,7 +10,7 @@ export const getBooksThunk = createAsyncThunk(
       const { data } = await getBooks(filters);
       return data;
     } catch (err) {
-      throw Error('Something went wrong');
+      throw Error('Can\'t get books');
     }
   }
 );
