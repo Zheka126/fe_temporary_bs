@@ -9,7 +9,7 @@ import {
   updateBook,
 } from 'src/api/requests/book';
 import { getProfileItems } from 'src/api/requests/profile';
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { useAppSelector } from 'src/redux/hooks';
 import { AuthorType } from 'src/types/author';
 import {
   AvailabilityStatus,
@@ -36,7 +36,7 @@ import { EditForm } from './EditForm/EditForm';
 
 export const BookDetails = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const { id: bookId } = useParams();
   const user = useAppSelector((state) => state.auth.user);
 
@@ -80,20 +80,21 @@ export const BookDetails = () => {
 
   // where to store this function - inside or outside of form component?
   const onUpdateBook = async (updatedBook: BookDetailsUpdateRequest) => {
-    console.log('updatedBook: ', updatedBook);
+    // console.log('updatedBook: ', updatedBook);
     try {
       await updateBook(updatedBook);
-      toast.success(
-        'The book has been successfully updated!'
-        );
-        setIsBaseModalOpen(false);
-        // setBookDetails({...updatedBook, 
-        // authors: bookDetails.authors.map});
+      toast.success('The book has been successfully updated!');
+      setIsBaseModalOpen(false);
+
+      // setBookDetails({ ...updatedBook,
+      //   id: bookId,
+      //   authors: allAuthors.filter((author) => author.id === updatedBook.authorId)
+      // });
     } catch (error: any) {
       if (error.response.status === StatusCodes.NOT_ALLOWED) {
         toast.error('You are not allowed to edit this book');
       }
-      console.log('Error:', error.message);
+      // console.log('Error:', error.message);
     }
   };
 
@@ -137,7 +138,7 @@ export const BookDetails = () => {
       navigate('/main');
     } catch (error: any) {
       toast.error('Some errors with the delete');
-      console.log('Error:', error.message);
+      // console.log('Error:', error.message);
     }
   };
 
@@ -155,7 +156,7 @@ export const BookDetails = () => {
       );
     } catch (error: any) {
       toast.error('Some errors with the assign');
-      console.log('Error:', error.message);
+      // console.log('Error:', error.message);
     }
   };
 
@@ -174,11 +175,11 @@ export const BookDetails = () => {
         .then(({ data }) => {
           setBookDetails(data);
         })
-        .catch((error: any) => {
+        .catch(() => {
           toast.error(
             'Oops! Something went wrong while loading the book details. Please try again later'
           );
-          console.log('Error:', error.message);
+          // console.log('Error:', error.message);
         });
 
       getProfileItems('assignments')
