@@ -7,7 +7,7 @@ import {
   StyledErrorMessage,
 } from 'src/components/common/Input.styles';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import { getAuthorsThunk } from 'src/redux/slices/authorSlice';
+import { getAuthorsThunk } from 'src/redux/slices/authorsSlice';
 import { BookDetailsType, BookDetailsUpdateRequest } from 'src/types/book';
 import {
   availabilityOptions,
