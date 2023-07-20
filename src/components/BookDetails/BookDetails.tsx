@@ -161,7 +161,7 @@ export const BookDetails = () => {
       );
     } catch (error: any) {
       toast.error('Some errors with the assign');
-      console.log('Error:', error.message);
+      // console.log('Error:', error.message);
     }
   };
 

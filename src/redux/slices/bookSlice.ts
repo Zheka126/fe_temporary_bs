@@ -15,7 +15,7 @@ export const getBooksThunk = createAsyncThunk(
       const { data } = await getBooks(filters);
       return data;
     } catch (err) {
-      throw Error('Something went wrong');
+      throw Error('Can\'t get books');
     }
   }
 );
@@ -51,13 +51,14 @@ export const bookSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(
+    builder
+    .addCase(
       getBooksThunk.fulfilled,
       (state, action: PayloadAction<GetBooksResponse>) => {
         state.books = action.payload.data;
         state.totalRecords = action.payload.totalRecords;
       }
-    );
+    )
   },
 });
 

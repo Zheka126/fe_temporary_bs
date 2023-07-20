@@ -43,11 +43,8 @@ export const updateBook = (book: BookDetailsUpdateRequest) =>
     },
   });
 
-export const assignBookToCurrentUser = (id: string | undefined) => {
-  console.log('id in assignBookToCurrentUser: ', id);
-
-  return instance.get(`${endpoint}/${id})/assign`);
-};
+export const assignBookToCurrentUser = (id: string | undefined) =>
+  instance.get(`${endpoint}/${id})/assign`);
 
 export const deleteBook = (id: string | undefined) =>
   instance.delete(`${endpoint}/${id}`);

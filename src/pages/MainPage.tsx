@@ -1,26 +1,26 @@
-import { useEffect, useReducer, useRef, useState } from 'react';
-import { Loader } from 'src/components';
-import { BookFilter } from 'src/components/BookFilter/BookFilter';
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import { getBooksThunk } from 'src/redux/slices/bookSlice';
-import { getGenresThunk } from 'src/redux/slices/genresSlice';
-import { FilterValues } from 'src/types/book';
+import { useEffect, useReducer, useRef, useState } from "react";
+import { Loader } from "src/components";
+import { BookFilter } from "src/components/BookFilter/BookFilter";
+import { useAppDispatch, useAppSelector } from "src/redux/hooks";
+import { getBooksThunk } from "src/redux/slices/bookSlice";
+import { getGenresThunk } from "src/redux/slices/genresSlice";
+import { FilterValues } from "src/types/book";
 
-import { BookList } from '../components/BookList/BookList';
-import { Container } from '../components/common/Container.styles';
-import { Pagination } from '../components/Pagination/Pagination';
+import { BookList } from "../components/BookList/BookList";
+import { Container } from "../components/common/Container.styles";
+import { Pagination } from "../components/Pagination/Pagination";
 import {
   BooksLoaderContainer,
   MainPageContainer,
   MainPageContentContainer,
-  NoBooksOrServerErrorText,
-} from './styles/MainPage.styles';
+  NoBooksOrServerErrorText
+} from "./styles/MainPage.styles";
 
 const initialState = {
   genre: [],
   status: [],
   selectedRating: null,
-  currentPage: 1,
+  currentPage: 1
 };
 
 type Action =
@@ -31,8 +31,7 @@ type Action =
 
 const reducer = (state: FilterValues, action: Action) => {
   switch (action.type) {
-
-    case 'genre': {
+    case "genre": {
       const selectedGenre = action.genre;
       const updatedGenres = state.genre.includes(selectedGenre)
         ? state.genre.filter((genre) => genre !== selectedGenre)
@@ -40,25 +39,31 @@ const reducer = (state: FilterValues, action: Action) => {
 
       return {
         ...state,
+        currentPage: 1,
         genre: updatedGenres
       };
     }
 
-    case 'status': {
+    case "status": {
       const selectedStatus = action.status;
       const updatedStatus = state.status.includes(selectedStatus)
         ? state.status.filter((status) => status !== selectedStatus)
         : [...state.status, selectedStatus];
       return {
         ...state,
-        status: updatedStatus,
+        currentPage: 1,
+        status: updatedStatus
       };
     }
 
-    case 'rating':
-      return { ...state, selectedRating: action.rating };
+    case "rating":
+      return {
+        ...state,
+        currentPage: 1,
+        selectedRating: action.rating
+      };
 
-    case 'pagination':
+    case "pagination":
       return { ...state, currentPage: action.page };
 
     default:
@@ -78,7 +83,7 @@ export const MainPage = () => {
   } = useAppSelector((state) => ({
     booksArr: state.books.books,
     booksTotalRecords: state.books.totalRecords,
-    genres: state.genres.genres,
+    genres: state.genres.genres
   }));
   const [booksLoading, setBooksLoading] = useState(true);
   const [genresLoading, setGenresLoading] = useState(true);
@@ -86,22 +91,26 @@ export const MainPage = () => {
   const [booksErr, setBooksErr] = useState('');
   const [genresErr, setGenresErr] = useState('');
 
-  const isGenresFetched = useRef(false)
+  const isGenresFetched = useRef(false);
 
   useEffect(() => {
     (async () => {
       setBooksLoading(true);
-      await dispatch(getBooksThunk(filters)).unwrap().catch(err => {
-        setBooksErr(err.message);
-      });
-      setBooksLoading(false);
-      
-      if(!isGenresFetched.current) {
-        await dispatch(getGenresThunk()).unwrap().catch(err => {
-          setGenresErr(err.message);
+      await dispatch(getBooksThunk(filters))
+        .unwrap()
+        .catch((err) => {
+          setBooksErr(err.message);
         });
+      setBooksLoading(false);
+
+      if (!isGenresFetched.current) {
+        await dispatch(getGenresThunk())
+          .unwrap()
+          .catch((err) => {
+            setGenresErr(err.message);
+          });
         setGenresLoading(false);
-        isGenresFetched.current = true
+        isGenresFetched.current = true;
       }
     })();
   }, [dispatch, filters]);
@@ -113,7 +122,7 @@ export const MainPage = () => {
         type: 'genre',
         genre: genreId!,
       });
-    } else if (type === 'status') {
+    } else if (type === "status") {
       dispatchReducer({
         type: 'status',
         status: key,
@@ -123,11 +132,11 @@ export const MainPage = () => {
 
   const setRating = (rate: number) => {
     const rating = rate === 1 && filters.selectedRating === 1 ? null : rate;
-    dispatchReducer({ type: 'rating', rating });
+    dispatchReducer({ type: "rating", rating });
   };
 
   const setCurrentPage = (page: number) => {
-    dispatchReducer({ type: 'pagination', page });
+    dispatchReducer({ type: "pagination", page });
   };
 
   return (

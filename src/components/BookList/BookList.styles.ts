@@ -6,6 +6,9 @@ export const BookListContainer = styled.div`
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 30px;
   padding: 20px;
+  max-height: 520px;
+  overflow: auto;
+  ${({ theme }) => theme.styledScrollbar};
 `;
 
 export const StyledBookItem = styled(Link)`

@@ -1,44 +1,51 @@
-import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import { getRolesThunk, updateRoleThunk } from 'src/redux/slices/rolesSlice';
-import { AvailableRoles, Role, UpdateRoleRequest } from 'src/types/roles';
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "src/redux/hooks";
+import { getRolesThunk, updateRoleThunk } from "src/redux/slices/rolesSlice";
+import { AvailableRoles, UpdateRoleRequest } from "src/types/roles";
 
-import { Loader } from '../common/Loader/Loader';
-import { ConfirmModal } from '../common/Modal/ConfirmModal';
+import { Pagination } from "..";
+import { Container } from "../common/Container.styles";
+import { Loader } from "../common/Loader/Loader";
+import { ConfirmModal } from "../common/Modal/ConfirmModal";
 import {
+  AdminRolesContainer,
   RequestError,
   RolesLoaderContainer,
-  RolesPanel,
-} from './AdminRoles.styles';
-import { UsersList } from './UsersList/UsersList';
+  RolesPanel
+} from "./AdminRoles.styles";
+import { UsersList } from "./UsersList/UsersList";
 
-interface AdminRolesProps {
-  roles: Role[];
-  currentPage: number;
-}
-
-export const AdminRoles = ({ roles, currentPage }: AdminRolesProps) => {
+export const AdminRoles = () => {
   const dispatch = useAppDispatch();
 
+  const [currentPage, setCurrentPage] = useState(1);
+
   const [isAllRolesLoading, setAllRolesLoading] = useState(true);
-  const [switchRoleLoadingId, setSwitchRoleLoadingId] = useState('');
+  const [switchRoleLoadingId, setSwitchRoleLoadingId] = useState("");
 
   const [isModalOpen, setModalOpen] = useState(false);
+
   const [updateRoleData, setUpdateRoleData] =
     useState<null | UpdateRoleRequest>(null);
 
-  const userRole = useAppSelector(({ auth }) => auth.user?.role);
+  const { userRole, roles, totalRoleRecords } = useAppSelector(
+    ({ auth, role }) => ({
+      userRole: auth.user?.role,
+      roles: role.roles,
+      totalRoleRecords: role.totalRecords
+    })
+  );
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     (async () => {
       try {
         setAllRolesLoading(true);
-        if (userRole === 'SuperAdmin') {
+        if (userRole === "SuperAdmin") {
           await dispatch(getRolesThunk(currentPage)).unwrap();
         } else {
-          throw Error('The page is available for super admin only');
+          throw Error("The page is available for super admin only");
         }
       } catch (err: any) {
         setError(err.message);
@@ -67,7 +74,7 @@ export const AdminRoles = ({ roles, currentPage }: AdminRolesProps) => {
     } catch (err: any) {
       setError(err.message);
     } finally {
-      setSwitchRoleLoadingId('');
+      setSwitchRoleLoadingId("");
     }
   };
 
@@ -76,31 +83,38 @@ export const AdminRoles = ({ roles, currentPage }: AdminRolesProps) => {
   }
 
   return (
-    <div>
-      {!isAllRolesLoading && roles.length ? (
-        <>
-          <RolesPanel>
-            <li>Username</li>
-            <li>Roles</li>
-            <li>Actions</li>
-          </RolesPanel>
-          <UsersList
-            roles={roles}
-            switchRoleLoadingId={switchRoleLoadingId}
-            openModal={openModal}
-          />
-        </>
-      ) : (
-        <RolesLoaderContainer>
-          <Loader size="big" />
-        </RolesLoaderContainer>
-      )}
-      <ConfirmModal
-        title="Are you sure you want to reassign the role for this user?"
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        onConfirm={updateRole}
+    <AdminRolesContainer>
+      <Container>
+        {!isAllRolesLoading && roles.length ? (
+          <>
+            <RolesPanel>
+              <li>Username</li>
+              <li>Roles</li>
+              <li>Actions</li>
+            </RolesPanel>
+            <UsersList
+              roles={roles}
+              switchRoleLoadingId={switchRoleLoadingId}
+              openModal={openModal}
+            />
+          </>
+        ) : (
+          <RolesLoaderContainer>
+            <Loader size="big" />
+          </RolesLoaderContainer>
+        )}
+        <ConfirmModal
+          title="Are you sure you want to reassign the role for this user?"
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          onConfirm={updateRole}
+        />
+      </Container>
+      <Pagination
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        pageCount={Math.ceil(totalRoleRecords / 12)}
       />
-    </div>
+    </AdminRolesContainer>
   );
 };

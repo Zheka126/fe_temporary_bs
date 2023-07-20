@@ -9,7 +9,7 @@ export const getRolesThunk = createAsyncThunk(
       const { data } = await getRoles(page);
       return data;
     } catch (err) {
-      throw Error('Some error occured');
+      throw Error('Can\'t get users');
     }
   }
 );

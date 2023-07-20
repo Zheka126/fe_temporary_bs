@@ -38,8 +38,7 @@ export const AppRouter = () => {
     if (location.pathname === "/") {
       navigate(isAuth ? "/main": "/login");
     }
-  }, [isAuth])
-
+  }, [isAuth, navigate])
   return (
     <Routes>
       {renderRoutes(openRoutes)}
