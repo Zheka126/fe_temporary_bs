@@ -82,7 +82,7 @@ export const EditForm = ({
     setFieldError,
     setFieldValue,
     setFieldTouched,
-    // isSubmitting,
+    isSubmitting,
   } = useFormik({
     initialValues,
     validationSchema: editFormValidation,
@@ -235,7 +235,7 @@ export const EditForm = ({
         </div>
       </StyledModalContent>
       <ButtonsContainer>
-        <Button type="submit" title="Submit" />
+        <Button type="submit" title="Submit" disabled={isSubmitting} />
         <CancelButton onClick={onModalClose}>Cancel</CancelButton>
       </ButtonsContainer>
     </form>

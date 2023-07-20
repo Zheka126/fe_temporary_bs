@@ -20,7 +20,7 @@ import {
 import { GenreType } from 'src/types/genre';
 import { getAuthorFullName } from 'src/utils';
 
-import { BaseModal, ConfirmModal } from '..';
+import { BaseModal, ConfirmModal, Loader } from '..';
 import { Button } from '../common/Button/Button';
 import { ButtonsContainer } from '../common/Container.styles';
 import { StyledParagraph } from '../LoginForm/LoginForm.styles';
@@ -36,7 +36,6 @@ import { EditForm } from './EditForm/EditForm';
 
 export const BookDetails = () => {
   const navigate = useNavigate();
-  // const dispatch = useAppDispatch();
   const { id: bookId } = useParams();
   const user = useAppSelector((state) => state.auth.user);
   const allAuthors = useAppSelector((state) => state.authors.authors);
@@ -68,14 +67,18 @@ export const BookDetails = () => {
   const [bookDetails, setBookDetails] =
     useState<BookDetailsType>(initialValues);
 
+  const [errors, setErrors] = useState({
+    bookDetailsError: '',
+    assigmentsErros: '',
+  });
+  const [isBookDetailsIsLoading, setBookDetailsIsLoaging] = useState(false);
+
   const genreElements = bookDetails.genres.map(({ id, name }) => (
     <BookGenreTag key={id}>{name}</BookGenreTag>
   ));
   const authorsNames = bookDetails.authors.map((author) =>
     getAuthorFullName(author)
   );
-
-  console.log('bookDetails: ', bookDetails);
 
   const openConfirmModal = (actionType: 'delete' | 'assignToMe') => {
     const confirmationData = {
@@ -101,7 +104,6 @@ export const BookDetails = () => {
   };
 
   const onUpdateBook = async (updatedBook: BookDetailsUpdateRequest) => {
-    console.log('updatedBook: ', updatedBook);
     try {
       await updateBook(updatedBook);
       toast.success('The book has been successfully updated!');
@@ -174,98 +176,125 @@ export const BookDetails = () => {
 
   useEffect(() => {
     (async () => {
+      setBookDetailsIsLoaging(true);
+      console.log('isBookDetailsIsLoading: ', isBookDetailsIsLoading);
       getBookById(bookId)
         .then(({ data }) => {
           setBookDetails(data);
         })
-        .catch(() => {
-          toast.error(
-            'Oops! Something went wrong while loading the book details. Please try again later'
-          );
-          // console.log('Error:', error.message);
+        .catch((error) => {
+          const errorMessage =
+            'Oops! Something went wrong while loading the book details. Please try again later';
+          toast.error(errorMessage);
+          setErrors((prev) => ({ ...prev, bookDetailsError: errorMessage }));
+          console.error('Error:', error.message);
         });
+      setBookDetailsIsLoaging(false);
 
       getProfileItems('assignments')
         .then(({ data }) => {
           setUserAssignments(data.data);
         })
         .catch((error) => {
-          toast.error(
-            'Something went wrong while loading the assignments. Please try again later.'
-          );
-          console.log('Error:', error.message);
+          const errorMessage =
+            'Oops! Something went wrong while loading the assignments. Please try again later';
+          toast.error(errorMessage);
+          setErrors((prev) => ({ ...prev, assigmentsErros: errorMessage }));
+          console.error('Error:', error.message);
         });
     })();
   }, []);
 
   return (
-    <BookDetailsContainer>
-      <BookCoverSection>
-        <img src={`${baseURL}/${bookDetails.imageSrc}`} alt="book cover" />
-      </BookCoverSection>
-      <BookDetailsSection>
-        <h1>{bookDetails.title}</h1>
-        <Details>
-          <div>
-            <BookDetail title="Author" value={authorsNames.join(', ')} />
-            <BookDetail title="Genres" value={genreElements} />
-            <BookDetail title="Description" value={bookDetails.description} />
-          </div>
+    <div>
+      {isBookDetailsIsLoading ? (
+        <Loader size="big" />
+      ) : errors.bookDetailsError ? (
+        <h2>{errors.bookDetailsError}</h2>
+      ) : (
+        <BookDetailsContainer>
+          <BookCoverSection>
+            <img src={`${baseURL}/${bookDetails.imageSrc}`} alt="book cover" />
+          </BookCoverSection>
+          <BookDetailsSection>
+            <h1>{bookDetails.title}</h1>
+            <Details>
+              <div>
+                <BookDetail title="Author" value={authorsNames.join(', ')} />
+                <BookDetail title="Genres" value={genreElements} />
+                <BookDetail
+                  title="Description"
+                  value={bookDetails.description}
+                />
+              </div>
 
-          <div>
-            <BookDetail title="Uploaded by" value={bookDetails.uploadedBy} />
-            <BookDetail
-              title="Publication Date"
-              value={bookDetails.publicationDate}
-            />
-            <BookDetail title="Language" value={bookDetails.language} />
-            <BookDetail title="Availability" value={bookDetails.availability} />
-          </div>
-        </Details>
-        <ButtonsContainer>
-          {user?.userName === bookDetails.uploadedBy && (
-            <>
-              <Button title="Edit" onClick={() => setIsBaseModalOpen(true)} />
-              <Button
-                title="Delete"
-                onClick={() => openConfirmModal('delete')}
+              <div>
+                <BookDetail
+                  title="Uploaded by"
+                  value={bookDetails.uploadedBy}
+                />
+                <BookDetail
+                  title="Publication Date"
+                  value={bookDetails.publicationDate}
+                />
+                <BookDetail title="Language" value={bookDetails.language} />
+                <BookDetail
+                  title="Availability"
+                  value={bookDetails.availability}
+                />
+              </div>
+            </Details>
+            <ButtonsContainer>
+              {user?.userName === bookDetails.uploadedBy && (
+                <>
+                  <Button
+                    title="Edit"
+                    onClick={() => setIsBaseModalOpen(true)}
+                  />
+                  <Button
+                    title="Delete"
+                    onClick={() => openConfirmModal('delete')}
+                  />
+                </>
+              )}
+              <span
+                data-tooltip-id={userAssignments.length > 2 ? 'tooltip' : ''}
+                data-tooltip-content="You should have less than 2 assignments to Assign a book"
+                data-tooltip-variant="warning"
+              >
+                <Button
+                  title="Assign to Me"
+                  onClick={() => openConfirmModal('assignToMe')}
+                  disabled={userAssignments.length > 2}
+                />
+              </span>
+            </ButtonsContainer>
+          </BookDetailsSection>
+          {isBaseModalOpen && (
+            <BaseModal
+              isOpen={isBaseModalOpen}
+              onClose={() => setIsBaseModalOpen(false)}
+              title={`Edit book "${bookDetails.title}"`}
+            >
+              <EditForm
+                bookDetails={bookDetails}
+                onUpdateBook={onUpdateBook}
+                onModalClose={() => setIsBaseModalOpen(false)}
               />
-            </>
+            </BaseModal>
           )}
-          <span
-            data-tooltip-id={userAssignments.length > 2 ? 'tooltip' : ''}
-            data-tooltip-content="You should have less than 2 assignments to Assign a book"
-            data-tooltip-variant="warning"
+          <ConfirmModal
+            isOpen={confrimModal.isOpen}
+            onClose={() =>
+              setConfirmModal((prev) => ({ ...prev, isOpen: false }))
+            }
+            title={confrimModal.title}
+            onConfirm={handleConfirm}
           >
-            <Button
-              title="Assign to Me"
-              onClick={() => openConfirmModal('assignToMe')}
-              disabled={userAssignments.length > 2}
-            />
-          </span>
-        </ButtonsContainer>
-      </BookDetailsSection>
-      {isBaseModalOpen && (
-        <BaseModal
-          isOpen={isBaseModalOpen}
-          onClose={() => setIsBaseModalOpen(false)}
-          title={`Edit book "${bookDetails.title}"`}
-        >
-          <EditForm
-            bookDetails={bookDetails}
-            onUpdateBook={onUpdateBook}
-            onModalClose={() => setIsBaseModalOpen(false)}
-          />
-        </BaseModal>
+            {confrimModal.content}
+          </ConfirmModal>
+        </BookDetailsContainer>
       )}
-      <ConfirmModal
-        isOpen={confrimModal.isOpen}
-        onClose={() => setConfirmModal((prev) => ({ ...prev, isOpen: false }))}
-        title={confrimModal.title}
-        onConfirm={handleConfirm}
-      >
-        {confrimModal.content}
-      </ConfirmModal>
-    </BookDetailsContainer>
+    </div>
   );
 };
