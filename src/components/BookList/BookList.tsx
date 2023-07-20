@@ -8,7 +8,7 @@ interface BookListProps {
 }
 
 export const BookList = ({ books }: BookListProps) => {
-  // console.log(`${baseURL}/${books[0].imageSrc}`);
+  // console.log(`${baseURL}/${books[0].imageSrc}`);;;
 
   return (
     <BookListContainer data-testid="book-list-container">
