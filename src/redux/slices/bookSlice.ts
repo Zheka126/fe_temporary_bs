@@ -24,7 +24,6 @@ export const addBookThunk = createAsyncThunk('addBookThunk', async (book: AddBoo
   }
 });
 
-
 export interface BookState {
   books: BookType[];
   totalRecords: number;
@@ -44,13 +43,14 @@ export const bookSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(
+    builder
+    .addCase(
       getBooksThunk.fulfilled,
       (state, action: PayloadAction<GetBooksResponse>) => {
         state.books = action.payload.data;
         state.totalRecords = action.payload.totalRecords;
       }
-    );
+    )
   },
 });
 
