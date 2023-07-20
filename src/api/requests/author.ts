@@ -10,10 +10,13 @@ export const addAuthor = (author: AddAuthorRequest) =>
   instance.post<string>(endpoint, author);
 
 export const getAuthorById = (id: string) =>
-  instance.get<AuthorType>(`/${endpoint}/${id}`);
+  instance.get<AuthorType>(`${endpoint}/${id}`);
+
+export const addNewAuthor = (author: AddAuthorRequest) =>
+  instance.post<string>(endpoint, author);
 
 export const updateAuthor = (author: AuthorType) =>
-  instance.put<AuthorType>(`/${endpoint}/${author}`, author);
+  instance.put<AuthorType>(`${endpoint}/${author}`, author);
 
 export const deleteAuthor = (id: string) =>
-  instance.delete(`/${endpoint}/${id}`);
+  instance.delete(`${endpoint}/${id}`);

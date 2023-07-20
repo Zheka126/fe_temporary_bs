@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import { StyledButton } from '../common/Button/Button.styles';
 import { StyledInput } from '../common/Input.styles';
 
 export const BookDetailsContainer = styled.div`
@@ -46,7 +47,7 @@ export const BookDetailItem = styled.div`
   }
 `;
 
-export const BookGenre = styled.span`
+export const BookGenreTag = styled.span`
   margin-right: 5px;
   padding: 1px 10px;
   color: white;
@@ -61,4 +62,13 @@ export const EditInput = styled(StyledInput)`
 export const StyledModalContent = styled.div`
   display: flex;
   gap: 50px;
+`;
+
+export const SubmitButton = styled(StyledButton)`
+color: black;
+  background-color: #228b22; /* Темно-зеленый цвет */
+`;
+
+export const CancelButton = styled(StyledButton)`
+  background-color: #ccc; /* Сероватый цвет */
 `;

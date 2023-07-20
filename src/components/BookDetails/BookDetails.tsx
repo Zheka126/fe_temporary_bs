@@ -1,165 +1,87 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { baseURL, StatusCodes } from 'src/api/constants';
-import { deleteBook, getBookById, updateBook } from 'src/api/requests/book';
+import {
+  assignBookToCurrentUser,
+  deleteBook,
+  getBookById,
+  updateBook,
+} from 'src/api/requests/book';
 import { getProfileItems } from 'src/api/requests/profile';
 import { useAppSelector } from 'src/redux/hooks';
-import { BookDetailsType } from 'src/types/book';
+import { AuthorType } from 'src/types/author';
+import {
+  AvailabilityStatus,
+  BookDetailsType,
+  BookDetailsUpdateRequest,
+  Language,
+} from 'src/types/book';
+import { GenreType } from 'src/types/genre';
+import { getAuthorFullName } from 'src/utils';
 
+import { BaseModal, ConfirmModal } from '..';
 import { Button } from '../common/Button/Button';
-import { InputContainer } from '../common/Input.styles';
-import { Modal } from '../common/Modal/Modal';
+import { ButtonsContainer } from '../common/Container.styles';
 import { StyledParagraph } from '../LoginForm/LoginForm.styles';
-import { ButtonsContainer } from '../SignupForm/SignupForm.styles';
 import { BookDetail } from './BookDetail';
 import {
   BookCoverSection,
   BookDetailsContainer,
   BookDetailsSection,
-  BookGenre,
+  BookGenreTag,
   Details,
-  EditInput,
-  StyledModalContent,
 } from './BookDetails.styles';
+import { EditForm } from './EditForm/EditForm';
 
 export const BookDetails = () => {
-  const { id } = useParams();
+  const { id: bookId } = useParams();
   const navigate = useNavigate();
-
-  const [assignments, setAssignments] = useState<string[]>([
-    'one',
-    'two',
-    'three',
-  ]);
   const user = useAppSelector((state) => state.auth.user);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modal, setModal] = useState({ modalTitle: '', actionType: '' });
+  const [userAssignments, setUserAssignments] = useState<string[]>([]);
+
+  const [confrimModal, setConfirmModal] = useState({
+    actionType: '',
+    isOpen: false,
+    title: '',
+    content: <div />,
+  });
+
+  const [isBaseModalOpen, setIsBaseModalOpen] = useState(false);
 
   const initialValues = {
-    id,
+    id: '',
     imageSrc: '',
-    title: 'Title',
-    authors: ['Author1', 'Author2'],
+    title: '',
+    authors: [] as AuthorType[],
     canBorrow: true,
-    genres: ['genre1', 'genre2', 'genre3'],
-    uploadedBy: 'User',
-    publicationDate: '2023-12-12',
-    language: 'English',
-    // description:
-    //   'lorem Ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quidem.',
-    availability: 'Free',
+    genres: [] as GenreType[],
+    uploadedBy: '',
+    publicationDate: '',
+    language: '' as Language,
+    description: '',
+    availability: '' as AvailabilityStatus,
+    some: '',
   };
 
-  const [bookDetails, setBookDetails] = useState(initialValues);
+  const [bookDetails, setBookDetails] =
+    useState<BookDetailsType>(initialValues);
 
-  const createEditInput = (inputId: keyof BookDetailsType, label: string) => {
-    return (
-      <InputContainer>
-        <label htmlFor={inputId}>{label}</label>
-        <EditInput
-          type="text"
-          required
-          id={inputId}
-          name={inputId}
-          value={
-            Array.isArray(bookDetails[inputId])
-              ? (bookDetails[inputId] as string[]).join(', ')
-              : (bookDetails[inputId] as string)
-          }
-          onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            setBookDetails({
-              ...bookDetails,
-              [inputId]: Array.isArray(bookDetails[inputId])
-                ? event.target.value.split(', ')
-                : event.target.value,
-            })
-          }
-        />
-      </InputContainer>
-    );
-  };
-  // where to store modal content?
-  // should it be here or inside JSX or in separate file?
-  const modalContent = (actionType: string) => {
-    switch (actionType) {
-      case 'edit':
-        return (
-          <StyledModalContent>
-            <div>
-              {createEditInput('title', 'Edit title')}
-              {createEditInput('authors', 'Edit author')}
-              {createEditInput('genres', 'Edit genres')}
-              {/* <input type="file" onChange={handleFileChange} /> */}
-              {/* {createEditInput('description', 'Edit description')} */}
-            </div>
-            <div>
-              {createEditInput('uploadedBy', 'Edit uploaded by')}
-              {createEditInput('publicationDate', 'Edit uploaded by')}
-              {createEditInput('language', 'Edit language')}
-              {createEditInput('availability', 'Edit availability')}
-            </div>
-          </StyledModalContent>
-        );
-      case 'delete':
-        return (
-          <StyledParagraph>
-            Are you sure you want to delete this book?
-          </StyledParagraph>
-        );
-      case 'assignToMe':
-        return (
-          <StyledParagraph>
-            Are you sure you want to assign this book to yourself?
-          </StyledParagraph>
-        );
-      default:
-        return <h2>Empty window... How did you get here?</h2>;
-    }
-  };
-
-  const genreElements = bookDetails.genres.map((genre) => (
-    <BookGenre key={genre}>{genre}</BookGenre>
+  const genreElements = bookDetails.genres.map(({ id, name }) => (
+    <BookGenreTag key={id}>{name}</BookGenreTag>
   ));
+  const authorsNames = bookDetails.authors.map((author) =>
+    getAuthorFullName(author)
+  );
 
-  const openModal = (actionType: string, modalTitle: string) => {
-    setIsModalOpen(true);
-    setModal({ actionType, modalTitle });
-  };
-  const openDeleteModal = () => {
-    openModal('delete', 'Confirm deletion');
-  };
-  const openEditModal = () => {
-    openModal('edit', `Edit book "${bookDetails.title}"`);
-  };
-  const openAssignToMeModal = () => {
-    openModal('assignToMe', `Assign book "${bookDetails.title}" to me`);
-  };
-
-  const fethcDeletingBook = async () => {
+  // where to store this function - inside or outside of form component?
+  const onUpdateBook = async (updatedBook: BookDetailsUpdateRequest) => {
+    console.log('updatedBook: ', updatedBook);
     try {
-      await deleteBook(id);
-      toast.success('The book has been successfully deleted!');
-      navigate('/main');
-    } catch (error: any) {
-      toast.error('Some errors with the delete');
-      console.log('Error:', error.message);
-    }
-  };
-
-  const fetchUpdatingBook = async () => {
-    try {
-      const updatedBook = {
-        ...bookDetails,
-        authors: bookDetails.authors.join(', ').split(', '),
-        genres: bookDetails.genres.join(', ').split(', '),
-      };
-      // if (bookDetails !== updateBook)
-      // make this check in future to avoid sending the same book to server
-      await updateBook(id, updatedBook);
-
+      await updateBook(updatedBook);
       toast.success('The book has been successfully updated!');
+      setIsBaseModalOpen(false);
     } catch (error: any) {
       if (error.response.status === StatusCodes.NOT_ALLOWED) {
         toast.error('You are not allowed to edit this book');
@@ -168,7 +90,62 @@ export const BookDetails = () => {
     }
   };
 
-  const fetchAssigningBook = async () => {
+  /*
+    Модальное окно для подтверждения открывается только в 2-х случаях:
+    1) Удаление книги
+    2) Assign to me 
+    Стало быть для них одна и та же модалка. Логично. 
+
+    При редактировании книги - открывается baseModal. 
+    Как сделать так, чтобы на кнопки удаления и присуждения открывалась одна модалка, 
+    а на редактирование другая ?
+
+    Где держать модальное окно для редактирования? 
+    Здесь или в форме редактирования?
+  */
+  const openConfirmModal = (actionType: string) => {
+    const actionData = {
+      delete: {
+        title: `Delete book "${bookDetails.title}"`,
+        content: (
+          <StyledParagraph>
+            Are you sure you want to delete this book?
+          </StyledParagraph>
+        ),
+      },
+      assignToMe: {
+        title: `Assign book "${bookDetails.title}"`,
+        content: (
+          <StyledParagraph>
+            Are you sure you want to assign this book to yourself?
+          </StyledParagraph>
+        ),
+      },
+    };
+
+    const { title, content } = actionData[actionType];
+
+    setConfirmModal((prev) => ({
+      ...prev,
+      isOpen: true,
+      actionType,
+      title,
+      content,
+    }));
+  };
+
+  const onDeleteBook = async () => {
+    try {
+      await deleteBook(bookId);
+      toast.success('The book has been successfully deleted!');
+      navigate('/main');
+    } catch (error: any) {
+      toast.error('Some errors with the delete');
+      console.log('Error:', error.message);
+    }
+  };
+
+  const onAssignBook = async () => {
     if (!bookDetails.canBorrow) {
       toast.warning(
         'The book is already assigned to another user for the current period of time, please join the queue by clicking on Add to queue'
@@ -176,7 +153,7 @@ export const BookDetails = () => {
       return;
     }
     try {
-      // await assignBookToCurrentUser(id);
+      await assignBookToCurrentUser(bookId);
       toast.success(
         `Book was successfully assigned to ${user?.userName}. Your assignment ends at: <End_date> /n Please wait for the Administrator approval`
       );
@@ -187,32 +164,37 @@ export const BookDetails = () => {
   };
 
   const handleConfirm = async () => {
-    if (modal.actionType === 'edit') {
-      await fetchUpdatingBook();
-    } else if (modal.actionType === 'delete') {
-      await fethcDeletingBook();
+    if (confrimModal.actionType === 'delete') {
+      await onDeleteBook();
     } else {
-      await fetchAssigningBook();
+      await onAssignBook();
     }
-    setIsModalOpen(false);
+    setConfirmModal((prev) => ({ ...prev, isOpen: false }));
   };
 
   useEffect(() => {
     (async () => {
-      try {
-        const { data: bookDetailsData } = await getBookById(id);
-        console.log('bookDetailsData: ', bookDetailsData);
-        setBookDetails(bookDetailsData);
+      getBookById(bookId)
+        .then(({ data }) => {
+          setBookDetails(data);
+        })
+        .catch((error: any) => {
+          toast.error(
+            'Oops! Something went wrong while loading the book details. Please try again later'
+          );
+          console.log('Error:', error.message);
+        });
 
-        const { data: assignmentsData } = await getProfileItems('assignments');
-        console.log('assignmentsData: ', assignmentsData);
-        setAssignments(assignmentsData);
-      } catch (error: any) {
-        toast.error(
-          'Something went wrong with getting book details. Please try again later.'
-        );
-        console.log('Error:', error.message);
-      }
+      getProfileItems('assignments')
+        .then(({ data }) => {
+          setUserAssignments(data.data);
+        })
+        .catch((error) => {
+          toast.error(
+            'Something went wrong while loading the assignments. Please try again later.'
+          );
+          console.log('Error:', error.message);
+        });
     })();
   }, []);
 
@@ -225,9 +207,9 @@ export const BookDetails = () => {
         <h1>{bookDetails.title}</h1>
         <Details>
           <div>
-            <BookDetail title="Author" value={bookDetails.authors.join(', ')} />
+            <BookDetail title="Author" value={authorsNames.join(', ')} />
             <BookDetail title="Genres" value={genreElements} />
-            {/* <BookDetail title="Description" value={bookDetails.description} /> */}
+            <BookDetail title="Description" value={bookDetails.description} />
           </div>
 
           <div>
@@ -243,31 +225,47 @@ export const BookDetails = () => {
         <ButtonsContainer>
           {user?.userName === bookDetails.uploadedBy && (
             <>
-              <Button title="Edit" onClick={openEditModal} />
-              <Button title="Delete" onClick={openDeleteModal} />
+              <Button title="Edit" onClick={() => setIsBaseModalOpen(true)} />
+              <Button
+                title="Delete"
+                onClick={() => openConfirmModal('delete')}
+              />
             </>
           )}
           <span
-            data-tooltip-id={assignments.length > 2 ? 'tooltip' : ''}
+            data-tooltip-id={userAssignments.length > 2 ? 'tooltip' : ''}
             data-tooltip-content="You should have less than 2 assignments to Assign a book"
             data-tooltip-variant="warning"
           >
             <Button
               title="Assign to Me"
-              onClick={openAssignToMeModal}
-              disabled={assignments.length > 2}
+              onClick={() => openConfirmModal('assignToMe')}
+              disabled={userAssignments.length > 2}
             />
           </span>
         </ButtonsContainer>
       </BookDetailsSection>
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title={modal.modalTitle}
+      {isBaseModalOpen && (
+        <BaseModal
+          isOpen={isBaseModalOpen}
+          onClose={() => setIsBaseModalOpen(false)}
+          title={`Edit book "${bookDetails.title}"`}
+        >
+          <EditForm
+            bookDetails={bookDetails}
+            onUpdateBook={onUpdateBook}
+            onModalClose={() => setIsBaseModalOpen(false)}
+          />
+        </BaseModal>
+      )}
+      <ConfirmModal
+        isOpen={confrimModal.isOpen}
+        onClose={() => setConfirmModal((prev) => ({ ...prev, isOpen: false }))}
+        title={confrimModal.title}
         onConfirm={handleConfirm}
       >
-        {modalContent(modal.actionType)}
-      </Modal>
+        {confrimModal.content}
+      </ConfirmModal>
     </BookDetailsContainer>
   );
 };

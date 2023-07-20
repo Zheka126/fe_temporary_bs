@@ -2,8 +2,9 @@ import { useState } from "react";
 import { FilterValues } from "src/types/book";
 import { GenreType } from "src/types/genre";
 
-import { Loader } from "..";
-import { Rating } from "../Rating/Rating";
+import { Loader } from '..';
+import { Checkbox } from '../common/Checkbox/Checkbox';
+import { Rating } from '../Rating/Rating';
 import {
   CheckboxContainer,
   GenresContainer,
@@ -27,7 +28,7 @@ export const BookFilter = ({
   genresErr,
   genresLoading,
   setCheckboxValue,
-  setRating
+  setRating,
 }: BookFilterProps) => {
   const [searchVal, setSearchVal] = useState("");
 
@@ -77,25 +78,20 @@ export const BookFilter = ({
         </>
       )}
       <h4>Status</h4>
-      {["Free", "Busy"].map((status) => {
-        return (
-          <CheckboxContainer key={status}>
-            <input
-              type="checkbox"
-              id={status}
-              name={status}
-              value={status}
-              checked={filters.status.includes(status)}
-              onChange={() => setCheckboxValue("status", status)}
-            />
-            <label htmlFor={status}>{status}</label>
-          </CheckboxContainer>
-        );
-      })}
+      {['Free', 'Busy'].map((status) => (
+        <Checkbox
+          key={status}
+          id={status}
+          name={status}
+          value={status}
+          checked={filters.status.includes(status)}
+          onChange={() => setCheckboxValue('status', status)}
+        />
+      ))}
       <h4>Popularity</h4>
       <Rating
         selectedRating={filters.selectedRating}
-        setSelectedRating={(ind) => setRating(ind + 1)}
+        setSelectedRating={(i) => setRating(i + 1)}
       />
     </div>
   );

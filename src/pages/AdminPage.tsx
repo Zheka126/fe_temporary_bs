@@ -17,21 +17,12 @@ const AdminReviews = () => {
 };
 
 const tabLinks = [
-  {
-    path: "/admin/roles",
-    text: "Manage Roles"
-  },
-  {
-    path: "/admin/assignments",
-    text: "Approve assignments"
-  },
-  {
-    path: "/admin/reviews",
-    text: "Delete reviews"
-  }
+  { path: '/admin/roles', text: 'Manage Roles' },
+  { path: '/admin/assignments', text: 'Approve assignments' },
+  { path: '/admin/reviews', text: 'Delete reviews' },
 ];
 
-export const AdminTabPage = () => {
+export const AdminPage = () => {
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -72,7 +63,7 @@ const reviews = 0;
       : "reviews";
 
   const pageCount = Math.ceil(
-    (currentlyViewedPage === "roles"
+    (currentlyViewedPage === 'roles'
       ? totalRoleRecords
       : currentlyViewedPage === "assignments"
       ? totalAssignmentsRecords

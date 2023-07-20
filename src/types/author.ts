@@ -4,4 +4,4 @@ export interface AuthorType {
   lastName: string;
 }
 
-export type AddAuthorRequest = Omit<AuthorType, 'id'>
+export type AddAuthorRequest = Omit<AuthorType, 'id'>;
