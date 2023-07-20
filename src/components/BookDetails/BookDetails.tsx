@@ -35,8 +35,9 @@ import {
 import { EditForm } from './EditForm/EditForm';
 
 export const BookDetails = () => {
-  const { id: bookId } = useParams();
   const navigate = useNavigate();
+  // const dispatch = useAppDispatch();
+  const { id: bookId } = useParams();
   const user = useAppSelector((state) => state.auth.user);
 
   const [userAssignments, setUserAssignments] = useState<string[]>([]);
@@ -75,35 +76,31 @@ export const BookDetails = () => {
     getAuthorFullName(author)
   );
 
+  // const authors = useAppSelector((state) => state.authors.authors);
+
   // where to store this function - inside or outside of form component?
   const onUpdateBook = async (updatedBook: BookDetailsUpdateRequest) => {
-    console.log('updatedBook: ', updatedBook);
+    // console.log('updatedBook: ', updatedBook);
     try {
       await updateBook(updatedBook);
       toast.success('The book has been successfully updated!');
       setIsBaseModalOpen(false);
+
+      // setBookDetails({ ...updatedBook,
+      //   id: bookId,
+      //   authors: allAuthors.filter((author) => author.id === updatedBook.authorId)
+      // });
     } catch (error: any) {
       if (error.response.status === StatusCodes.NOT_ALLOWED) {
         toast.error('You are not allowed to edit this book');
       }
-      console.log('Error:', error.message);
+      // console.log('Error:', error.message);
     }
   };
 
-  /*
-    Модальное окно для подтверждения открывается только в 2-х случаях:
-    1) Удаление книги
-    2) Assign to me 
-    Стало быть для них одна и та же модалка. Логично. 
+  type ActionType = 'delete' | 'assignToMe';
 
-    При редактировании книги - открывается baseModal. 
-    Как сделать так, чтобы на кнопки удаления и присуждения открывалась одна модалка, 
-    а на редактирование другая ?
-
-    Где держать модальное окно для редактирования? 
-    Здесь или в форме редактирования?
-  */
-  const openConfirmModal = (actionType: string) => {
+  const openConfirmModal = (actionType: ActionType) => {
     const actionData = {
       delete: {
         title: `Delete book "${bookDetails.title}"`,
@@ -141,7 +138,7 @@ export const BookDetails = () => {
       navigate('/main');
     } catch (error: any) {
       toast.error('Some errors with the delete');
-      console.log('Error:', error.message);
+      // console.log('Error:', error.message);
     }
   };
 
@@ -159,7 +156,7 @@ export const BookDetails = () => {
       );
     } catch (error: any) {
       toast.error('Some errors with the assign');
-      console.log('Error:', error.message);
+      // console.log('Error:', error.message);
     }
   };
 
@@ -178,11 +175,11 @@ export const BookDetails = () => {
         .then(({ data }) => {
           setBookDetails(data);
         })
-        .catch((error: any) => {
+        .catch(() => {
           toast.error(
             'Oops! Something went wrong while loading the book details. Please try again later'
           );
-          console.log('Error:', error.message);
+          // console.log('Error:', error.message);
         });
 
       getProfileItems('assignments')
