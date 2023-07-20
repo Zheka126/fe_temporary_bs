@@ -30,11 +30,7 @@ export const addBookThunk = createAsyncThunk(
       throw Error('Something went wrong');
     }
   }
-<<<<<<< HEAD
-});
-=======
 );
->>>>>>> 4c1bd36d18df12cbdb4aaeab3c275826f3c00e65
 
 export interface BookState {
   books: BookType[];
