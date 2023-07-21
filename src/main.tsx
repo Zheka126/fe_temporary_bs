@@ -2,7 +2,6 @@ import 'normalize.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import './index.css';
 
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
