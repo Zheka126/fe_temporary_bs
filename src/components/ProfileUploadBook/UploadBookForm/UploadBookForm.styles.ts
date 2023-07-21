@@ -29,7 +29,7 @@ export const EmptyImageBlock = styled.div<{ isError: boolean }>`
   border-radius: 10px;
   background-color: white;
   width: 150px;
-  height: 150px;
+  height: 200px;
   position: relative;
   span {
     top: 10px;

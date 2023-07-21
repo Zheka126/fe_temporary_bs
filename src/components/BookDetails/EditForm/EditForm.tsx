@@ -1,6 +1,7 @@
 import { useFormik } from 'formik';
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent, useEffect, useRef } from 'react';
 import Select from 'react-select';
+import { baseURL } from 'src/api/constants';
 import { Button } from 'src/components';
 import { ButtonsContainer } from 'src/components/common/Container.styles';
 import {
@@ -8,6 +9,11 @@ import {
   StyledErrorMessage,
 } from 'src/components/common/Input.styles';
 import { selectStyles } from 'src/components/common/Select.styles';
+import {
+  EmptyImageBlock,
+  ImageBlock,
+  UploadImgBtn,
+} from 'src/components/ProfileUploadBook/UploadBookForm/UploadBookForm.styles';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { getAuthorsThunk } from 'src/redux/slices/authorsSlice';
 import { BookDetailsType, BookDetailsUpdateRequest } from 'src/types/book';
@@ -18,11 +24,7 @@ import {
   languageOptions,
 } from 'src/utils';
 
-import {
-  CancelButton,
-  EditInput,
-  StyledModalContent,
-} from '../BookDetails.styles';
+import { CancelButton, EditInput } from '../BookDetails.styles';
 import { editFormValidation } from './editFormValidation';
 
 // const createEditInput = (detailValue: string, label: string) => {
@@ -57,6 +59,7 @@ export const EditForm = ({
   onModalClose,
 }: EditFormProps) => {
   const dispatch = useAppDispatch();
+  const inputFileRef = useRef<HTMLInputElement>(null);
   const { allAuthors, allGenres } = useAppSelector(({ authors, genres }) => ({
     allAuthors: authors.authors,
     allGenres: genres.genres,
@@ -69,12 +72,13 @@ export const EditForm = ({
     language: bookDetails.language,
     publicationDate: bookDetails.publicationDate,
     availability: bookDetails.availability,
-    image: null,
+    image: bookDetails.imageSrc,
     authorId: bookDetails.authors.map((author) => author.id),
     genreId: bookDetails.genres.map((genre) => genre.id),
   };
 
   const {
+    values,
     errors,
     touched,
     handleSubmit,
@@ -86,8 +90,8 @@ export const EditForm = ({
   } = useFormik({
     initialValues,
     validationSchema: editFormValidation,
-    onSubmit: (values, { setSubmitting }) => {
-      onUpdateBook(values);
+    onSubmit: (vals, { setSubmitting }) => {
+      onUpdateBook(vals);
       setSubmitting(false);
     },
   });
@@ -107,6 +111,17 @@ export const EditForm = ({
     touched.availability && errors.availability
   );
 
+  console.log('errors', errors);
+
+  // const isError = (field: string) => Boolean(touched[field] && errors[field]);
+
+  // console.log('values.image: ', values.image);
+  
+  const imgSrc = typeof values.image === 'string'
+  ? `${baseURL}/${values.image}`
+  : URL.createObjectURL(values.image as File);
+  
+  // console.log('imgSrc: ', imgSrc);
   useEffect(() => {
     (async () => {
       await dispatch(getAuthorsThunk());
@@ -115,8 +130,41 @@ export const EditForm = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <StyledModalContent>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          gap: '20px',
+        }}
+      >
         <div>
+          <ImageBlock>
+            {imgSrc ? (
+              <img src={imgSrc} alt="book cover" />
+            ) : (
+              <EmptyImageBlock isError={Boolean(touched.image && errors.image)}>
+                {touched.image && errors.image && (
+                  <StyledErrorMessage>{errors.image}</StyledErrorMessage>
+                )}
+              </EmptyImageBlock>
+            )}
+            <input
+              id="image"
+              name="image"
+              type="file"
+              ref={inputFileRef}
+              accept=".png, .jpg, .bmp"
+              onChange={onCoverUpload}
+            />
+            <UploadImgBtn
+              type="button"
+              onClick={() => inputFileRef.current?.click()}
+            >
+              Upload book cover
+            </UploadImgBtn>
+          </ImageBlock>
+        </div>
+        <div style={{ width: '450px' }}>
           <InputContainer>
             <label htmlFor="title">Edit title</label>
             <EditInput
@@ -153,19 +201,10 @@ export const EditForm = ({
               <StyledErrorMessage>{errors.publicationDate}</StyledErrorMessage>
             )}
           </InputContainer>
-          <InputContainer>
-            <input
-              type="file"
-              id="image"
-              name="image"
-              accept=".png, .jpg, .bmp"
-              onChange={onCoverUpload}
-            />
-          </InputContainer>
         </div>
-        <div>
+        <div style={{ width: '450px' }}>
           <InputContainer>
-            <label htmlFor="authorId">Edit authors</label>
+            <label htmlFor="authorId">Authors</label>
             <Select
               defaultValue={getAuthorOptions(bookDetails.authors)}
               isMulti
@@ -186,13 +225,14 @@ export const EditForm = ({
             )}
           </InputContainer>
           <InputContainer>
-            <label htmlFor="genreId">Edit genres</label>
+            <label htmlFor="genreId">Genres</label>
             <Select
               defaultValue={getGenresOptions(bookDetails.genres)}
               isMulti
               id="genreId"
               name="genreId"
               options={getGenresOptions(allGenres)}
+              styles={selectStyles(isSelectGenresErr)}
               onBlur={() => setFieldTouched('genreId', true)}
               onChange={(options) =>
                 setFieldValue(
@@ -200,14 +240,13 @@ export const EditForm = ({
                   options!.map((o) => o.value)
                 )
               }
-              styles={selectStyles(isSelectGenresErr)}
             />
             {touched.genreId && errors.genreId && (
               <StyledErrorMessage>{errors.genreId}</StyledErrorMessage>
             )}
           </InputContainer>
           <InputContainer>
-            <label htmlFor="language">Edit language</label>
+            <label htmlFor="language">Language</label>
             <Select
               defaultValue={languageOptions.find(
                 (option) => option.value === bookDetails.language
@@ -220,7 +259,7 @@ export const EditForm = ({
             />
           </InputContainer>
           <InputContainer>
-            <label htmlFor="availability">Edit availability</label>
+            <label htmlFor="availability">Availability</label>
             <Select
               defaultValue={availabilityOptions.find(
                 (option) => option.value === bookDetails.availability
@@ -233,9 +272,14 @@ export const EditForm = ({
             />
           </InputContainer>
         </div>
-      </StyledModalContent>
-      <ButtonsContainer>
-        <Button type="submit" title="Submit" disabled={isSubmitting} />
+      </div>
+      <ButtonsContainer style={{ marginTop: '40px', justifyContent: 'center' }}>
+        <Button
+          style={{ maxWidth: '300px' }}
+          type="submit"
+          title="Submit"
+          disabled={isSubmitting}
+        />
         <CancelButton onClick={onModalClose}>Cancel</CancelButton>
       </ButtonsContainer>
     </form>

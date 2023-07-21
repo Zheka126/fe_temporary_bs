@@ -47,11 +47,11 @@ export const selectStyles = (border?: boolean) => ({
   }),
   valueContainer: (baseStyles: any) => ({
     ...baseStyles,
-    flexWrap: 'wrap',
+    flexWrap: 'nowrap',
   }),
   multiValue: (baseStyles: any) => ({
     ...baseStyles,
-    backgroundColor: '#E4163A',
+    backgroundColor: 'black',
     borderRadius: '4px',
     color: 'white',
     minWidth: '25%',

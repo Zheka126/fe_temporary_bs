@@ -59,11 +59,13 @@ export const EditInput = styled(StyledInput)`
   background-color: ${({ theme }) => theme.colors.lightGray};
 `;
 
-export const StyledModalContent = styled.div`
+export const StyledEditForm = styled.form`
   display: flex;
+  justify-content: space-between;
   gap: 50px;
 `;
 
 export const CancelButton = styled(StyledButton)`
+  max-width: 300px;
   background-color: #ccc; /* Сероватый цвет */
 `;

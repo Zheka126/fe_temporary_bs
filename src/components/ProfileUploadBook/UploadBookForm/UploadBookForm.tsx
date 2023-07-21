@@ -16,6 +16,7 @@ import { AuthorType } from 'src/types/author';
 import { AddBookRequest } from 'src/types/book';
 import { GenreType } from 'src/types/genre';
 import { SelectValue } from 'src/types/select';
+import { getAuthorOptions, getGenresOptions } from 'src/utils';
 
 import {
   AddBookGetAuthorsErr,
@@ -83,7 +84,6 @@ export const UploadBookForm = ({ authors, genres }: UploadBookFormProps) => {
 
   const [isGetAuthorsLoading, setGetAuthorsLoading] = useState(false);
   const [getAuthorsErr, setGetAuthorsErr] = useState('');
-
   const [uploadBookErr, setUploadBookErr] = useState('');
 
   const uploadBook = async (
@@ -154,18 +154,6 @@ export const UploadBookForm = ({ authors, genres }: UploadBookFormProps) => {
     setFieldValue('language', o!.value);
   };
 
-  const authorsOption = authors.map((author) => ({
-    id: author.id,
-    label: `${author.firstName} ${author.lastName}`,
-    value: `${author.firstName} ${author.lastName}`,
-  }));
-
-  const genresOption = genres.map((genre) => ({
-    id: genre.id,
-    label: genre.name,
-    value: genre.name,
-  }));
-
   const imgSrc = values.image ? URL.createObjectURL(values.image) : '';
 
   const isSelectGenresErr = Boolean(touched.genreId && errors.genreId);
@@ -231,7 +219,7 @@ export const UploadBookForm = ({ authors, genres }: UploadBookFormProps) => {
           <Select
             id="authorId"
             name="authorId"
-            options={authorsOption}
+            options={getAuthorOptions(authors)}
             placeholder="Authors"
             onFocus={getAuthors}
             isMulti
@@ -253,7 +241,7 @@ export const UploadBookForm = ({ authors, genres }: UploadBookFormProps) => {
         <InputContainer>
           <Select
             id="genreId"
-            options={genresOption}
+            options={getGenresOptions(genres)}
             placeholder="Genres"
             isMulti
             styles={selectStyles(isSelectGenresErr)}

@@ -16,7 +16,7 @@ export const ModalContainer = styled.div<{ isOpen: boolean }>`
 `;
 
 export const ModalCard = styled.div<{ isOpen: boolean }>`
-  max-width: 60vw;
+  min-width: 30vw;
   padding: 10px 20px;
   color: ${({ theme }) => theme.colors.black};
   background-color: white;

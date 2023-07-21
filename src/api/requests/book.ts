@@ -15,12 +15,14 @@ export const getBooks = (filters: FilterValues) => {
 
   return instance.get<GetBooksResponse>(endpoint, {
     params: {
+      x: undefined,
       // Pagination.PageSize=
       ...(genre.length ? { Genre: genre } : {}),
       ...(status.length ? { Availability: status } : {}),
       ...(selectedRating ? { Rating: selectedRating } : {}),
       ...(currentPage !== 1 ? { 'Pagination.Page': currentPage } : {}),
     },
+
     // paramsSerializer: { indexes: null },
   });
 };

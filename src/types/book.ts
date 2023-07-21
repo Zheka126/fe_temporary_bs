@@ -27,7 +27,7 @@ export interface GetBooksResponse {
 // like making some fields unrequired
 export interface BookDetailsType {
   id: string | undefined;
-  imageSrc: string;
+  imageSrc: string | File | null;
   title: string;
   authors: AuthorType[];
   genres: GenreType[];

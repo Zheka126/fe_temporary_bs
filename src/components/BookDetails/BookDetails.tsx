@@ -63,7 +63,9 @@ export const BookDetails = () => {
     availability: '' as AvailabilityStatus,
   };
 
-  const [userAssignments, setUserAssignments] = useState<string[]>([]);
+  const [userActiveAssignments, setUserActiveAssignments] = useState<string[]>(
+    []
+  );
   const [bookDetails, setBookDetails] =
     useState<BookDetailsType>(initialValues);
 
@@ -71,7 +73,7 @@ export const BookDetails = () => {
     bookDetailsError: '',
     assigmentsErros: '',
   });
-  const [isBookDetailsIsLoading, setBookDetailsIsLoaging] = useState(false);
+  const [isBookDetailsIsLoading, setBookDetailsIsLoading] = useState(true);
 
   const genreElements = bookDetails.genres.map(({ id, name }) => (
     <BookGenreTag key={id}>{name}</BookGenreTag>
@@ -123,7 +125,13 @@ export const BookDetails = () => {
           );
           return genre ? [...acc, genre] : acc;
         }, [] as GenreType[]),
+        ...(typeof updatedBook.image !== 'string'
+          ? { imageSrc: updatedBook.image }
+          : {}),
       };
+      if (typeof updatedBook.image !== 'string') {
+        newBook.imageSrc = updatedBook.image;
+      }
 
       setBookDetails((prev) => ({ ...prev, ...newBook }));
     } catch (error: any) {
@@ -173,11 +181,10 @@ export const BookDetails = () => {
     }
     setConfirmModal((prev) => ({ ...prev, isOpen: false }));
   };
+  console.log(userActiveAssignments);
 
   useEffect(() => {
-    (async () => {
-      setBookDetailsIsLoaging(true);
-      console.log('isBookDetailsIsLoading: ', isBookDetailsIsLoading);
+    (() => {
       getBookById(bookId)
         .then(({ data }) => {
           setBookDetails(data);
@@ -188,12 +195,17 @@ export const BookDetails = () => {
           toast.error(errorMessage);
           setErrors((prev) => ({ ...prev, bookDetailsError: errorMessage }));
           console.error('Error:', error.message);
+        })
+        .finally(() => {
+          setBookDetailsIsLoading(false);
         });
-      setBookDetailsIsLoaging(false);
 
       getProfileItems('assignments')
         .then(({ data }) => {
-          setUserAssignments(data.data);
+          const activeAssignments = data.data.filter(
+            (assignment: any) => assignment.status === 'ACTIVE'
+          );
+          setUserActiveAssignments(activeAssignments);
         })
         .catch((error) => {
           const errorMessage =
@@ -205,6 +217,11 @@ export const BookDetails = () => {
     })();
   }, []);
 
+  const imageSrc =
+    typeof bookDetails.imageSrc !== 'string'
+      ? URL.createObjectURL(bookDetails.imageSrc as File)
+      : `${baseURL}/${bookDetails.imageSrc}`;
+
   return (
     <div>
       {isBookDetailsIsLoading ? (
@@ -214,7 +231,7 @@ export const BookDetails = () => {
       ) : (
         <BookDetailsContainer>
           <BookCoverSection>
-            <img src={`${baseURL}/${bookDetails.imageSrc}`} alt="book cover" />
+            <img src={imageSrc} alt="book cover" />
           </BookCoverSection>
           <BookDetailsSection>
             <h1>{bookDetails.title}</h1>
@@ -258,14 +275,14 @@ export const BookDetails = () => {
                 </>
               )}
               <span
-                data-tooltip-id={userAssignments.length > 2 ? 'tooltip' : ''}
+                data-tooltip-id="tooltip"
                 data-tooltip-content="You should have less than 2 assignments to Assign a book"
                 data-tooltip-variant="warning"
               >
                 <Button
                   title="Assign to Me"
                   onClick={() => openConfirmModal('assignToMe')}
-                  disabled={userAssignments.length > 2}
+                  disabled={userActiveAssignments.length > 2}
                 />
               </span>
             </ButtonsContainer>

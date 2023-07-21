@@ -6,6 +6,7 @@ export const editFormValidation = object({
     .max(70, 'Maximum 70 characters allowed.')
     .matches(/^[a-zA-Z0-9\s.,?!:;(){}[\]\-'"…]+$/, 'Wrong format')
     .required('Required'),
+  image: string().required('Required'),
   description: string().required('Required'),
   genreId: array().min(1, 'Required').required('Required'),
   publicationDate: string()
