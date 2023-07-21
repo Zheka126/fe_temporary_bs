@@ -44,8 +44,7 @@ export const AppRouter = () => {
       {renderRoutes(openRoutes)}
 
       <Route path="/" element={<Header />}>
-        {/* {isAuth && renderRoutes(privateRoutes)} */}
-        {renderRoutes(privateRoutes)}
+        {isAuth && renderRoutes(privateRoutes)}
       </Route>
       <Route path="*" element={<LoginPage />} />
     </Routes>

@@ -27,7 +27,7 @@ export const ProfileMyBooks = () => {
 
   useEffect(() => {
     try {
-      //   dispatch(getProfileMyBooksThunk(currentPage));
+        dispatch(getProfileMyBooksThunk(currentPage));
     } catch (err) {
       console.log(err);
     }
@@ -41,8 +41,7 @@ export const ProfileMyBooks = () => {
             {myBooks.map((book) => {
               return (
                 <MyBooksItem key={book.id} to={`/books/${book.id}`}>
-                  {/* <img src={`${baseURL}/${book.imageSrc}`} alt="book cover" /> */}
-                  <img src={book.imageSrc} alt="book cover" />
+                  <img src={`${baseURL}/${book.imageSrc}`} alt="book cover" />
                   <span>{book.title}</span>
                 </MyBooksItem>
               );
