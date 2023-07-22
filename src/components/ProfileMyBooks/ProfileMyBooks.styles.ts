@@ -19,7 +19,7 @@ export const MyBooksList = styled.div`
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 30px;
   padding: 20px;
-  max-height: 450px;
+  max-height: 400px;
   overflow: auto;
   ${({ theme }) => theme.styledScrollbar};
 `;

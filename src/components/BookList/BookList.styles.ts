@@ -6,7 +6,7 @@ export const BookListContainer = styled.div`
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 30px;
   padding: 20px;
-  max-height: 520px;
+  max-height: 450px;
   overflow: auto;
   ${({ theme }) => theme.styledScrollbar};
 `;
