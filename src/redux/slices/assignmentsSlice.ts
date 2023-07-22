@@ -8,8 +8,6 @@ export const getAssignmentsThunk = createAsyncThunk(
   async (page: number) => {
     try {
       const { data } = await getAssignments(page);
-      console.log(data.data);
-      
       return data;
     } catch (err: any) {
       throw Error('Can\'t get assignments');

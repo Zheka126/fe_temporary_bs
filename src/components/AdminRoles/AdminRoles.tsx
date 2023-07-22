@@ -44,16 +44,14 @@ export const AdminRoles = () => {
         setAllRolesLoading(true);
         if (userRole === "SuperAdmin") {
           await dispatch(getRolesThunk(currentPage)).unwrap();
-        } else {
-          throw Error("The page is available for super admin only");
-        }
+        } 
       } catch (err: any) {
         setError(err.message);
       } finally {
         setAllRolesLoading(false);
       }
     })();
-  }, [currentPage]);
+  }, [currentPage, userRole]);
 
   const openModal = (userId: string, role: AvailableRoles) => {
     setModalOpen(true);
@@ -81,6 +79,10 @@ export const AdminRoles = () => {
   if (error) {
     return <RequestError>{error}😢</RequestError>;
   }
+  
+  if (userRole !== "SuperAdmin") {
+    return <RequestError>The page is available for super admin only 😢</RequestError>;
+  } 
 
   return (
     <AdminRolesContainer>

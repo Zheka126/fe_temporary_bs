@@ -19,6 +19,14 @@ interface AssignmentsListProps {
   ) => void;
 }
 
+const getDate = (date: string) => {
+  const dateObject = new Date(date);
+  const day = dateObject.getDate().toString().padStart(2, "0");
+  const month = (dateObject.getMonth() + 1).toString().padStart(2, "0");
+  const year = dateObject.getFullYear().toString();
+  return `${day}/${month}/${year}`;
+}
+
 export const AssignmentsList = ({
   assignments,
   isHandleAssIdLoading,
@@ -27,11 +35,13 @@ export const AssignmentsList = ({
   return (
     <StyledAssignmentsList>
       {assignments.map((assignment) => {
+        const requestDate = getDate(assignment.requestDate)
+        
         return (
           <AssignmentItem key={assignment.id}>
-            <span>{assignment.bookId}</span>
-            <span>{assignment.userId}</span>
-            <span>{assignment.requestDate}</span>
+            <span>{assignment.bookTitile}</span>
+            <span>{assignment.username}</span>
+            <span>{requestDate}</span>
             {/* <span>{assignment.startDate}</span> */}
             {/* <span>{assignment.endDate}</span> */}
             <AssignmentsButtonsContainer>
@@ -49,7 +59,7 @@ export const AssignmentsList = ({
                       onClick={() =>
                         onApproveRejectAssignment({
                           assId: assignment.id,
-                          type: btn === "Reject" ? 'reject' : 'approve' 
+                          type: btn === "Reject" ? "reject" : "approve"
                         })
                       }
                     >

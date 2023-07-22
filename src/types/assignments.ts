@@ -2,6 +2,8 @@ export interface AssignmentType {
   id: string;
   bookId: string | undefined;
   userId: string | undefined
+  bookTitile: string
+  username: string
   requestDate: string
   status: string;
 }

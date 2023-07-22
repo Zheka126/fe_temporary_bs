@@ -4,9 +4,7 @@ import {
   getAssignmentsThunk,
   onHandleAssignmentThunk
 } from "src/redux/slices/assignmentsSlice";
-import {
-  ApproveRejectAssignmentRequest,
-} from "src/types/assignments";
+import { ApproveRejectAssignmentRequest } from "src/types/assignments";
 
 import { Loader, Pagination } from "..";
 import { Container } from "../common/Container.styles";
@@ -43,8 +41,6 @@ export const AdminAssignments = () => {
         setAssignmentLoading(true);
         if (userRole === "SuperAdmin" || userRole === "Admin") {
           await dispatch(getAssignmentsThunk(currentPage)).unwrap();
-        } else {
-          throw Error("The page is available for super admin and admin only");
         }
       } catch (err: any) {
         setAssignmentsErr(err.message);
@@ -52,7 +48,7 @@ export const AdminAssignments = () => {
         setAssignmentLoading(false);
       }
     })();
-  }, [currentPage]);
+  }, [currentPage, userRole]);
 
   const onApproveRejectAssignment = async (
     handleAssPayload: ApproveRejectAssignmentRequest
@@ -67,23 +63,13 @@ export const AdminAssignments = () => {
     }
   };
 
-  const assignments = assignmentsArr.map((assign) => {
-    const dateObject = new Date(assign.requestDate);
-    const day = dateObject.getDate().toString().padStart(2, "0");
-    const month = (dateObject.getMonth() + 1).toString().padStart(2, "0");
-    const year = dateObject.getFullYear().toString();
-    const requestDate = `${day}/${month}/${year}`;
-
-    const bookId = booksArr.find((book) => book.id === assign.bookId)?.title;
-    const userId = roles.find((role) => role.id === assign.userId)?.username;
-
-    return {
-      ...assign,
-      bookId,
-      userId,
-      requestDate
-    };
-  });
+  if (userRole !== "SuperAdmin" && userRole !== "Admin") {
+    return (
+      <EmptyAssignmentsOrErr>
+        The page is available for super admin and admin only 😢
+      </EmptyAssignmentsOrErr>
+    );
+  }
 
   return (
     <AssignmentsRolesContainer>
@@ -104,9 +90,9 @@ export const AdminAssignments = () => {
               {/* <li>End Date</li> */}
               <li>Actions</li>
             </AssignmentsPanel>
-            {assignments.length ? (
+            {assignmentsArr.length ? (
               <AssignmentsList
-                assignments={assignments}
+                assignments={assignmentsArr}
                 onApproveRejectAssignment={onApproveRejectAssignment}
                 isHandleAssIdLoading={isHandleAssIdLoading}
               />
