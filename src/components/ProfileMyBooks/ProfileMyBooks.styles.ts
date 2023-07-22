@@ -11,6 +11,7 @@ export const MyBooksContentContainer = styled.div`
   display: grid;
   grid-template-columns: 80% 20%;
   column-gap: 50px;
+  margin-top: 20px;
 `;
 
 export const MyBooksList = styled.div`
@@ -46,4 +47,11 @@ export const UploadBookButtonContainer = styled.div`
   display: flex;
   justify-content: end;
   align-items: end;
+`;
+
+export const ProNoMyBooksOrErr = styled.div`
+  ${({ theme }) => theme.flexStyles()};
+  font-size: 32px;
+  font-weight: 500;
+  margin-top: 50px;
 `;

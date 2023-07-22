@@ -94,7 +94,7 @@ export const UploadBookForm = ({ authors, genres }: UploadBookFormProps) => {
       setSubmitting(true);
       await dispatch(addBookThunk(newBook)).unwrap();
       resetForm();
-      navigate(-1)
+      navigate("/profile/my-books")
     } catch (err: any) {
       setUploadBookErr(err.message);
     } finally {

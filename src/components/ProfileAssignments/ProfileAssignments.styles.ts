@@ -6,7 +6,7 @@ export const ProfileAssignmentsContainer = styled.div`
   height: calc(100% - 34px);
 `;
 
-export const AssignmentsPanel = styled.div`
+export const AssignmentsPanel = styled.ul`
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
   list-style: none;
@@ -15,4 +15,15 @@ export const AssignmentsPanel = styled.div`
   padding-bottom: 20px;
   border-bottom: 2px solid black;
   padding-left: 20px;
+`;
+
+export const ProAssLoadingContainer = styled.div`
+  margin-top: 100px;
+`;
+
+export const ProNoAssignmentsOrErr = styled.div`
+  ${({ theme }) => theme.flexStyles()};
+  font-size: 32px;
+  font-weight: 500;
+  margin-top: 50px;
 `;
