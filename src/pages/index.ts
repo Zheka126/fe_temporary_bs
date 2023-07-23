@@ -1,7 +1,13 @@
 import { AdminPage } from './AdminPage';
-import { BookDetailsPage } from './BookDetailsPage';
+import { BookInfoPage } from './BookInfoPage';
 import { LoginPage } from './LoginPage';
 import { MainPage } from './MainPage';
 import { RegistrationPage } from './RegistrationPage';
 
-export { AdminPage, BookDetailsPage, LoginPage, MainPage, RegistrationPage };
+export {
+  AdminPage,
+  BookInfoPage as BookDetailsPage,
+  LoginPage,
+  MainPage,
+  RegistrationPage,
+};

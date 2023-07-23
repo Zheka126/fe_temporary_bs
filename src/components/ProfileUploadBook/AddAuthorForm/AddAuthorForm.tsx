@@ -30,6 +30,7 @@ export const AddAuthorForm = ({
   };
   const isValidFirstName = firstName ? !!/^[A-Za-z]+$/.test(firstName) : true;
   const isValidLastName = lastName ? !!/^[A-Za-z]+$/.test(lastName) : true;
+  // const isValid = (name: string) => !!/^[A-Za-z]+$/.test(name)
   return (
     <div>
       <h3>Add Author</h3>
