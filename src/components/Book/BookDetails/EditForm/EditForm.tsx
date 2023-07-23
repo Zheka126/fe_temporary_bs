@@ -111,17 +111,11 @@ export const EditForm = ({
     touched.availability && errors.availability
   );
 
-  console.log('errors', errors);
+  const imgSrc =
+    typeof values.image === 'string'
+      ? `${baseURL}/${values.image}`
+      : URL.createObjectURL(values.image as File);
 
-  // const isError = (field: string) => Boolean(touched[field] && errors[field]);
-
-  // console.log('values.image: ', values.image);
-  
-  const imgSrc = typeof values.image === 'string'
-  ? `${baseURL}/${values.image}`
-  : URL.createObjectURL(values.image as File);
-  
-  // console.log('imgSrc: ', imgSrc);
   useEffect(() => {
     (async () => {
       await dispatch(getAuthorsThunk());

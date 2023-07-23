@@ -185,6 +185,7 @@ export const SignupForm = () => {
             title="Log in"
             data-testid="login-button"
             data-tooltip-id="tooltip"
+            // data-tooltip-variant='info'
             data-tooltip-content="Go to the login page"
             onClick={() => navigate('/login')}
           />

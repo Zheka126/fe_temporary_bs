@@ -1,6 +1,6 @@
 import { ReactComponent as StarIcon } from '/assets/star.svg';
 
-import { StarItem, StarsList } from "./Rating.styles";
+import { StarItem, StyledStarsList } from './Rating.styles';
 
 const stars = Array(5)
   .fill(1)
@@ -13,18 +13,16 @@ interface RatingProps {
 
 export const Rating = ({ selectedRating, setSelectedRating }: RatingProps) => {
   return (
-    <StarsList>
-      {stars.map((ind) => {
-        return (
-          <StarItem
-            key={ind}
-            filled={selectedRating ? ind < selectedRating : false}
-            onClick={() => setSelectedRating(ind)}
-          >
-            <StarIcon />
-          </StarItem>
-        );
-      })}
-    </StarsList>
+    <StyledStarsList>
+      {stars.map((ind) => (
+        <StarItem
+          key={ind}
+          filled={selectedRating ? ind < selectedRating : false}
+          onClick={() => setSelectedRating(ind)}
+        >
+          <StarIcon />
+        </StarItem>
+      ))}
+    </StyledStarsList>
   );
 };

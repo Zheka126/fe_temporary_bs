@@ -1,9 +1,8 @@
+import { StyledButton } from 'src/components/common/Button/Button.styles';
+import { StyledInput } from 'src/components/common/Input.styles';
 import styled from 'styled-components';
 
-import { StyledButton } from '../common/Button/Button.styles';
-import { StyledInput } from '../common/Input.styles';
-
-export const BookDetailsContainer = styled.div`
+export const AllDetailsContainer = styled.div`
   display: flex;
   gap: 200px;
   max-width: 1600px;
@@ -15,7 +14,7 @@ export const BookDetailsContainer = styled.div`
   }
 `;
 
-export const BookCoverSection = styled.div`
+export const CoverSection = styled.div`
   flex: 0.3;
 
   img {
@@ -23,7 +22,7 @@ export const BookCoverSection = styled.div`
   }
 `;
 
-export const BookDetailsSection = styled.div`
+export const DetailsSection = styled.div`
   flex: 0.4;
 `;
 
@@ -32,7 +31,7 @@ export const Details = styled.div`
   justify-content: space-between;
 `;
 
-export const BookDetailItem = styled.div`
+export const DetailItem = styled.div`
   max-width: 330px;
   margin: 20px 0;
   color: #596d82;
@@ -47,7 +46,7 @@ export const BookDetailItem = styled.div`
   }
 `;
 
-export const BookGenreTag = styled.span`
+export const GenreTag = styled.span`
   margin-right: 5px;
   padding: 1px 10px;
   color: white;
@@ -67,5 +66,5 @@ export const StyledEditForm = styled.form`
 
 export const CancelButton = styled(StyledButton)`
   max-width: 300px;
-  background-color: #ccc; /* Сероватый цвет */
+  background-color: #ccc;
 `;

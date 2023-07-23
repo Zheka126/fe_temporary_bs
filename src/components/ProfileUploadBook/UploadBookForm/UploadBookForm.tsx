@@ -190,7 +190,6 @@ export const UploadBookForm = ({ authors, genres }: UploadBookFormProps) => {
         <InputContainer>
           <StyledInput
             id="title"
-            type="text"
             placeholder="Title"
             bgcColor="gray"
             isError={Boolean(touched.title && errors.title)}
@@ -204,7 +203,6 @@ export const UploadBookForm = ({ authors, genres }: UploadBookFormProps) => {
         <InputContainer>
           <StyledInput
             id="description"
-            type="text"
             placeholder="Description"
             bgcColor="gray"
             isError={Boolean(touched.description && errors.description)}

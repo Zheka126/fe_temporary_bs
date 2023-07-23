@@ -1,4 +1,4 @@
-import { BookDetailItem } from './BookDetails.styles';
+import { DetailItem } from './BookDetails.styles';
 
 interface BookDetailProps {
   title: string;
@@ -6,8 +6,8 @@ interface BookDetailProps {
 }
 
 export const BookDetail = ({ title, value }: BookDetailProps) => (
-  <BookDetailItem>
+  <DetailItem>
     <p>{title}</p>
     <span>{value}</span>
-  </BookDetailItem>
+  </DetailItem>
 );

@@ -1,18 +1,23 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getAssignments, handleAssignments } from 'src/api/requests/assignments';
-import { ApproveRejectAssignmentRequest, AssignmentType, GetAssignmentsResponse } from 'src/types/assignments';
+import {
+  getAssignments,
+  handleAssignments,
+} from 'src/api/requests/assignments';
+import {
+  ApproveRejectAssignmentRequest,
+  AssignmentType,
+  GetAssignmentsResponse,
+} from 'src/types/assignments';
 
 export const getAssignmentsThunk = createAsyncThunk(
   'getAssignmentsThunk',
   async (page: number) => {
     try {
       const { data } = await getAssignments(page);
-      console.log(data.data);
-      
       return data;
     } catch (err: any) {
-      throw Error('Can\'t get assignments');
+      throw Error("Can't get assignments");
     }
   }
 );
@@ -31,12 +36,12 @@ export const onHandleAssignmentThunk = createAsyncThunk(
 
 interface AssignmentsState {
   assignments: AssignmentType[];
-  totalRecords: number
+  totalRecords: number;
 }
 
 const initialState: AssignmentsState = {
   assignments: [],
-  totalRecords: 0
+  totalRecords: 0,
 };
 
 export const assignmentsSlice = createSlice({
@@ -49,22 +54,23 @@ export const assignmentsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-    .addCase(
+      .addCase(
         getAssignmentsThunk.fulfilled,
-      (state, action: PayloadAction<GetAssignmentsResponse>) => {
-        state.assignments = action.payload.data
-        state.totalRecords = action.payload.totalRecords
-      }
-    )
-    .addCase(
-      onHandleAssignmentThunk.fulfilled,
-      (state, action: PayloadAction<string>) => {
-        const assignmentId = action.payload
-        state.assignments = state.assignments.filter(ass => ass.id !== assignmentId);
-      }
-    );
+        (state, action: PayloadAction<GetAssignmentsResponse>) => {
+          state.assignments = action.payload.data;
+          state.totalRecords = action.payload.totalRecords;
+        }
+      )
+      .addCase(
+        onHandleAssignmentThunk.fulfilled,
+        (state, action: PayloadAction<string>) => {
+          const assignmentId = action.payload;
+          state.assignments = state.assignments.filter(
+            (ass) => ass.id !== assignmentId
+          );
+        }
+      );
   },
-
 });
 
 // export const { setAssignments } = assignmentsSlice.actions;

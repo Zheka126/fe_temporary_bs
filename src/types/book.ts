@@ -46,7 +46,7 @@ export interface BookDetailsType {
 
 export interface BookDetailsUpdateRequest {
   bookId: string | undefined;
-  image: File | null;
+  image: File | null | string;
   title: string;
   authorId: string[];
   genreId: string[];
@@ -72,4 +72,13 @@ export interface AddBookRequest {
   language: string;
   publicationDate: string;
   image: File | null;
+}
+
+export interface WantedBook {
+  title: string;
+  authorId: string[];
+}
+
+export interface WantedBookUpdateRequest extends WantedBook {
+  id: string;
 }
