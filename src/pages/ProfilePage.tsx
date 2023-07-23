@@ -1,22 +1,28 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Container } from "src/components/common/Container.styles";
+import { ProfileAssignments } from "src/components/ProfileAssignments/ProfileAssignments";
+import { ProfileMyBooks } from "src/components/ProfileMyBooks/ProfileMyBooks";
 import { ProfileUploadBook } from "src/components/ProfileUploadBook/ProfileUploadBook";
 
-import { StyledLink, SubPageContainer, Tabs } from './styles/common/common.styles';
+import {
+  AdminProfilePageContainer,
+  StyledLink,
+  Tabs
+} from "./styles/common/common.styles";
 
 const tabLinks = [
   { path: "/profile", text: "My Profile" },
   { path: "/profile/assignments", text: "My assignments" },
-  { path: "/profile/books", text: "My books" },
+  { path: "/profile/my-books", text: "My books" },
   { path: "/profile/wantedBooks", text: "Wanted books" },
   { path: "/profile/upload-book", text: "Upload book" }
 ];
 
 export const ProfilePage = () => {
-    const location = useLocation()
+  const location = useLocation();
 
   return (
-    <SubPageContainer>
+    <AdminProfilePageContainer>
       <Container>
         <Tabs>
           {tabLinks.map((link) => {
@@ -31,11 +37,13 @@ export const ProfilePage = () => {
             );
           })}
         </Tabs>
-
-        <Routes>
-          <Route path="upload-book" element={<ProfileUploadBook />} />
-        </Routes>
       </Container>
-    </SubPageContainer>
+
+      <Routes>
+        <Route path="assignments" element={<ProfileAssignments />} />
+        <Route path="my-books" element={<ProfileMyBooks />} />
+        <Route path="upload-book" element={<ProfileUploadBook />} />
+      </Routes>
+    </AdminProfilePageContainer>
   );
 };

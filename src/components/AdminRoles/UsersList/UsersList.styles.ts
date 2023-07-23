@@ -7,7 +7,9 @@ export const StyledUsersList = styled.div`
   border-radius: 10px;
   max-height: 400px;
   overflow: auto;
+  ${({ theme }) => theme.styledScrollbar};
 `;
+
 export const UserItem = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);

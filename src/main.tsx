@@ -1,5 +1,4 @@
 import 'normalize.css';
-import 'react-toastify/dist/ReactToastify.css';
 import 'react-tooltip/dist/react-tooltip.css';
 import './index.css';
 
@@ -13,10 +12,10 @@ import { theme } from './theme';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   // <React.StrictMode>
-  <Provider store={store}>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
-  </Provider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </Provider>
   // </React.StrictMode>
 );

@@ -16,6 +16,7 @@ import authorsReducer from './slices/authorsSlice';
 import authReducer from './slices/authSlice';
 import bookReducer from './slices/bookSlice';
 import genresReducer from './slices/genresSlice';
+import profileReducer from './slices/profileSlice';
 import roleReducer from './slices/rolesSlice';
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -27,7 +28,8 @@ const rootReducer = combineReducers({
   role: roleReducer,
   genres: genresReducer,
   assignments: assignmentsReducer,
-  authors: authorsReducer
+  authors: authorsReducer,
+  profile: profileReducer,
 });
 
 // REDUX PERSIST

@@ -10,7 +10,7 @@ export const getAssignmentsThunk = createAsyncThunk(
       const { data } = await getAssignments(page);
       return data;
     } catch (err: any) {
-      throw Error('Some error occured');
+      throw Error('Can\'t get assignments');
     }
   }
 );

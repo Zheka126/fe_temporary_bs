@@ -19,7 +19,7 @@ export const SearchInput = styled.input`
 `;
 
 export const GenresContainer = styled.div`
-  height: 100px;
+  height: 150px;
   width: 200px;
   padding-right: 20px;
   overflow: auto;

@@ -38,14 +38,14 @@ export const AppRouter = () => {
     if (location.pathname === "/") {
       navigate(isAuth ? "/main": "/login");
     }
-  }, [isAuth])
-
+  }, [isAuth, navigate])
   return (
     <Routes>
       {renderRoutes(openRoutes)}
 
       <Route path="/" element={<Header />}>
-        {isAuth && renderRoutes(privateRoutes)}
+        {/* {isAuth && renderRoutes(privateRoutes)} */}
+        {renderRoutes(privateRoutes)}
       </Route>
       <Route path="*" element={<LoginPage />} />
     </Routes>

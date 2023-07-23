@@ -1,17 +1,19 @@
-import { HashRouter } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import { Tooltip } from "react-tooltip";
-import { PersistGate } from "redux-persist/integration/react";
-import { ThemeProvider } from "styled-components";
+import 'react-toastify/dist/ReactToastify.css';
 
-import { AppRouter } from "./components";
-import { persistor } from "./redux/store";
-import { theme } from "./theme";
+import { HashRouter } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import { Tooltip } from 'react-tooltip';
+import { PersistGate } from 'redux-persist/integration/react';
+import { ThemeProvider } from 'styled-components';
+
+import { AppRouter } from './components';
+import { persistor } from './redux/store';
+import { theme } from './theme';
 
 export const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <HashRouter>
+      <HashRouter basename='/'>
         <PersistGate loading={null} persistor={persistor}>
           <AppRouter />
         </PersistGate>

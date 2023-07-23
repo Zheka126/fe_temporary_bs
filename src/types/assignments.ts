@@ -1,19 +1,19 @@
 export interface AssignmentType {
   id: string;
-  bookId?: string;
-  userId?: string;
-  requestDate: string;
-  startDate: string;
-  endDate: string;
+  bookId: string | undefined;
+  userId: string | undefined
+  bookTitile: string
+  username: string
+  requestDate: string
   status: string;
 }
 
 export interface GetAssignmentsResponse {
-    data: AssignmentType[]
-    totalRecords: number
+  data: AssignmentType[];
+  totalRecords: number;
 }
 
 export interface ApproveRejectAssignmentRequest {
-  assId: string
-  type: 'approve' | 'reject'
+  assId: string;
+  type: 'approve' | 'reject';
 }

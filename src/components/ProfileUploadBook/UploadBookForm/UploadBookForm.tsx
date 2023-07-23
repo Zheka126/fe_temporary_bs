@@ -94,7 +94,7 @@ export const UploadBookForm = ({ authors, genres }: UploadBookFormProps) => {
       setSubmitting(true);
       await dispatch(addBookThunk(newBook)).unwrap();
       resetForm();
-      navigate(-1)
+      navigate("/profile/my-books")
     } catch (err: any) {
       setUploadBookErr(err.message);
     } finally {
@@ -310,7 +310,7 @@ export const UploadBookForm = ({ authors, genres }: UploadBookFormProps) => {
               </UploadBtn>
               <CancelBtn
                 type="button"
-                onClick={() => navigate("/profile/books")}
+                onClick={() => navigate("/profile/my-books")}
               >
                 Cancel
               </CancelBtn>

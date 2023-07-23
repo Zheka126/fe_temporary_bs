@@ -1,11 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const SubPageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+export const AdminProfilePageContainer = styled.div`
   height: calc(100vh - 90px);
-  width: 100%;
   padding-top: 20px;
 `;
 
