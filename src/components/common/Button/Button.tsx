@@ -7,6 +7,6 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   ref?: React.MutableRefObject<HTMLButtonElement | null>;
 }
 
-export const Button = ({ title, ...props }: ButtonProps) => {
-  return <StyledButton {...props}>{title}</StyledButton>;
-};
+export const Button = ({ title, ...props }: ButtonProps) => (
+  <StyledButton {...props}>{title}</StyledButton>
+);

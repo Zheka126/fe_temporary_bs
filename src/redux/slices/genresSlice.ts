@@ -8,7 +8,7 @@ export const getGenresThunk = createAsyncThunk('getGenresThunk', async () => {
     const { data } = await getGenres();
     return data;
   } catch (error) {
-    throw Error('Can\'t get genres');
+    throw Error("Can't get genres");
   }
 });
 

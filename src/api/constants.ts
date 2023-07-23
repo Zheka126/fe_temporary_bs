@@ -1,3 +1,5 @@
+export const baseURL = 'https://backend.book-sharing.app.mddinternship.com/api';
+
 export enum StatusCodes {
   SUCCESS = 200,
   CREATED = 201,
@@ -6,4 +8,12 @@ export enum StatusCodes {
   INTERNAL_SERVER_ERROR = 500,
 }
 
-export const baseURL = 'https://backend.book-sharing.app.mddinternship.com/api';
+export enum Endpoints {
+  LOGIN = '/login',
+  REGISTER = '/register',
+  BOOKS = '/books',
+  AUTHOR = '/author',
+  GENRE = '/genre',
+  USERS = '/users',
+  PROFILE = '/profile',
+}
