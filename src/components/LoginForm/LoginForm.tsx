@@ -1,4 +1,5 @@
 import { FormikHelpers, useFormik } from 'formik';
+import { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { StatusCodes } from 'src/api/constants';
@@ -27,6 +28,7 @@ const initialValues: LoginRequest = {
 export const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const usernameRef = useRef<HTMLInputElement>(null);
 
   const onSubmit = async (
     values: LoginRequest,
@@ -73,6 +75,12 @@ export const LoginForm = () => {
       onSubmit,
     });
 
+  useEffect(() => {
+    if (usernameRef.current) {
+      usernameRef.current.focus();
+    }
+  }, []);
+
   return (
     <StyledForm onSubmit={handleSubmit} data-testid="login-form">
       <Title data-testid="login-title">Login</Title>
@@ -85,6 +93,7 @@ export const LoginForm = () => {
           id="username"
           type="text"
           placeholder="Enter username"
+          ref={usernameRef}
           isError={Boolean(touched.username && errors.username)}
           {...getFieldProps('username')}
         />
@@ -118,12 +127,7 @@ export const LoginForm = () => {
       {isSubmitting ? (
         <Loader size="mini" />
       ) : (
-        <Button
-          type="submit"
-          title="Log in"
-
-          data-testid="login-button"
-        />
+        <Button type="submit" title="Log in" data-testid="login-button" />
       )}
     </StyledForm>
   );

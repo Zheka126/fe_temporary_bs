@@ -14,9 +14,9 @@ const AdminReviews = () => {
 };
 
 const tabLinks = [
-  { path: "/admin/roles", text: "Manage Roles" },
-  { path: "/admin/assignments", text: "Approve assignments" },
-  { path: "/admin/reviews", text: "Delete reviews" }
+  { path: '/admin/roles', text: 'Manage Roles' },
+  { path: '/admin/assignments', text: 'Approve assignments' },
+  { path: '/admin/reviews', text: 'Delete reviews' },
 ];
 
 export const AdminPage = () => {

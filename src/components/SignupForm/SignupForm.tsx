@@ -1,4 +1,5 @@
 import { FormikHelpers, useFormik } from 'formik';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { StatusCodes } from 'src/api/constants';
@@ -28,6 +29,7 @@ const initialValues: UserRegistrationData = {
 
 export const SignupForm = () => {
   const navigate = useNavigate();
+  const firstNameRef = useRef<HTMLInputElement>(null);
 
   const onSubmit = async (
     values: UserRegistrationData,
@@ -67,6 +69,12 @@ export const SignupForm = () => {
       onSubmit,
     });
 
+  useEffect(() => {
+    if (firstNameRef.current) {
+      firstNameRef.current.focus();
+    }
+  }, []);
+
   return (
     <StyledForm onSubmit={handleSubmit} data-testid="signup-form">
       <Title data-testid="signup-title">Sign Up</Title>
@@ -76,6 +84,7 @@ export const SignupForm = () => {
           id="firstName"
           type="text"
           placeholder="First name"
+          ref={firstNameRef}
           isError={Boolean(touched.firstName && errors.firstName)}
           {...getFieldProps('firstName')}
         />
@@ -176,6 +185,7 @@ export const SignupForm = () => {
             title="Log in"
             data-testid="login-button"
             data-tooltip-id="tooltip"
+            // data-tooltip-variant='info'
             data-tooltip-content="Go to the login page"
             onClick={() => navigate('/login')}
           />
