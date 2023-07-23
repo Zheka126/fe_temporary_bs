@@ -19,7 +19,7 @@ const tabLinks = [
   { path: "/admin/reviews", text: "Delete reviews" }
 ];
 
-export const AdminTabPage = () => {
+export const AdminPage = () => {
   const location = useLocation();
 
   return (
