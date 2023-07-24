@@ -47,10 +47,12 @@ export const updateBook = (book: BookDetailsUpdateRequest) =>
   });
 
 export const assignBookToCurrentUser = (id: string | undefined) =>
-  instance.get(`${endpoint}/${id})/assign`);
+  instance.get(`${endpoint}/${id}/assign`);
 
 export const getBookReviews = (id: string | undefined) =>
-  instance.get(`${endpoint}/${id}/reviews`);
+  instance.get(`${endpoint}/reviews`, {
+    params: { BookId: id },
+  });
 // should be like this but there are other fields...
 // instance.get<ReviewType[]>(`${endpoint}/${id}/reviews`);
 
