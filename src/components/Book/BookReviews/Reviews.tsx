@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { getBookReviews } from 'src/api/requests/book';
 import { ReviewType } from 'src/types/review';
 
@@ -25,7 +24,6 @@ export const Reviews = () => {
       }
     })();
   }, []);
-
 
   if (error) {
     return <h2>{error}</h2>;
