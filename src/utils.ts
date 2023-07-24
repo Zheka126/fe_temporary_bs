@@ -37,6 +37,7 @@ export const availabilityOptions: OptionType[] = Object.values(
   value: status,
   label: status,
 }));
+
 export const languageOptions: OptionType[] = Object.values(Language).map(
   (language, index) => ({
     id: index,
@@ -47,3 +48,11 @@ export const languageOptions: OptionType[] = Object.values(Language).map(
 
 export const getGenresOptions = (genres: GenreType[]) =>
   genres.map(({ id, name }) => ({ id, label: name, value: id }));
+
+export const getDate = (date: string) => {
+  const dateObject = new Date(date);
+  const day = dateObject.getDate().toString().padStart(2, '0');
+  const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
+  const year = dateObject.getFullYear().toString();
+  return `${day}/${month}/${year}`;
+};
