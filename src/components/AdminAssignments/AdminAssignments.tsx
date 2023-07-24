@@ -1,45 +1,46 @@
-import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "src/redux/hooks";
+import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import {
   getAssignmentsThunk,
-  onHandleAssignmentThunk
-} from "src/redux/slices/assignmentsSlice";
-import { ApproveRejectAssignmentRequest } from "src/types/assignments";
+  onHandleAssignmentThunk,
+} from 'src/redux/slices/assignmentsSlice';
+import { ApproveRejectAssignmentRequest } from 'src/types/assignments';
 
-import { Loader, Pagination } from "..";
-import { Container } from "../common/Container.styles";
+import { Loader, Pagination } from '..';
+import { Container } from '../common/Container.styles';
 import {
   AssignmentsLoaderContainer,
   AssignmentsPanel,
   AssignmentsRolesContainer,
-  EmptyAssignmentsOrErr
-} from "./AdminAssignments.styles";
-import { AssignmentsList } from "./AssignmentsList/AssignmentsList";
+  EmptyAssignmentsOrErr,
+} from './AdminAssignments.styles';
+import { AssignmentsList } from './AssignmentsList/AssignmentsList';
 
 export const AdminAssignments = () => {
   const dispatch = useAppDispatch();
 
-  const { userRole, assignmentsArr, totalAssignmentsRecords, booksArr, roles } =
-    useAppSelector(({ auth, assignments, books, role }) => ({
+  const { userRole, assignmentsArr, totalAssignmentsRecords } = useAppSelector(
+    ({ auth, assignments, books, role }) => ({
       userRole: auth.user?.role,
       assignmentsArr: assignments.assignments,
       totalAssignmentsRecords: assignments.totalRecords,
       booksArr: books.books,
-      roles: role.roles
-    }));
+      roles: role.roles,
+    })
+  );
 
   const [currentPage, setCurrentPage] = useState(1);
 
   const [isAssignmentLoading, setAssignmentLoading] = useState(true);
-  const [assignmentsErr, setAssignmentsErr] = useState("");
+  const [assignmentsErr, setAssignmentsErr] = useState('');
 
-  const [isHandleAssIdLoading, setHandleAssIdLoading] = useState("");
+  const [isHandleAssIdLoading, setHandleAssIdLoading] = useState('');
 
   useEffect(() => {
     (async () => {
       try {
         setAssignmentLoading(true);
-        if (userRole === "SuperAdmin" || userRole === "Admin") {
+        if (userRole === 'SuperAdmin' || userRole === 'Admin') {
           await dispatch(getAssignmentsThunk(currentPage)).unwrap();
         }
       } catch (err: any) {
@@ -59,11 +60,11 @@ export const AdminAssignments = () => {
     } catch (err: any) {
       setAssignmentsErr(err.message);
     } finally {
-      setHandleAssIdLoading("");
+      setHandleAssIdLoading('');
     }
   };
 
-  if (userRole !== "SuperAdmin" && userRole !== "Admin") {
+  if (userRole !== 'SuperAdmin' && userRole !== 'Admin') {
     return (
       <EmptyAssignmentsOrErr>
         The page is available for super admin and admin only 😢
