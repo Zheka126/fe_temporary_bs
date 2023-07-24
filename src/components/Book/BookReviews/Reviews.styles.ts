@@ -8,7 +8,7 @@ export const SectionTitle = styled.h2`
 export const ReviewsContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  /* gap: 50px; */
+  margin-bottom: 50px;
 `;
 
 export const BookReviewsList = styled.ul`
