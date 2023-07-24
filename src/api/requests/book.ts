@@ -59,5 +59,9 @@ export const getBookReviews = (id: string | undefined) =>
 export const addBookReview = (review: AddReviewRequest) =>
   instance.post(`${endpoint}/reviews/add`, review);
 
+// {
+//   params: review,
+// }
+
 export const deleteBook = (id: string | undefined) =>
   instance.delete(`${endpoint}/${id}`);

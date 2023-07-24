@@ -9,6 +9,10 @@ export const ReviewsContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 50px;
+
+  form {
+    max-width: 500px;
+  }
 `;
 
 export const BookReviewsList = styled.ul`
