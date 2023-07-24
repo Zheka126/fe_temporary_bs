@@ -19,7 +19,7 @@ import {
 import { ButtonsContainer } from 'src/components/common/Container.styles';
 import { StyledParagraph } from 'src/components/LoginForm/LoginForm.styles';
 import { useAppSelector } from 'src/redux/hooks';
-import { AssignmentType } from 'src/types/assignments';
+import { BookAssignmentType } from 'src/types/assignments';
 import { AuthorType } from 'src/types/author';
 import {
   AvailabilityStatus,
@@ -67,16 +67,21 @@ export const SmartBookDetails = () => {
   };
   const [details, setDetails] = useState<BookDetailsType>(initialValues);
 
-  const [userAssignments, setUserAssignments] = useState({
-    active: [] as AssignmentType[],
-    pending: [] as AssignmentType[],
-  });
+  const [userAssignments, setUserAssignments] = useState<BookAssignmentType[]>(
+    []
+  );
+  console.log('userAssignments: ', userAssignments);
 
   const [errors, setErrors] = useState({
     bookDetailsError: '',
     assigmentsErros: '',
   });
   const [isBookDetailsIsLoading, setBookDetailsIsLoading] = useState(true);
+
+  const filterAssigments = (
+    assignments: BookAssignmentType[],
+    status: string
+  ) => assignments.filter((assignment) => assignment.status === status);
 
   const onUpdateBook = async (updatedBook: BookDetailsUpdateRequest) => {
     try {
@@ -122,6 +127,7 @@ export const SmartBookDetails = () => {
       toast.success(
         'Book was successfully added to the queue. Your assignment starts at: <Start_date>'
       );
+      setBaseModal((prev) => ({ ...prev, isOpen: false }));
     } catch (error: any) {
       toast.error('Some errors with the addint to queue');
       console.log('Error:', error.message);
@@ -197,7 +203,6 @@ export const SmartBookDetails = () => {
       return;
     }
     try {
-      console.log('bookId: ', bookId);
       await assignBookToCurrentUser(bookId);
       toast.success(
         `Book was successfully assigned to ${user?.userName}. Your assignment ends at: <End_date> /n Please wait for the Administrator approval`
@@ -236,23 +241,7 @@ export const SmartBookDetails = () => {
 
       getProfileItems('assignments')
         .then(({ data }) => {
-          const pendingAssignments = [] as AssignmentType[];
-          const activeAssignments = [] as AssignmentType[];
-
-          data.data.forEach((assignment: AssignmentType) => {
-            if (assignment.status === 'PENDING') {
-              pendingAssignments.push(assignment);
-            }
-            if (assignment.status === 'ACTIVE') {
-              activeAssignments.push(assignment);
-            }
-          });
-
-          setUserAssignments((prev) => ({
-            ...prev,
-            pending: [...prev.pending, ...pendingAssignments],
-            active: [...prev.active, ...activeAssignments],
-          }));
+          setUserAssignments(data.data);
         })
         .catch((error) => {
           const errorMessage =
@@ -263,6 +252,16 @@ export const SmartBookDetails = () => {
         });
     })();
   }, []);
+
+  const isAssignButtonDisabled =
+    filterAssigments(userAssignments, 'ACTIVE').length > 2 ||
+    filterAssigments(userAssignments, 'PENDING').length > 0 ||
+    userAssignments.some((assignment) => assignment.title === details.title);
+
+  const isAddToQueueButtonDisabled =
+    filterAssigments(userAssignments, 'ACTIVE').length +
+      filterAssigments(userAssignments, 'PENDING').length >
+    3;
 
   return isBookDetailsIsLoading ? (
     <Loader size="big" />
@@ -296,22 +295,23 @@ export const SmartBookDetails = () => {
         )}
         <span
           data-tooltip-id="tooltip"
-          data-tooltip-content={`You'll be able to add new books starting: <End_date_Current_Pending_Assignment>`}
+          data-tooltip-content={
+            isAddToQueueButtonDisabled
+              ? `You'll be able to add new books starting: <End_date_Current_Pending_Assignment>`
+              : ''
+          }
           data-tooltip-variant="warning"
         >
           <Button
             title="Add to queue"
             onClick={() => openBaseModal('addToQueue')}
-            disabled={
-              userAssignments.active.length + userAssignments.pending.length > 3
-            }
+            disabled={isAddToQueueButtonDisabled}
           />
         </span>
         <span
           data-tooltip-id="tooltip"
           data-tooltip-content={
-            userAssignments.active.length > 2 ||
-            userAssignments.pending.length > 0
+            isAssignButtonDisabled
               ? 'You should have less than 2 active assignments to Assign a book'
               : ''
           }
@@ -320,10 +320,7 @@ export const SmartBookDetails = () => {
           <Button
             title="Assign to Me"
             onClick={() => openConfirmModal('assignToMe')}
-            disabled={
-              userAssignments.active.length > 2 ||
-              userAssignments.pending.length > 0
-            }
+            disabled={isAssignButtonDisabled}
           />
         </span>
       </ButtonsContainer>
