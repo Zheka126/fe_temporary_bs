@@ -197,6 +197,7 @@ export const SmartBookDetails = () => {
       return;
     }
     try {
+      console.log('bookId: ', bookId);
       await assignBookToCurrentUser(bookId);
       toast.success(
         `Book was successfully assigned to ${user?.userName}. Your assignment ends at: <End_date> /n Please wait for the Administrator approval`
@@ -237,7 +238,7 @@ export const SmartBookDetails = () => {
         .then(({ data }) => {
           const pendingAssignments = [] as AssignmentType[];
           const activeAssignments = [] as AssignmentType[];
-      
+
           data.data.forEach((assignment: AssignmentType) => {
             if (assignment.status === 'PENDING') {
               pendingAssignments.push(assignment);
@@ -301,13 +302,16 @@ export const SmartBookDetails = () => {
           <Button
             title="Add to queue"
             onClick={() => openBaseModal('addToQueue')}
-            disabled={userAssignments.active.length + userAssignments.pending.length > 3}
+            disabled={
+              userAssignments.active.length + userAssignments.pending.length > 3
+            }
           />
         </span>
         <span
           data-tooltip-id="tooltip"
           data-tooltip-content={
-            userAssignments.active.length > 2
+            userAssignments.active.length > 2 ||
+            userAssignments.pending.length > 0
               ? 'You should have less than 2 active assignments to Assign a book'
               : ''
           }
@@ -316,7 +320,10 @@ export const SmartBookDetails = () => {
           <Button
             title="Assign to Me"
             onClick={() => openConfirmModal('assignToMe')}
-            disabled={userAssignments.active.length > 2}
+            disabled={
+              userAssignments.active.length > 2 ||
+              userAssignments.pending.length > 0
+            }
           />
         </span>
       </ButtonsContainer>
