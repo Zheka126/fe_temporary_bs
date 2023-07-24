@@ -203,6 +203,7 @@ export const SmartBookDetails = () => {
       return;
     }
     try {
+      console.log('bookId: ', bookId);
       await assignBookToCurrentUser(bookId);
       toast.success(
         `Book was successfully assigned to ${user?.userName}. Your assignment ends at: <End_date> /n Please wait for the Administrator approval`

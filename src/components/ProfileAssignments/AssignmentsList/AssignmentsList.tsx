@@ -1,4 +1,5 @@
 import { ProfileAssignmentType } from "src/types/profile";
+import { getDate } from "src/utils";
 
 import {
   ActionsBtn,
@@ -11,21 +12,22 @@ interface AssignmentsListProps {
   profileAssignments: ProfileAssignmentType[];
 }
 
+const dateDisplayed = (date: string | null) => {
+  if(!date) return '---'
+  return getDate(date)
+}
+
 export const AssignmentsList = ({
   profileAssignments
 }: AssignmentsListProps) => {
   return (
     <StyledAssignmentsList>
       {profileAssignments.map((proAss) => {
-        const dateDisplayed =
-          proAss.status === "PENDING" || proAss.status === "REJECTED"
-            ? "---"
-            : "some time";
         return (
           <ProAssItem key={proAss.id}>
             <span>{proAss.title}</span>
-            <span>{dateDisplayed}</span>
-            <span>{dateDisplayed}</span>
+            <span>{dateDisplayed(proAss.startDate)}</span>
+            <span>{dateDisplayed(proAss.endDate)}</span>
             <AssignmentStatus status={proAss.status}>
               {proAss.status}
             </AssignmentStatus>
@@ -35,8 +37,6 @@ export const AssignmentsList = ({
               <ActionsBtn type="button">
                 {proAss.status === "ACTIVE"
                   ? "Extend deadline"
-                  : proAss.status === "REJECTED"
-                  ? "---"
                   : "Change time range"}
               </ActionsBtn>
             )}

@@ -20,12 +20,10 @@ export const AdminAssignments = () => {
   const dispatch = useAppDispatch();
 
   const { userRole, assignmentsArr, totalAssignmentsRecords } = useAppSelector(
-    ({ auth, assignments, books, role }) => ({
+    ({ auth, assignments }) => ({
       userRole: auth.user?.role,
       assignmentsArr: assignments.assignments,
       totalAssignmentsRecords: assignments.totalRecords,
-      booksArr: books.books,
-      roles: role.roles,
     })
   );
 
