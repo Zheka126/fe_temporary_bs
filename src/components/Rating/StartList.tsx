@@ -12,9 +12,8 @@ interface RatingProps {
 
 export const StarsList = ({ length, filled }: RatingProps) => {
   return (
-    <StyledStarsList filled>
-      {length &&
-        Array.from({ length }).map((_, index) => <StarIcon key={v4()} />)}
+    <StyledStarsList filled={filled}>
+      {length && Array.from({ length }).map(() => <StarIcon key={v4()} />)}
     </StyledStarsList>
   );
 };
