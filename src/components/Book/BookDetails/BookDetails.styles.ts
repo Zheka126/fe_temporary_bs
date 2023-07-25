@@ -23,7 +23,7 @@ export const CoverSection = styled.div`
 `;
 
 export const DetailsSection = styled.div`
-  flex: 0.4;
+  flex: 0.5;
 `;
 
 export const Details = styled.div`
