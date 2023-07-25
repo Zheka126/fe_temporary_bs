@@ -21,7 +21,7 @@ export const StyledBookItem = styled(Link)`
   height: fit-content;
   img {
     width: 70px;
-    height: 70px;
+    height: 100px;
     border-radius: 10px;
   }
   &:hover {
