@@ -19,7 +19,7 @@ import {
 import { ButtonsContainer } from 'src/components/common/Container.styles';
 import { StyledParagraph } from 'src/components/LoginForm/LoginForm.styles';
 import { useAppSelector } from 'src/redux/hooks';
-import { BookAssignmentType } from 'src/types/assignments';
+import { BookAssignmentType, STATUS } from 'src/types/assignments';
 import { AuthorType } from 'src/types/author';
 import {
   AvailabilityStatus,
@@ -205,6 +205,13 @@ export const SmartBookDetails = () => {
     try {
       console.log('bookId: ', bookId);
       await assignBookToCurrentUser(bookId);
+      setUserAssignments(prev => [...prev, {
+        id: '1234567',
+        status: STATUS.PENDING,
+        title: details.title,
+         startDate: null,
+         endDate: null,
+      }])
       toast.success(
         `Book was successfully assigned to ${user?.userName}. Your assignment ends at: <End_date> /n Please wait for the Administrator approval`
       );
