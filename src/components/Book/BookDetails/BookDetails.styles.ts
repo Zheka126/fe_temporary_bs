@@ -5,7 +5,7 @@ import styled from 'styled-components';
 export const AllDetailsContainer = styled.div`
   display: flex;
   gap: 200px;
-  max-width: 1600px;
+  max-width: 1700px;
   margin: 0 auto;
   padding: 30px;
 
@@ -29,6 +29,7 @@ export const DetailsSection = styled.div`
 export const Details = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 30px;
 `;
 
 export const DetailItem = styled.div`

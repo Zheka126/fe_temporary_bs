@@ -203,15 +203,17 @@ export const SmartBookDetails = () => {
       return;
     }
     try {
-      console.log('bookId: ', bookId);
       await assignBookToCurrentUser(bookId);
-      setUserAssignments(prev => [...prev, {
-        id: '1234567',
-        status: STATUS.PENDING,
-        title: details.title,
-         startDate: null,
-         endDate: null,
-      }])
+      setUserAssignments((prev) => [
+        ...prev,
+        {
+          id: '1234567',
+          status: STATUS.PENDING,
+          title: details.title,
+          startDate: null,
+          endDate: null,
+        },
+      ]);
       toast.success(
         `Book was successfully assigned to ${user?.userName}. Your assignment ends at: <End_date> /n Please wait for the Administrator approval`
       );
@@ -319,7 +321,9 @@ export const SmartBookDetails = () => {
         <span
           data-tooltip-id="tooltip"
           data-tooltip-content={
-            isAssignButtonDisabled
+            filterAssigments(userAssignments, 'PENDING').length > 0
+              ? 'You already have one pending assignment'
+              : isAssignButtonDisabled
               ? 'You should have less than 2 active assignments to Assign a book'
               : ''
           }
